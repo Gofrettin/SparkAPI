@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Spark.Event\Spark.Event.csproj" />
+      <ProjectReference Include="..\Spark.Game\Spark.Game.csproj" />
+      <ProjectReference Include="..\Spark.Network\Spark.Network.csproj" />
+      <ProjectReference Include="..\Spark.Packet\Spark.Packet.csproj" />
+    </ItemGroup>
+
+</Project>
