@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Toolkit", "srcs\Spark.Toolkit\Spark.Toolkit.csproj", "{B4E56FA9-896B-4AE0-85AA-D2443EF1146D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Core", "srcs\Spark.Core\Spark.Core.csproj", "{6C513A9D-230B-4F12-BB18-6CE502A2A4D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Database", "srcs\Spark.Database\Spark.Database.csproj", "{7A938452-8848-447D-8277-BC617D29FA5C}"
@@ -20,16 +18,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Event", "srcs\Spark.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark", "srcs\Spark\Spark.csproj", "{8E8B1ABB-34DA-4834-AD17-6DF90869EB67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Toolkit", "srcs\Spark.Toolkit\Spark.Toolkit.csproj", "{BD44E3A2-BCDF-408F-8815-05B563B3B7B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Example", "example\Spark.Example\Spark.Example.csproj", "{EFA3835E-AB0C-42D7-9F21-D1724DFCEB94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Game.Abstraction", "srcs\Spark.Game.Abstraction\Spark.Game.Abstraction.csproj", "{DB4EE534-30F7-4519-BBE2-09553CA12EDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Game.Factory", "srcs\Spark.Game.Factory\Spark.Game.Factory.csproj", "{C3BA4B36-7041-4FC1-9306-39F0DD0895D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B4E56FA9-896B-4AE0-85AA-D2443EF1146D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4E56FA9-896B-4AE0-85AA-D2443EF1146D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4E56FA9-896B-4AE0-85AA-D2443EF1146D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4E56FA9-896B-4AE0-85AA-D2443EF1146D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C513A9D-230B-4F12-BB18-6CE502A2A4D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C513A9D-230B-4F12-BB18-6CE502A2A4D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C513A9D-230B-4F12-BB18-6CE502A2A4D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -66,6 +68,22 @@ Global
 		{8E8B1ABB-34DA-4834-AD17-6DF90869EB67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E8B1ABB-34DA-4834-AD17-6DF90869EB67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E8B1ABB-34DA-4834-AD17-6DF90869EB67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD44E3A2-BCDF-408F-8815-05B563B3B7B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD44E3A2-BCDF-408F-8815-05B563B3B7B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD44E3A2-BCDF-408F-8815-05B563B3B7B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD44E3A2-BCDF-408F-8815-05B563B3B7B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFA3835E-AB0C-42D7-9F21-D1724DFCEB94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA3835E-AB0C-42D7-9F21-D1724DFCEB94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA3835E-AB0C-42D7-9F21-D1724DFCEB94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA3835E-AB0C-42D7-9F21-D1724DFCEB94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB4EE534-30F7-4519-BBE2-09553CA12EDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB4EE534-30F7-4519-BBE2-09553CA12EDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB4EE534-30F7-4519-BBE2-09553CA12EDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB4EE534-30F7-4519-BBE2-09553CA12EDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3BA4B36-7041-4FC1-9306-39F0DD0895D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3BA4B36-7041-4FC1-9306-39F0DD0895D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3BA4B36-7041-4FC1-9306-39F0DD0895D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3BA4B36-7041-4FC1-9306-39F0DD0895D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

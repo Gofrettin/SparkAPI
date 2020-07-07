@@ -1,7 +1,9 @@
-﻿using NLog;
+﻿using System.Threading.Tasks;
+using NLog;
 using Spark.Event;
 using Spark.Event.Characters;
 using Spark.Game;
+using Spark.Game.Abstraction;
 using Spark.Game.Entities;
 using Spark.Packet.Characters;
 
@@ -15,11 +17,11 @@ namespace Spark.Processor.Characters
 
         public CInfoProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
 
-        protected override void Process(IClient client, CInfo packet)
+        protected override Task Process(IClient client, CInfo packet)
         {
             if (client.Character != null)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             client.Character = new Character(packet.Id, client)
@@ -30,6 +32,8 @@ namespace Spark.Processor.Characters
             _eventPipeline.Emit(new CharacterInitializedEvent(client.Character));
 
             Logger.Info($"Client with id {client.Id} initialized with character {client.Character.Name}");
+
+            return Task.CompletedTask;
         }
     }
 }

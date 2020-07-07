@@ -45,13 +45,12 @@ namespace Spark.Packet
 
         public IPacket CreatePacket(string content)
         {
-            string[] split = content.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-            if (split.Length == 0)
+            if (content == string.Empty)
             {
-                Logger.Warn("Weird packet (0 length)");
                 return default;
             }
+            
+            string[] split = content.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
             string header = split[0];
             string[] packetContent = header.Length > 1 ? split.Skip(1).ToArray() : split;

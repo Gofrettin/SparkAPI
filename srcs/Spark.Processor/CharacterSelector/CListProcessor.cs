@@ -1,26 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NLog;
 using Spark.Core;
-using Spark.Game;
-using Spark.Network.Client.Impl;
+using Spark.Core.Storage;
+using Spark.Game.Abstraction;
 using Spark.Packet.CharacterSelector;
 
 namespace Spark.Processor.CharacterSelector
 {
     public class CListProcessor : PacketProcessor<CList>
     {
-        protected override void Process(IClient client, CList packet)
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
+        protected override Task Process(IClient client, CList packet)
         {
-            List<SelectableCharacter> characters = (client as RemoteClient)?.SelectableCharacters;
-            if (characters == null)
-            {
-                return;
-            }
-
-            characters.Add(new SelectableCharacter
+            LoginStorage storage = client.GetStorage<LoginStorage>();
+            storage.SelectableCharacters.Add(new SelectableCharacter
             {
                 Name = packet.Name,
                 Slot = packet.Slot
             });
+            
+            Logger.Debug($"Added {packet.Name} character to selectable characters");
+            
+            return Task.CompletedTask;
         }
     }
 }

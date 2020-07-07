@@ -2,48 +2,49 @@
 using System.Linq;
 using NLog;
 using Spark.Core.Enum;
-using Spark.Game.Entities;
+using Spark.Game.Abstraction;
+using Spark.Game.Abstraction.Entities;
 
 namespace Spark.Game
 {
-    public sealed class Map
+    public sealed class Map : IMap
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Dictionary<long, Monster> _monsters;
-        private readonly Dictionary<long, Npc> _npcs;
-        private readonly Dictionary<long, MapObject> _objects;
-        private readonly Dictionary<long, Player> _players;
+        private readonly Dictionary<long, IMonster> _monsters;
+        private readonly Dictionary<long, INpc> _npcs;
+        private readonly Dictionary<long, IMapObject> _objects;
+        private readonly Dictionary<long, IPlayer> _players;
 
         public Map(int id, string name, byte[] grid)
         {
             Id = id;
-            Name = name;
+            NameKey = name;
             Grid = grid;
 
-            _monsters = new Dictionary<long, Monster>();
-            _npcs = new Dictionary<long, Npc>();
-            _players = new Dictionary<long, Player>();
-            _objects = new Dictionary<long, MapObject>();
+            _monsters = new Dictionary<long, IMonster>();
+            _npcs = new Dictionary<long, INpc>();
+            _players = new Dictionary<long, IPlayer>();
+            _objects = new Dictionary<long, IMapObject>();
         }
 
-        public IEnumerable<Entity> Entities => _monsters.Values
-            .Concat<Entity>(_npcs.Values)
+        public IEnumerable<IEntity> Entities => _monsters.Values
+            .Concat<IEntity>(_npcs.Values)
             .Concat(_players.Values)
             .Concat(_objects.Values);
 
         public int Id { get; }
-        public string Name { get; }
+        public string NameKey { get; }
         public byte[] Grid { get; }
         public int Height { get; }
         public int Width { get; }
 
-        public IEnumerable<Monster> Monsters => _monsters.Values;
-        public IEnumerable<Player> Players => _players.Values;
-        public IEnumerable<Npc> Npcs => _npcs.Values;
-        public IEnumerable<MapObject> Objects => _objects.Values;
+        public IEnumerable<IMonster> Monsters => _monsters.Values;
+        public IEnumerable<IPlayer> Players => _players.Values;
+        public IEnumerable<INpc> Npcs => _npcs.Values;
+        public IEnumerable<IMapObject> Objects => _objects.Values;
 
-        public Entity GetEntity(EntityType entityType, long id)
+        public IEntity GetEntity(EntityType entityType, long id)
         {
             switch (entityType)
             {
@@ -61,21 +62,21 @@ namespace Spark.Game
             }
         }
 
-        public void AddEntity(Entity entity)
+        public void AddEntity(IEntity entity)
         {
             switch (entity.EntityType)
             {
                 case EntityType.Monster:
-                    _monsters[entity.Id] = (Monster)entity;
+                    _monsters[entity.Id] = (IMonster)entity;
                     break;
                 case EntityType.Npc:
-                    _npcs[entity.Id] = (Npc)entity;
+                    _npcs[entity.Id] = (INpc)entity;
                     break;
                 case EntityType.MapObject:
-                    _objects[entity.Id] = (MapObject)entity;
+                    _objects[entity.Id] = (IMapObject)entity;
                     break;
                 case EntityType.Player:
-                    _players[entity.Id] = (Player)entity;
+                    _players[entity.Id] = (IPlayer)entity;
                     break;
                 default:
                     Logger.Warn($"Unvalid entity type {entity.EntityType}");
@@ -87,7 +88,7 @@ namespace Spark.Game
             Logger.Debug($"Entity {entity.EntityType} with id {entity.Id} added to map {Id}");
         }
 
-        public void RemoveEntity(Entity entity)
+        public void RemoveEntity(IEntity entity)
         {
             switch (entity.EntityType)
             {

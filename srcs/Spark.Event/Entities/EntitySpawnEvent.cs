@@ -1,17 +1,17 @@
-﻿using Spark.Game;
-using Spark.Game.Entities;
+﻿using Spark.Game.Abstraction;
+using Spark.Game.Abstraction.Entities;
 
 namespace Spark.Event.Entities
 {
     public class EntitySpawnEvent : IEvent
     {
-        public EntitySpawnEvent(Map map, Entity entity)
+        public EntitySpawnEvent(IMap map, IEntity entity)
         {
             Map = map;
             Entity = entity;
         }
 
-        public Map Map { get; }
-        public Entity Entity { get; }
+        public IMap Map { get; }
+        public IEntity Entity { get; }
     }
 }

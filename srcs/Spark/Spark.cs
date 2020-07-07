@@ -1,16 +1,19 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Spark.Core;
+using Spark.Core.Server;
 using Spark.Database;
 using Spark.Event;
 using Spark.Extension;
-using Spark.Game;
+using Spark.Game.Abstraction;
+using Spark.Game.Abstraction.Factory;
 using Spark.Game.Factory;
-using Spark.Game.Factory.Impl;
 using Spark.Gameforge;
-using Spark.Network.Client;
-using Spark.Network.Client.Impl;
+using Spark.Network.Session;
 using Spark.Packet;
 using Spark.Processor;
 
@@ -18,72 +21,56 @@ namespace Spark
 {
     public sealed class Spark : ISpark
     {
-        internal Spark(IClientFactory clientFactory, IPacketManager packetManager, IPacketFactory packetFactory, IEventPipeline eventPipeline, IGameDataProvider gameDataProvider)
+        private static bool Created { get; set; }
+
+        public IClientFactory ClientFactory { get; }
+        public IEventPipeline EventPipeline { get; }
+        public IPacketManager PacketManager { get;}
+        public IPacketFactory PacketFactory { get; }
+        public IGameDataProvider GameDataProvider { get; }
+        public IGameforgeService GameforgeService { get; }
+        public IEnumerable<IEventHandler> BuiltInEventHandlers { get; }
+        public IEnumerable<IPacketProcessor> BuildInPacketProcessors { get; }
+
+        public Spark(IClientFactory clientFactory, IEventPipeline eventPipeline, IPacketManager packetManager, IPacketFactory packetFactory, IGameDataProvider gameDataProvider, IGameforgeService gameforgeService, IEnumerable<IEventHandler> builtInEventHandlers, IEnumerable<IPacketProcessor> builtInPacketProcessors)
         {
+            if (Created)
+            {
+                throw new InvalidOperationException("Can't create multiple instance of Spark");
+            }
+            
             ClientFactory = clientFactory;
             EventPipeline = eventPipeline;
             PacketManager = packetManager;
             PacketFactory = packetFactory;
             GameDataProvider = gameDataProvider;
+            GameforgeService = gameforgeService;
+            BuiltInEventHandlers = builtInEventHandlers;
+            BuildInPacketProcessors = builtInPacketProcessors;
+
+            Created = true;
         }
 
-        public IClientFactory ClientFactory { get; }
-        public IEventPipeline EventPipeline { get; }
-        public IPacketManager PacketManager { get; }
-        public IPacketFactory PacketFactory { get; }
-        public IGameDataProvider GameDataProvider { get; }
-
-        public async Task<IClient> CreateClient(IPEndPoint ip)
+        public async Task<IClient> CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
         {
-            IClient client = await ClientFactory.CreateClient(ip);
-            client.PacketReceived += packet =>
-            {
-                IPacket typedPacket = PacketFactory.CreatePacket(packet);
-                if (typedPacket == null)
-                {
-                    return;
-                }
-
-                PacketManager.Process(client, typedPacket);
-            };
+            IClient client = await ClientFactory.CreateClient(ip, serverSelector, characterSelector);
+            
+            client.SendPacket($"NoS0577 {token} {GameforgeService.InstallationId} 007C762C 20.9.3.3127 0 D0C4D9B41720BC5E00E1C6C7DC6B8B22");
 
             return client;
         }
 
-        public async Task<IClient> CreateClient(IPEndPoint ip, string name, int encryptionKey)
+        public void Initialize()
         {
-            IClient client = await ClientFactory.CreateClient(ip, name, encryptionKey);
-            client.PacketReceived += packet =>
-            {
-                IPacket typedPacket = PacketFactory.CreatePacket(packet);
-                if (typedPacket == null)
-                {
-                    return;
-                }
-
-                PacketManager.Process(client, typedPacket);
-            };
-
-            return client;
+            EventPipeline.AddEventHandlers(BuiltInEventHandlers);
+            PacketManager.AddPacketProcessors(BuildInPacketProcessors);
+            
+            GameDataProvider.EnsureCreated();
         }
 
-        public async Task<IClient> CreateClient(Process process)
-        {
-            IClient client = await ClientFactory.CreateClient(process);
-            client.PacketReceived += packet =>
-            {
-                IPacket typedPacket = PacketFactory.CreatePacket(packet);
-                if (typedPacket == null)
-                {
-                    return;
-                }
+        public Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> predicate) =>
+            GameforgeService.GetSessionToken(email, password, locale, predicate);
 
-                PacketManager.Process(client, typedPacket);
-            };
-
-            return client;
-        }
-        
         public void AddEventHandler<T>(T handler) where T : IEventHandler
         {
             EventPipeline.AddEventHandler(handler);
@@ -99,17 +86,25 @@ namespace Spark
             services.AddTransient<IGameforgeService, GameforgeService>();
             services.AddTransient<IClientFactory, ClientFactory>();
             services.AddTransient<IMapFactory, MapFactory>();
+            services.AddTransient<ISessionFactory, SessionFactory>();
 
             services.AddSingleton<IPacketFactory, PacketFactory>();
             services.AddSingleton<IPacketManager, PacketManager>();
             services.AddSingleton<IEventPipeline, EventPipeline>();
             services.AddSingleton<IGameDataProvider, GameDataProvider>();
 
-            services.AddSingleton<SparkConstructor>();
+            services.AddSingleton<Spark>();
 
-            SparkConstructor sparkConstructor = services.BuildServiceProvider().GetService<SparkConstructor>();
+            Spark spark = services.BuildServiceProvider().GetService<Spark>();
 
-            return sparkConstructor.Construct();
+            spark.Initialize();
+            
+            return spark;
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

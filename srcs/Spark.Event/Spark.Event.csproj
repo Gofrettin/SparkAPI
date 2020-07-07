@@ -5,7 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Spark.Game\Spark.Game.csproj" />
+      <ProjectReference Include="..\Spark.Game.Abstraction\Spark.Game.Abstraction.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NLog" Version="4.7.2" />
     </ItemGroup>
 
 </Project>

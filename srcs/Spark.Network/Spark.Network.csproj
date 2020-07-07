@@ -10,10 +10,11 @@
       <PackageReference Include="DotNetty.Common" Version="0.6.0" />
       <PackageReference Include="DotNetty.Handlers" Version="0.6.0" />
       <PackageReference Include="DotNetty.Transport" Version="0.6.0" />
+      <PackageReference Include="NLog" Version="4.7.2" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Spark.Game\Spark.Game.csproj" />
+      <ProjectReference Include="..\Spark.Core\Spark.Core.csproj" />
     </ItemGroup>
 
 </Project>

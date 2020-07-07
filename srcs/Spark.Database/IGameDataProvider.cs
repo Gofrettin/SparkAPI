@@ -36,12 +36,14 @@ namespace Spark.Database
             CheckDirectory(MapDataProvider.Folder);
         }
 
-        private static void CheckDirectory(string path)
+        private static bool CheckDirectory(string path)
         {
             if (!Directory.Exists(path))
             {
-                throw new InvalidOperationException($"{path} doesn't exists");
+                throw new IOException($"Can't found {path}");
             }
+
+            return true;
         }
     }
 }

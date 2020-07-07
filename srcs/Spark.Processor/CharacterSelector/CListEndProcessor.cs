@@ -1,24 +1,32 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Linq;
+using System.Threading.Tasks;
+using NLog;
 using Spark.Core;
-using Spark.Event;
-using Spark.Event.CharacterSelector;
-using Spark.Game;
-using Spark.Network.Client.Impl;
+using Spark.Core.Storage;
+using Spark.Game.Abstraction;
 using Spark.Packet.CharacterSelector;
 
 namespace Spark.Processor.CharacterSelector
 {
     public class CListEndProcessor : PacketProcessor<CListEnd>
     {
-        private readonly IEventPipeline _eventPipeline;
-
-        public CListEndProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
-
-        protected override void Process(IClient client, CListEnd packet)
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
+        protected override Task Process(IClient client, CListEnd packet)
         {
-            IEnumerable<SelectableCharacter> characters = (client as RemoteClient)?.SelectableCharacters;
+            LoginStorage storage = client.GetStorage<LoginStorage>();
+            SelectableCharacter character = storage.SelectableCharacters.FirstOrDefault(x => storage.CharacterSelector.Invoke(x));
 
-            _eventPipeline.Emit(new CharacterSelectReadyEvent(client, characters));
+            if (character == null)
+            {
+                Logger.Error("Can't found character matching predicate");
+                return Task.CompletedTask;
+            }
+            
+            client.SendPacket($"select {character.Slot}");
+            Logger.Info($"Character {character.Name} selected");
+            return Task.CompletedTask;
         }
     }
 }

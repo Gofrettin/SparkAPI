@@ -1,16 +1,21 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
+using Spark.Core;
+using Spark.Core.Server;
 using Spark.Event;
-using Spark.Game;
+using Spark.Game.Abstraction;
+using Spark.Gameforge;
 
 namespace Spark
 {
-    public interface ISpark
+    public interface ISpark : IDisposable
     {
-        Task<IClient> CreateClient(IPEndPoint ip);
-        Task<IClient> CreateClient(IPEndPoint ip, string name, int encryptionKey);
-        Task<IClient> CreateClient(Process process);
+        IGameforgeService GameforgeService { get; }
+        
+        Task<IClient> CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector);
+        Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> predicate);
 
         void AddEventHandler<T>(T handler) where T : IEventHandler;
     }

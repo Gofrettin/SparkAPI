@@ -1,11 +1,11 @@
-﻿using Spark.Game.Entities;
+﻿using Spark.Game.Abstraction.Entities;
 
 namespace Spark.Event.Entities
 {
     public class EntityMoveEvent : IEvent
     {
-        public EntityMoveEvent(Entity entity) => Entity = entity;
+        public EntityMoveEvent(IEntity entity) => Entity = entity;
 
-        public Entity Entity { get; }
+        public IEntity Entity { get; }
     }
 }

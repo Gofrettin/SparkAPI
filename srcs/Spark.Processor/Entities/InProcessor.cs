@@ -1,8 +1,10 @@
-﻿using NLog;
+﻿using System.Threading.Tasks;
+using NLog;
 using Spark.Core.Enum;
 using Spark.Event;
 using Spark.Event.Entities;
-using Spark.Game;
+using Spark.Game.Abstraction;
+using Spark.Game.Abstraction.Entities;
 using Spark.Game.Entities;
 using Spark.Packet.Entities;
 
@@ -16,16 +18,16 @@ namespace Spark.Processor.Entities
 
         public InProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
 
-        protected override void Process(IClient client, In packet)
+        protected override Task Process(IClient client, In packet)
         {
-            Map map = client.Character.Map;
+            IMap map = client.Character.Map;
             if (map == null)
             {
                 Logger.Warn("Can't process in packet, character map is null");
-                return;
+                return Task.CompletedTask;
             }
 
-            Entity entity;
+            IEntity entity;
             switch (packet.EntityType)
             {
                 case EntityType.Monster:
@@ -42,11 +44,13 @@ namespace Spark.Processor.Entities
                     break;
                 default:
                     Logger.Error($"Undefined switch clause for entity type {packet.EntityType}");
-                    return;
+                    return Task.CompletedTask;
             }
 
             map.AddEntity(entity);
             _eventPipeline.Emit(new EntitySpawnEvent(map, entity));
+
+            return Task.CompletedTask;
         }
     }
 }

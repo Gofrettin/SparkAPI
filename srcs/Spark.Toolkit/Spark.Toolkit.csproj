@@ -1,8 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
         <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+		<OutputPath>$(SolutionDir)\build\Toolkit</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Spark.Database\Spark.Database.csproj" />
+    </ItemGroup>
 
 </Project>

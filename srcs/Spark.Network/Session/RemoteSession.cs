@@ -1,46 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using DotNetty.Transport.Channels;
 using NLog;
-using Spark.Core;
 using Spark.Core.Extension;
-using Spark.Game;
-using Spark.Game.Entities;
 
-namespace Spark.Network.Client.Impl
+namespace Spark.Network.Session
 {
-    public class RemoteClient : ChannelDuplexHandler, IClient
+    public class RemoteSession : ChannelDuplexHandler, ISession
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public RemoteClient()
-        {
-            Id = Guid.NewGuid();
-            SelectableCharacters = new List<SelectableCharacter>();
-        }
-
-        public IChannel Channel { get; private set; }
-        public string Name { get; set; }
-        public List<SelectableCharacter> SelectableCharacters { get; }
-
-        public Guid Id { get; }
-        public Character Character { get; set; }
+        
         public event Action<string> PacketReceived;
 
-        public void SendPacket(string packet)
-        {
-            Channel.WriteAndFlushAsync(packet).OnException(x => { Logger.Error(x.InnerException); });
-        }
-
+        public IChannel Channel { get; private set; }
+        
         public override void ChannelActive(IChannelHandlerContext context)
         {
             Channel = context.Channel;
-            Logger.Info($"Channel with id {Id} is now active");
+            Logger.Info($"Channel {Channel.Id.AsShortText()} is now active");
         }
 
         public override void ChannelInactive(IChannelHandlerContext context)
         {
-            Logger.Info($"Channel with id {Id} is now inactive");
+            Logger.Info($"Channel {Channel.Id.AsShortText()} is now inactive");
         }
 
         public override void ChannelRead(IChannelHandlerContext context, object message)
@@ -52,13 +33,21 @@ namespace Spark.Network.Client.Impl
             }
 
             packet = packet.Trim();
-
+            
             PacketReceived?.Invoke(packet);
         }
 
         public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
         {
             Logger.Error(exception);
+        }
+
+        public void SendPacket(string packet)
+        {
+            Channel.WriteAndFlushAsync(packet).OnException(x =>
+            {
+                Logger.Error(x.InnerException);
+            });
         }
     }
 }

@@ -12,6 +12,11 @@ namespace Spark.Network.Decoder
 
         protected override void Decode(IChannelHandlerContext context, IByteBuffer input, List<object> output)
         {
+            if (!input.IsReadable())
+            {
+                return;
+            }
+            
             var buffer = new byte[input.ReadableBytes];
             input.ReadBytes(buffer);
 

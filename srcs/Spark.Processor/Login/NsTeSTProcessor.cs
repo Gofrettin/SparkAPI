@@ -1,7 +1,10 @@
-﻿using NLog;
-using Spark.Event;
-using Spark.Event.Login;
-using Spark.Game;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using NLog;
+using Spark.Core.Server;
+using Spark.Core.Storage;
+using Spark.Game.Abstraction;
+using Spark.Network.Session;
 using Spark.Packet.Login;
 
 namespace Spark.Processor.Login
@@ -9,15 +12,33 @@ namespace Spark.Processor.Login
     public class NsTeSTProcessor : PacketProcessor<NsTeST>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
+        private readonly ISessionFactory _sessionFactory;
 
-        private readonly IEventPipeline _eventPipeline;
-
-        public NsTeSTProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
-
-        protected override void Process(IClient client, NsTeST packet)
+        public NsTeSTProcessor(ISessionFactory sessionFactory)
         {
-            Logger.Info($"Successfully connected with account {packet.Name}");
-            _eventPipeline.Emit(new LoginCompleteEvent(packet.Name, packet.EncryptionKey, packet.Servers));
+            _sessionFactory = sessionFactory;
+        }
+        
+        protected override async Task Process(IClient client, NsTeST packet)
+        {
+            LoginStorage storage = client.GetStorage<LoginStorage>();
+            WorldServer server = packet.Servers.FirstOrDefault(x => storage.ServerSelector.Invoke(x));
+
+            if (server == null)
+            {
+                Logger.Error("Can't found world server");
+                return;
+            }
+
+            client.Session = await _sessionFactory.CreateSession(server.Ip, packet.EncryptionKey);
+            
+            client.SendPacket($"{packet.EncryptionKey}");
+            await Task.Delay(1000).ContinueWith(x =>
+            {
+                client.SendPacket($"{packet.Name} GFMODE 2");
+                client.SendPacket("thisifgamemode");
+            });
         }
     }
 }

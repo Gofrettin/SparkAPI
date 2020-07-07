@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Spark.Game;
+using Spark.Game.Abstraction;
 using Spark.Packet;
 
 namespace Spark.Processor
@@ -7,18 +9,18 @@ namespace Spark.Processor
     public interface IPacketProcessor
     {
         Type PacketType { get; }
-        void Handle(IClient client, IPacket packet);
+        Task Process(IClient client, IPacket packet);
     }
 
     public abstract class PacketProcessor<TPacket> : IPacketProcessor where TPacket : IPacket
     {
         public Type PacketType { get; } = typeof(TPacket);
 
-        public void Handle(IClient client, IPacket packet)
+        public Task Process(IClient client, IPacket packet)
         {
-            Process(client, (TPacket)packet);
+            return Process(client, (TPacket)packet);
         }
 
-        protected abstract void Process(IClient client, TPacket packet);
+        protected abstract Task Process(IClient client, TPacket packet);
     }
 }

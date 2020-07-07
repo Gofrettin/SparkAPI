@@ -12,11 +12,18 @@
       <ProjectReference Include="..\Spark.Core\Spark.Core.csproj" />
       <ProjectReference Include="..\Spark.Database\Spark.Database.csproj" />
       <ProjectReference Include="..\Spark.Event\Spark.Event.csproj" />
+      <ProjectReference Include="..\Spark.Game.Factory\Spark.Game.Factory.csproj" />
       <ProjectReference Include="..\Spark.Gameforge\Spark.Gameforge.csproj" />
       <ProjectReference Include="..\Spark.Game\Spark.Game.csproj" />
       <ProjectReference Include="..\Spark.Network\Spark.Network.csproj" />
       <ProjectReference Include="..\Spark.Packet\Spark.Packet.csproj" />
       <ProjectReference Include="..\Spark.Processor\Spark.Processor.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="nlog.config">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

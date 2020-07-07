@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NLog;
 using Spark.Core.Extension;
 
@@ -47,7 +48,7 @@ namespace Spark.Event
             }
 
             handlers.Add(handler);
-            Logger.Info($"Registered event handler {handler.GetType().Name} for event {handler.EventType.Name}");
+            Logger.Debug($"Registered event handler {handler.GetType().Name} for event {handler.EventType.Name}");
         }
 
         public void AddEventHandlers(IEnumerable<IEventHandler> handlers)
@@ -56,6 +57,8 @@ namespace Spark.Event
             {
                 AddEventHandler(handler);
             }
+            
+            Logger.Info($"Registered {handlers.Count()} event handlers");
         }
     }
 }

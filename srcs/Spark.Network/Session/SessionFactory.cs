@@ -1,21 +1,24 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
-using Spark.Game;
 using Spark.Network.Decoder;
 using Spark.Network.Encoder;
 
-namespace Spark.Network.Client.Impl
+namespace Spark.Network.Session
 {
-    public class ClientFactory : IClientFactory
+    public interface ISessionFactory
     {
-        public async Task<IClient> CreateClient(IPEndPoint server)
+        Task<ISession> CreateSession(IPEndPoint ip);
+        Task<ISession> CreateSession(IPEndPoint ip, int encryptionKey);
+    }
+    
+    public class SessionFactory : ISessionFactory
+    {
+        public async Task<ISession> CreateSession(IPEndPoint ip)
         {
-            var client = new RemoteClient();
+            var session = new RemoteSession();
             Bootstrap bootstrap = new Bootstrap()
                 .Channel<TcpSocketChannel>()
                 .Group(new MultithreadEventLoopGroup())
@@ -24,23 +27,18 @@ namespace Spark.Network.Client.Impl
                     IChannelPipeline pipeline = x.Pipeline;
 
                     pipeline.AddLast(new LoginDecoder());
-                    pipeline.AddLast(client);
+                    pipeline.AddLast(session);
                     pipeline.AddLast(new LoginEncoder());
                 }));
 
-            await bootstrap.ConnectAsync(server);
+            await bootstrap.ConnectAsync(ip);
 
-
-            return client;
+            return session;
         }
 
-        public async Task<IClient> CreateClient(IPEndPoint server, string name, int encryptionKey)
+        public async Task<ISession> CreateSession(IPEndPoint ip, int encryptionKey)
         {
-            var client = new RemoteClient
-            {
-                Name = name
-            };
-
+            var session = new RemoteSession();
             Bootstrap bootstrap = new Bootstrap()
                 .Channel<TcpSocketChannel>()
                 .Group(new MultithreadEventLoopGroup())
@@ -50,16 +48,14 @@ namespace Spark.Network.Client.Impl
 
                     pipeline.AddLast(new KeepAlive());
                     pipeline.AddLast(new WorldDecoder());
-                    pipeline.AddLast(client);
+                    pipeline.AddLast(session);
                     pipeline.AddLast(new WorldEncoder(encryptionKey));
                     pipeline.AddLast(new PacketFormatter());
                 }));
+            
+            await bootstrap.ConnectAsync(ip);
 
-            await bootstrap.ConnectAsync(server);
-
-            return client;
+            return session;
         }
-
-        public Task<IClient> CreateClient(Process process) => throw new NotImplementedException();
     }
 }
