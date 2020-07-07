@@ -18,24 +18,76 @@ namespace Spark
 {
     public sealed class Spark : ISpark
     {
-        internal Spark(IClientFactory clientFactory, IPacketManager packetManager, IEventPipeline eventPipeline, IGameDataProvider gameDataProvider)
+        internal Spark(IClientFactory clientFactory, IPacketManager packetManager, IPacketFactory packetFactory, IEventPipeline eventPipeline, IGameDataProvider gameDataProvider)
         {
             ClientFactory = clientFactory;
             EventPipeline = eventPipeline;
             PacketManager = packetManager;
+            PacketFactory = packetFactory;
             GameDataProvider = gameDataProvider;
         }
 
         public IClientFactory ClientFactory { get; }
         public IEventPipeline EventPipeline { get; }
         public IPacketManager PacketManager { get; }
+        public IPacketFactory PacketFactory { get; }
         public IGameDataProvider GameDataProvider { get; }
 
-        public Task<IClient> CreateClient(IPEndPoint ip) => ClientFactory.CreateClient(ip);
+        public async Task<IClient> CreateClient(IPEndPoint ip)
+        {
+            IClient client = await ClientFactory.CreateClient(ip);
+            client.PacketReceived += packet =>
+            {
+                IPacket typedPacket = PacketFactory.CreatePacket(packet);
+                if (typedPacket == null)
+                {
+                    return;
+                }
 
-        public Task<IClient> CreateClient(IPEndPoint ip, string name, int encryptionKey) => ClientFactory.CreateClient(ip, name, encryptionKey);
+                PacketManager.Process(client, typedPacket);
+            };
 
-        public Task<IClient> CreateClient(Process process) => ClientFactory.CreateClient(process);
+            return client;
+        }
+
+        public async Task<IClient> CreateClient(IPEndPoint ip, string name, int encryptionKey)
+        {
+            IClient client = await ClientFactory.CreateClient(ip, name, encryptionKey);
+            client.PacketReceived += packet =>
+            {
+                IPacket typedPacket = PacketFactory.CreatePacket(packet);
+                if (typedPacket == null)
+                {
+                    return;
+                }
+
+                PacketManager.Process(client, typedPacket);
+            };
+
+            return client;
+        }
+
+        public async Task<IClient> CreateClient(Process process)
+        {
+            IClient client = await ClientFactory.CreateClient(process);
+            client.PacketReceived += packet =>
+            {
+                IPacket typedPacket = PacketFactory.CreatePacket(packet);
+                if (typedPacket == null)
+                {
+                    return;
+                }
+
+                PacketManager.Process(client, typedPacket);
+            };
+
+            return client;
+        }
+        
+        public void AddEventHandler<T>(T handler) where T : IEventHandler
+        {
+            EventPipeline.AddEventHandler(handler);
+        }
 
         public static ISpark CreateInstance()
         {
