@@ -5,7 +5,7 @@ using Spark.Event;
 using Spark.Event.Entities;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
-using Spark.Game.Entities;
+using Spark.Game.Abstraction.Factory;
 using Spark.Packet.Entities;
 
 namespace Spark.Processor.Entities
@@ -15,8 +15,13 @@ namespace Spark.Processor.Entities
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IEventPipeline _eventPipeline;
+        private readonly IEntityFactory _entityFactory;
 
-        public InProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+        public InProcessor(IEventPipeline eventPipeline, IEntityFactory entityFactory)
+        {
+            _eventPipeline = eventPipeline;
+            _entityFactory = entityFactory;
+        }
 
         protected override Task Process(IClient client, In packet)
         {
@@ -31,16 +36,16 @@ namespace Spark.Processor.Entities
             switch (packet.EntityType)
             {
                 case EntityType.Monster:
-                    entity = new Monster(packet.EntityId, 0);
+                    entity = _entityFactory.CreateMonster(packet.EntityId, packet.GameKey);
                     break;
                 case EntityType.Npc:
-                    entity = new Npc(packet.EntityId, 0);
+                    entity = _entityFactory.CreateNpc(packet.EntityId, packet.GameKey);
                     break;
                 case EntityType.Player:
-                    entity = new Player(packet.EntityId);
+                    entity = _entityFactory.CreatePlayer(packet.EntityId);
                     break;
                 case EntityType.MapObject:
-                    entity = new MapObject(packet.EntityId, 0);
+                    entity = _entityFactory.CreateMapObject(packet.EntityId, packet.GameKey);
                     break;
                 default:
                     Logger.Error($"Undefined switch clause for entity type {packet.EntityType}");

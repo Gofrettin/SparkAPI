@@ -7,7 +7,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Spark.Event\Spark.Event.csproj" />
       <ProjectReference Include="..\Spark.Game.Abstraction\Spark.Game.Abstraction.csproj" />
-      <ProjectReference Include="..\Spark.Game\Spark.Game.csproj" />
       <ProjectReference Include="..\Spark.Network\Spark.Network.csproj" />
       <ProjectReference Include="..\Spark.Packet\Spark.Packet.csproj" />
     </ItemGroup>

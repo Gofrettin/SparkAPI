@@ -2,9 +2,8 @@
 using NLog;
 using Spark.Event;
 using Spark.Event.Characters;
-using Spark.Game;
 using Spark.Game.Abstraction;
-using Spark.Game.Entities;
+using Spark.Game.Abstraction.Factory;
 using Spark.Packet.Characters;
 
 namespace Spark.Processor.Characters
@@ -14,8 +13,13 @@ namespace Spark.Processor.Characters
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IEventPipeline _eventPipeline;
+        private readonly IEntityFactory _entityFactory;
 
-        public CInfoProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+        public CInfoProcessor(IEventPipeline eventPipeline, IEntityFactory entityFactory)
+        {
+            _eventPipeline = eventPipeline;
+            _entityFactory = entityFactory;
+        }
 
         protected override Task Process(IClient client, CInfo packet)
         {
@@ -24,10 +28,7 @@ namespace Spark.Processor.Characters
                 return Task.CompletedTask;
             }
 
-            client.Character = new Character(packet.Id, client)
-            {
-                Name = packet.Name
-            };
+            client.Character = _entityFactory.CreateCharacter(packet.Id, packet.Name, client);
 
             _eventPipeline.Emit(new CharacterInitializedEvent(client.Character));
 

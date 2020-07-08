@@ -2,10 +2,8 @@
 using NLog;
 using Spark.Event;
 using Spark.Event.Entities;
-using Spark.Game;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
-using Spark.Game.Entities;
 using Spark.Packet.Entities;
 
 namespace Spark.Processor.Entities
