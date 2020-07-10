@@ -13,9 +13,9 @@ namespace Spark.Processor.Entities
     public class InProcessor : PacketProcessor<In>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly IEntityFactory _entityFactory;
 
         private readonly IEventPipeline _eventPipeline;
-        private readonly IEntityFactory _entityFactory;
 
         public InProcessor(IEventPipeline eventPipeline, IEntityFactory entityFactory)
         {

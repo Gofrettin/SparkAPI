@@ -2,6 +2,5 @@
 {
     public interface IMonster : IGameEntity, ILivingEntity
     {
-        
     }
 }

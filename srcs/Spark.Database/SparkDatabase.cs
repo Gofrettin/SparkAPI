@@ -9,38 +9,40 @@ namespace Spark.Database
     public sealed class SparkDatabase : IDatabase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
-        public string DatabaseDirectory { get; } = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException(), "Database");
-        
+
+        public SparkDatabase()
+        {
+            Directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException(), "Database");
+
+            Maps = new Repository<MapData>(Path.Combine(Directory, "maps.json"));
+            Monsters = new Repository<MonsterData>(Path.Combine(Directory, "monsters.json"));
+            Items = new Repository<ItemData>(Path.Combine(Directory, "items.json"));
+            Skills = new Repository<SkillData>(Path.Combine(Directory, "skills.json"));
+        }
+
+        public string Directory { get; }
+
         public IRepository<MapData> Maps { get; }
         public IRepository<MonsterData> Monsters { get; }
         public IRepository<ItemData> Items { get; }
         public IRepository<SkillData> Skills { get; }
 
-        public SparkDatabase()
-        {
-            Maps = new Repository<MapData>(Path.Combine(DatabaseDirectory, "maps.json"));
-            Monsters = new Repository<MonsterData>(Path.Combine(DatabaseDirectory, "monsters.json"));
-            Items = new Repository<ItemData>(Path.Combine(DatabaseDirectory, "items.json"));
-            Skills = new Repository<SkillData>(Path.Combine(DatabaseDirectory, "skills.json"));
-        }
-        
         public void Load()
         {
-            if (!Directory.Exists(DatabaseDirectory))
+            if (!System.IO.Directory.Exists(Directory))
             {
-                throw new IOException($"Can't load database missing {DatabaseDirectory} directory");
+                throw new IOException($"Can't load database missing {Directory} directory");
             }
-            
+
             Logger.Info("Loading maps");
             Maps.Load();
-            
+
             Logger.Info("Loading monsters");
             Monsters.Load();
-            
+
             Logger.Info("Loading items");
             Items.Load();
-            
+
             Logger.Info("Loading skills");
             Skills.Load();
         }

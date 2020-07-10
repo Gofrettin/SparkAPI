@@ -18,7 +18,7 @@ namespace Spark.Toolkit.Parser
         {
             Formatting = Formatting.Indented
         };
-        
+
         public void Parse(DirectoryInfo input, DirectoryInfo output)
         {
             FileInfo itemDat = input.GetFiles().FirstOrDefault(x => x.Name.Equals("Item.dat", StringComparison.InvariantCultureIgnoreCase));
@@ -27,7 +27,7 @@ namespace Spark.Toolkit.Parser
                 Logger.Warn("Can't found Item.dat file, skipping items parsing");
                 return;
             }
-            
+
             TextContent content = TextReader.FromFile(itemDat)
                 .SkipCommentedLines("#")
                 .SkipEmptyLines()
@@ -36,24 +36,24 @@ namespace Spark.Toolkit.Parser
                 .GetContent();
 
             IEnumerable<TextRegion> regions = content.GetRegions("VNUM");
-            
+
             var items = new Dictionary<int, ItemData>();
             foreach (TextRegion region in regions)
             {
                 int gameKey = region.GetLine("VNUM").GetValue<int>(1);
                 string nameKey = region.GetLine("NAME").GetValue(1);
-                
+
                 items[gameKey] = new ItemData
                 {
-                    NameKey = nameKey,
+                    NameKey = nameKey
                 };
             }
-            
+
             using (StreamWriter file = File.CreateText(Path.Combine(output.FullName, "items.json")))
             {
                 _serializer.Serialize(file, items);
             }
-            
+
             Logger.Info($"Successfully parsed {items.Count} items");
         }
     }

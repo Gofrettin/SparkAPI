@@ -16,7 +16,7 @@ namespace Spark.Network.Decoder
             {
                 return;
             }
-            
+
             var buffer = new byte[input.ReadableBytes];
             input.ReadBytes(buffer);
 

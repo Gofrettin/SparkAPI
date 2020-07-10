@@ -7,6 +7,12 @@ namespace Spark.Game.Entities
 {
     public class Player : IPlayer
     {
+        public Player(long id)
+        {
+            Id = id;
+            EntityType = EntityType.Player;
+        }
+
         public long Id { get; }
         public EntityType EntityType { get; }
         public string Name { get; set; }
@@ -14,11 +20,5 @@ namespace Spark.Game.Entities
         public Position Position { get; set; }
         public int Hp { get; set; }
         public int Mp { get; set; }
-        
-        public Player(long id)
-        {
-            Id = id;
-            EntityType = EntityType.Player;
-        }
     }
 }

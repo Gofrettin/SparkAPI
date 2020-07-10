@@ -11,9 +11,9 @@ namespace Spark.Processor.Characters
     public class CInfoProcessor : PacketProcessor<CInfo>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly IEntityFactory _entityFactory;
 
         private readonly IEventPipeline _eventPipeline;
-        private readonly IEntityFactory _entityFactory;
 
         public CInfoProcessor(IEventPipeline eventPipeline, IEntityFactory entityFactory)
         {

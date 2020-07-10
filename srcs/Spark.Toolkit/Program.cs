@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using NLog;
 using Spark.Toolkit.Parser;
 
@@ -8,7 +7,7 @@ namespace Spark.Toolkit
     public static class Program
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
         public static void Main(string[] args)
         {
             if (args.Length != 1)
@@ -23,7 +22,7 @@ namespace Spark.Toolkit
                 Logger.Error($"Directory {path} doesn't exists");
                 return;
             }
-            
+
             var input = new DirectoryInfo(path);
             DirectoryInfo output = Directory.GetParent(path).CreateSubdirectory("Output");
 
@@ -32,7 +31,7 @@ namespace Spark.Toolkit
                 new MapParser(),
                 new MonsterParser(),
                 new SkillParser(),
-                new ItemParser(), 
+                new ItemParser()
             };
 
             foreach (IParser parser in parsers)

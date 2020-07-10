@@ -7,6 +7,13 @@ namespace Spark.Game.Entities
 {
     public class Character : ICharacter
     {
+        public Character(long id, IClient client)
+        {
+            Id = id;
+            EntityType = EntityType.Player;
+            Client = client;
+        }
+
         public long Id { get; }
         public EntityType EntityType { get; }
         public string Name { get; set; }
@@ -16,13 +23,5 @@ namespace Spark.Game.Entities
         public int Mp { get; set; }
 
         public IClient Client { get; }
-        
-        public Character(long id, IClient client)
-        {
-            Id = id;
-            EntityType = EntityType.Player;
-            Client = client;
-        }
-        
     }
 }

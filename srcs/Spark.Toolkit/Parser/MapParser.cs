@@ -17,7 +17,7 @@ namespace Spark.Toolkit.Parser
         {
             Formatting = Formatting.Indented
         };
-        
+
         public void Parse(DirectoryInfo input, DirectoryInfo output)
         {
             DirectoryInfo mapDirectory = input.GetDirectories().FirstOrDefault(x => x.Name == "Maps");
@@ -48,7 +48,7 @@ namespace Spark.Toolkit.Parser
                 .SplitLineContent(' ')
                 .TrimLines()
                 .GetContent();
-            
+
             var mapNameKeys = new Dictionary<int, string>();
             foreach (TextLine line in content.Lines)
             {
@@ -61,7 +61,7 @@ namespace Spark.Toolkit.Parser
                     mapNameKeys[i] = nameKey;
                 }
             }
-            
+
             var maps = new Dictionary<int, MapData>();
             foreach (FileInfo mapFile in mapFiles)
             {
@@ -72,12 +72,12 @@ namespace Spark.Toolkit.Parser
                     Grid = File.ReadAllBytes(mapFile.FullName)
                 };
             }
-            
+
             using (StreamWriter file = File.CreateText(Path.Combine(output.FullName, "maps.json")))
             {
                 _serializer.Serialize(file, maps);
             }
-            
+
             Logger.Info($"Successfully parsed {maps.Count} maps");
         }
     }

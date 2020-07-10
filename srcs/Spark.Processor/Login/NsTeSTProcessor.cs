@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using NLog;
 using Spark.Core.Server;
-using Spark.Network.Option;
 using Spark.Game.Abstraction;
+using Spark.Network.Option;
 using Spark.Network.Session;
 using Spark.Packet.Login;
 
@@ -12,14 +12,11 @@ namespace Spark.Processor.Login
     public class NsTeSTProcessor : PacketProcessor<NsTeST>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
         private readonly ISessionFactory _sessionFactory;
 
-        public NsTeSTProcessor(ISessionFactory sessionFactory)
-        {
-            _sessionFactory = sessionFactory;
-        }
-        
+        public NsTeSTProcessor(ISessionFactory sessionFactory) => _sessionFactory = sessionFactory;
+
         protected override async Task Process(IClient client, NsTeST packet)
         {
             LoginOption option = client.GetStorage<LoginOption>();
@@ -32,7 +29,7 @@ namespace Spark.Processor.Login
             }
 
             client.Session = await _sessionFactory.CreateSession(server.Ip, packet.EncryptionKey);
-            
+
             client.SendPacket($"{packet.EncryptionKey}");
             await Task.Delay(1000).ContinueWith(x =>
             {

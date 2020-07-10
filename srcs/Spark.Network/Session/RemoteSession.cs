@@ -8,11 +8,16 @@ namespace Spark.Network.Session
     public class RemoteSession : ChannelDuplexHandler, ISession
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
-        public event Action<string> PacketReceived;
 
         public IChannel Channel { get; private set; }
-        
+
+        public event Action<string> PacketReceived;
+
+        public void SendPacket(string packet)
+        {
+            Channel.WriteAndFlushAsync(packet).OnException(x => { Logger.Error(x.InnerException); });
+        }
+
         public override void ChannelActive(IChannelHandlerContext context)
         {
             Channel = context.Channel;
@@ -33,21 +38,13 @@ namespace Spark.Network.Session
             }
 
             packet = packet.Trim();
-            
+
             PacketReceived?.Invoke(packet);
         }
 
         public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
         {
             Logger.Error(exception);
-        }
-
-        public void SendPacket(string packet)
-        {
-            Channel.WriteAndFlushAsync(packet).OnException(x =>
-            {
-                Logger.Error(x.InnerException);
-            });
         }
     }
 }

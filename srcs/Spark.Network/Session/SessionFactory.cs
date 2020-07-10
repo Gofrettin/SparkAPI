@@ -13,7 +13,7 @@ namespace Spark.Network.Session
         Task<ISession> CreateSession(IPEndPoint ip);
         Task<ISession> CreateSession(IPEndPoint ip, int encryptionKey);
     }
-    
+
     public class SessionFactory : ISessionFactory
     {
         public async Task<ISession> CreateSession(IPEndPoint ip)
@@ -52,7 +52,7 @@ namespace Spark.Network.Session
                     pipeline.AddLast(new WorldEncoder(encryptionKey));
                     pipeline.AddLast(new PacketFormatter());
                 }));
-            
+
             await bootstrap.ConnectAsync(ip);
 
             return session;

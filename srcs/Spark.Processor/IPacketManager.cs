@@ -31,12 +31,9 @@ namespace Spark.Processor
                 Logger.Warn($"No packet processor for {packet.GetType().Name}");
                 return;
             }
-            
+
             Logger.Debug($"Processing packet {packet.GetType().Name} using {processor.GetType().Name}");
-            processor.Process(client, packet).OnException(x =>
-            {
-                Logger.Error(x);
-            });
+            processor.Process(client, packet).OnException(x => { Logger.Error(x); });
         }
 
         public void AddPacketProcessor(IPacketProcessor processor)
@@ -51,6 +48,7 @@ namespace Spark.Processor
             {
                 AddPacketProcessor(processor);
             }
+
             Logger.Info($"Registered {processors.Count()} packet processors");
         }
     }

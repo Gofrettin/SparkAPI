@@ -1,4 +1,4 @@
-﻿﻿namespace Spark.Database.Data
+﻿namespace Spark.Database.Data
 {
     public class MonsterData
     {

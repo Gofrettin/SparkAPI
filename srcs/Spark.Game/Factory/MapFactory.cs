@@ -1,5 +1,4 @@
-﻿using System;
-using NLog;
+﻿using NLog;
 using Spark.Database;
 using Spark.Database.Data;
 using Spark.Game.Abstraction;
@@ -10,13 +9,10 @@ namespace Spark.Game.Factory
     public class MapFactory : IMapFactory
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
         private readonly IDatabase _database;
 
-        public MapFactory(IDatabase database)
-        {
-            _database = database;
-        }
+        public MapFactory(IDatabase database) => _database = database;
 
         public IMap CreateMap(int mapId)
         {

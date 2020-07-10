@@ -15,13 +15,10 @@ namespace Spark.Database
 
     public sealed class Repository<T> : IRepository<T>
     {
+        public Repository(string path) => Path = path;
+
         public string Path { get; }
         public ReadOnlyDictionary<int, T> Values { get; private set; }
-
-        public Repository(string path)
-        {
-            Path = path;
-        }
 
         public T GetValue(int id) => Values.GetValueOrDefault(id);
 

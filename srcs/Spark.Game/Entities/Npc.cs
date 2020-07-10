@@ -7,6 +7,13 @@ namespace Spark.Game.Entities
 {
     public class Npc : INpc
     {
+        public Npc(long id, int gameKey)
+        {
+            Id = id;
+            GameKey = gameKey;
+            EntityType = EntityType.Npc;
+        }
+
         public long Id { get; }
         public EntityType EntityType { get; }
         public string Name { get; set; }
@@ -15,12 +22,5 @@ namespace Spark.Game.Entities
         public int GameKey { get; set; }
         public int Hp { get; set; }
         public int Mp { get; set; }
-        
-        public Npc(long id, int gameKey)
-        {
-            Id = id;
-            GameKey = gameKey;
-            EntityType = EntityType.Npc;
-        }
     }
 }

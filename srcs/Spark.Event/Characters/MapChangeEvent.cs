@@ -1,5 +1,4 @@
-﻿using Spark.Game;
-using Spark.Game.Abstraction;
+﻿using Spark.Game.Abstraction;
 
 namespace Spark.Event.Characters
 {

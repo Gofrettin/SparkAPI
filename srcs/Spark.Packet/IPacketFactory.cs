@@ -49,7 +49,7 @@ namespace Spark.Packet
             {
                 return default;
             }
-            
+
             string[] split = content.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
             string header = split[0];

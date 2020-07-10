@@ -57,7 +57,7 @@ namespace Spark.Event
             {
                 AddEventHandler(handler);
             }
-            
+
             Logger.Info($"Registered {handlers.Count()} event handlers");
         }
     }
