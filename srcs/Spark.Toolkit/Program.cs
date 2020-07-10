@@ -1,53 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using NLog;
+using Spark.Toolkit.Parser;
 
 namespace Spark.Toolkit
 {
     public static class Program
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
         public static void Main(string[] args)
         {
-            if (args.Length != 2)
+            if (args.Length != 1)
             {
-                Console.WriteLine("Incorrect args length");
+                Logger.Error("Incorrect parameter length");
+                return;
+            }
+
+            string path = args[0];
+            if (!Directory.Exists(path))
+            {
+                Logger.Error($"Directory {path} doesn't exists");
                 return;
             }
             
-            string input = args[0];
-            string output = args[1];
+            var input = new DirectoryInfo(path);
+            DirectoryInfo output = Directory.GetParent(path).CreateSubdirectory("Output");
 
-            if (!Directory.Exists(input))
+            IParser[] parsers =
             {
-                Console.WriteLine($"Can't found {input} directory");
-                return;
-            }
-
-            if (!Directory.Exists(output))
-            {
-                Console.WriteLine($"Can't found {output} directory");
-                return;
-            }
-
-            MapDirectoryParser[] parsers =
-            {
-                new MapDirectoryParser()
+                new MapParser(),
+                new MonsterParser(),
+                new SkillParser(),
+                new ItemParser(), 
             };
 
-            IEnumerable<string> directories = Directory.EnumerateDirectories(input);
-            foreach (string directory in directories)
+            foreach (IParser parser in parsers)
             {
-                string directoryName = Path.GetFileName(directory);
-                IDirectoryParser parser = parsers.FirstOrDefault(x => x.Name == directoryName);
-                if (parser == null)
-                {
-                    Console.WriteLine($"No parser for {directoryName}");
-                    continue;
-                }
-                
                 parser.Parse(input, output);
             }
+
+            Logger.Info("Parsing completed");
+            Logger.Info($"Output can be found here : {output.FullName}");
         }
     }
 }

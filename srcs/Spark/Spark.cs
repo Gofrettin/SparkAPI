@@ -26,13 +26,13 @@ namespace Spark
         public IClientFactory ClientFactory { get; }
         public IEventPipeline EventPipeline { get; }
         public IPacketManager PacketManager { get;}
-        public IPacketFactory PacketFactory { get; }
-        public IGameDataProvider GameDataProvider { get; }
+        public IDatabase Database { get; }
         public IGameforgeService GameforgeService { get; }
+        
         public IEnumerable<IEventHandler> BuiltInEventHandlers { get; }
         public IEnumerable<IPacketProcessor> BuildInPacketProcessors { get; }
 
-        public Spark(IClientFactory clientFactory, IEventPipeline eventPipeline, IPacketManager packetManager, IPacketFactory packetFactory, IGameDataProvider gameDataProvider, IGameforgeService gameforgeService, IEnumerable<IEventHandler> builtInEventHandlers, IEnumerable<IPacketProcessor> builtInPacketProcessors)
+        public Spark(IClientFactory clientFactory, IEventPipeline eventPipeline, IDatabase database, IPacketManager packetManager, IGameforgeService gameforgeService, IEnumerable<IEventHandler> builtInEventHandlers, IEnumerable<IPacketProcessor> builtInPacketProcessors)
         {
             if (Created)
             {
@@ -42,9 +42,9 @@ namespace Spark
             ClientFactory = clientFactory;
             EventPipeline = eventPipeline;
             PacketManager = packetManager;
-            PacketFactory = packetFactory;
-            GameDataProvider = gameDataProvider;
             GameforgeService = gameforgeService;
+            Database = database;
+            
             BuiltInEventHandlers = builtInEventHandlers;
             BuildInPacketProcessors = builtInPacketProcessors;
 
@@ -62,10 +62,10 @@ namespace Spark
 
         public void Initialize()
         {
+            Database.Load();
+            
             EventPipeline.AddEventHandlers(BuiltInEventHandlers);
             PacketManager.AddPacketProcessors(BuildInPacketProcessors);
-            
-            GameDataProvider.EnsureCreated();
         }
 
         public Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> predicate) =>
@@ -91,8 +91,7 @@ namespace Spark
             services.AddSingleton<IPacketFactory, PacketFactory>();
             services.AddSingleton<IPacketManager, PacketManager>();
             services.AddSingleton<IEventPipeline, EventPipeline>();
-            services.AddSingleton<IGameDataProvider, GameDataProvider>();
-
+            services.AddSingleton<IDatabase, SparkDatabase>();
             services.AddSingleton<Spark>();
 
             Spark spark = services.BuildServiceProvider().GetService<Spark>();

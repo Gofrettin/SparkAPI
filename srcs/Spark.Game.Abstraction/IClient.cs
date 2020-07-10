@@ -1,5 +1,5 @@
 ﻿using System;
-using Spark.Core.Storage;
+using Spark.Network.Option;
 using Spark.Game.Abstraction.Entities;
 using Spark.Network.Session;
 
@@ -15,7 +15,7 @@ namespace Spark.Game.Abstraction
         
         void SendPacket(string packet);
 
-        T GetStorage<T>() where T : IStorage;
-        void AddStorage<T>(T storage) where T : IStorage;
+        T GetStorage<T>() where T : IOption;
+        void AddStorage<T>(T storage) where T : IOption;
     }
 }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NLog;
 using Spark.Core;
-using Spark.Core.Storage;
+using Spark.Network.Option;
 using Spark.Game.Abstraction;
 using Spark.Packet.CharacterSelector;
 
@@ -15,8 +15,8 @@ namespace Spark.Processor.CharacterSelector
         
         protected override Task Process(IClient client, CListEnd packet)
         {
-            LoginStorage storage = client.GetStorage<LoginStorage>();
-            SelectableCharacter character = storage.SelectableCharacters.FirstOrDefault(x => storage.CharacterSelector.Invoke(x));
+            LoginOption option = client.GetStorage<LoginOption>();
+            SelectableCharacter character = option.SelectableCharacters.FirstOrDefault(x => option.CharacterSelector.Invoke(x));
 
             if (character == null)
             {

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using NLog;
 using Spark.Core.Server;
-using Spark.Core.Storage;
+using Spark.Network.Option;
 using Spark.Game.Abstraction;
 using Spark.Network.Session;
 using Spark.Packet.Login;
@@ -22,8 +22,8 @@ namespace Spark.Processor.Login
         
         protected override async Task Process(IClient client, NsTeST packet)
         {
-            LoginStorage storage = client.GetStorage<LoginStorage>();
-            WorldServer server = packet.Servers.FirstOrDefault(x => storage.ServerSelector.Invoke(x));
+            LoginOption option = client.GetStorage<LoginOption>();
+            WorldServer server = packet.Servers.FirstOrDefault(x => option.ServerSelector.Invoke(x));
 
             if (server == null)
             {

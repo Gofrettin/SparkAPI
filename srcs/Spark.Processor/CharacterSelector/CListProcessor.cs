@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using NLog;
 using Spark.Core;
-using Spark.Core.Storage;
+using Spark.Network.Option;
 using Spark.Game.Abstraction;
 using Spark.Packet.CharacterSelector;
 
@@ -14,8 +14,8 @@ namespace Spark.Processor.CharacterSelector
         
         protected override Task Process(IClient client, CList packet)
         {
-            LoginStorage storage = client.GetStorage<LoginStorage>();
-            storage.SelectableCharacters.Add(new SelectableCharacter
+            LoginOption option = client.GetStorage<LoginOption>();
+            option.SelectableCharacters.Add(new SelectableCharacter
             {
                 Name = packet.Name,
                 Slot = packet.Slot

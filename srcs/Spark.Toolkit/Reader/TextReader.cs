@@ -21,6 +21,7 @@ namespace Spark.Toolkit.Reader
 
         public static TextReader FromString(string content) => new TextReader(content.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
         public static TextReader FromFile(string path) => new TextReader(File.ReadAllLines(path));
+        public static TextReader FromFile(FileInfo fileInfo) => FromFile(fileInfo.FullName);
 
         public TextReader SkipEmptyLines() => SkipLines(string.IsNullOrEmpty);
 

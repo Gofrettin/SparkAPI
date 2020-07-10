@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Spark.Core.Storage;
+using Spark.Network.Option;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 using Spark.Network.Session;
@@ -50,9 +50,9 @@ namespace Spark.Game
             PacketReceived?.Invoke(packet);
         }
 
-        public T GetStorage<T>() where T : IStorage => (T)Storage.GetValueOrDefault(typeof(T));
+        public T GetStorage<T>() where T : IOption => (T)Storage.GetValueOrDefault(typeof(T));
         
-        public void AddStorage<T>(T storage) where T : IStorage
+        public void AddStorage<T>(T storage) where T : IOption
         {
             Storage[typeof(T)] = storage;
         }

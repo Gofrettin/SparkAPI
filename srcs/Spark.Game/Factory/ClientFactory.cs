@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Spark.Core;
-using Spark.Core.Storage;
+using Spark.Network.Option;
 using Spark.Core.Server;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Factory;
@@ -30,7 +30,7 @@ namespace Spark.Game.Factory
             ISession session = await _sessionFactory.CreateSession(ip);
             IClient client = new Client(session);
             
-            client.AddStorage(new LoginStorage(serverSelector, characterSelector));
+            client.AddStorage(new LoginOption(serverSelector, characterSelector));
 
             client.PacketReceived += packet =>
             {
