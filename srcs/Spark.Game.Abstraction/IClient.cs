@@ -15,7 +15,7 @@ namespace Spark.Game.Abstraction
 
         void SendPacket(string packet);
 
-        T GetStorage<T>() where T : IOption;
-        void AddStorage<T>(T storage) where T : IOption;
+        T GetOption<T>() where T : IOption;
+        void AddOption<T>(T storage) where T : IOption;
     }
 }

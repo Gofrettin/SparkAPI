@@ -30,7 +30,7 @@ namespace Spark.Game.Factory
             ISession session = await _sessionFactory.CreateSession(ip);
             IClient client = new Client(session);
 
-            client.AddStorage(new LoginOption(serverSelector, characterSelector));
+            client.AddOption(new LoginOption(serverSelector, characterSelector));
 
             client.PacketReceived += packet =>
             {

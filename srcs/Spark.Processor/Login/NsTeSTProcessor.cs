@@ -21,7 +21,7 @@ namespace Spark.Processor.Login
 
         protected override void Process(IClient client, NsTeST packet)
         {
-            LoginOption option = client.GetStorage<LoginOption>();
+            LoginOption option = client.GetOption<LoginOption>();
             WorldServer server = packet.Servers.FirstOrDefault(x => option.ServerSelector.Invoke(x));
 
             if (server == null)

@@ -1,56 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using DotNetty.Buffers;
 using DotNetty.Codecs;
+using DotNetty.Common.Utilities;
 using DotNetty.Transport.Channels;
+using NLog;
 
 namespace Spark.Network.Decoder
 {
     public class WorldDecoder : ByteToMessageDecoder
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
         private static readonly char[] Keys = { ' ', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'n' };
 
         protected override void Decode(IChannelHandlerContext context, IByteBuffer input, List<object> output)
         {
-            if (!input.IsReadable())
-            {
-                return;
-            }
-
             var buffer = new byte[input.ReadableBytes];
+
             input.ReadBytes(buffer);
 
-            string currentPacket = "";
             int index = 0;
+            string packet = string.Empty;
 
             while (index < buffer.Length)
             {
-                byte currentByte = buffer[index];
+                byte b = buffer[index];
                 index++;
-
-                if (currentByte == 0xFF)
+                
+                if (b == 0xFF)
                 {
-                    output.Add(currentPacket);
-                    currentPacket = "";
+                    output.Add(packet.Trim());
+                    packet = string.Empty;
                     continue;
                 }
 
-                byte length = (byte)(currentByte & 0x7F);
+                int length = b & 0x7F;
 
-                if ((currentByte & 0x80) != 0)
+                if ((b & 0x80) != 0)
                 {
                     while (length != 0)
                     {
                         if (index < buffer.Length)
                         {
-                            currentByte = buffer[index];
+                            b = buffer[index];
                             index++;
-
-                            byte firstIndex = (byte)(((currentByte & 0xF0u) >> 4) - 1);
-                            byte first = (byte)(firstIndex != 255 ? firstIndex != 14 ? Keys[firstIndex] : '\u0000' : '?');
-                            if (first != 0x6E)
+                            
+                            int firstIndex = ((b & 0xF0) >> 4) - 1;
+                            if (firstIndex >= 0 && firstIndex < Keys.Length)
                             {
-                                currentPacket += Convert.ToChar(first);
+                                int first = Keys[firstIndex];
+                                if (first != 0x6E)
+                                {
+                                    packet += Convert.ToChar(first);
+                                }
                             }
 
                             if (length <= 1)
@@ -58,11 +62,14 @@ namespace Spark.Network.Decoder
                                 break;
                             }
 
-                            byte secondIndex = (byte)((currentByte & 0xF) - 1);
-                            byte second = (byte)(secondIndex != 255 ? secondIndex != 14 ? Keys[secondIndex] : '\u0000' : '?');
-                            if (second != 0x6E)
+                            int secondIndex = (b & 0xF) - 1;
+                            if (secondIndex >= 0 && secondIndex < Keys.Length)
                             {
-                                currentPacket += Convert.ToChar(second);
+                                int second = Keys[secondIndex];
+                                if (second != 0x6E)
+                                {
+                                    packet += Convert.ToChar(second);
+                                }
                             }
 
                             length -= 2;
@@ -79,12 +86,7 @@ namespace Spark.Network.Decoder
                     {
                         if (index < buffer.Length)
                         {
-                            currentPacket += Convert.ToChar(buffer[index] ^ 0xFF);
-                            index++;
-                        }
-                        else if (index == buffer.Length)
-                        {
-                            currentPacket += Convert.ToChar(0xFF);
+                            packet += Convert.ToChar(buffer[index] ^ 0xFF);
                             index++;
                         }
 

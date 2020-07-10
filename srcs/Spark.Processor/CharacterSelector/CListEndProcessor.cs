@@ -14,7 +14,7 @@ namespace Spark.Processor.CharacterSelector
 
         protected override void Process(IClient client, CListEnd packet)
         {
-            LoginOption option = client.GetStorage<LoginOption>();
+            LoginOption option = client.GetOption<LoginOption>();
             SelectableCharacter character = option.SelectableCharacters.FirstOrDefault(x => option.CharacterSelector.Invoke(x));
 
             if (character == null)
@@ -25,7 +25,6 @@ namespace Spark.Processor.CharacterSelector
 
             client.SendPacket($"select {character.Slot}");
             Logger.Info($"Character {character.Name} selected");
-            return;
         }
     }
 }

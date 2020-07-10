@@ -38,8 +38,6 @@ namespace Spark.Network.Session
                 return;
             }
 
-            packet = packet.Trim();
-
             Logger.Trace($"In: {packet}");
             PacketReceived?.Invoke(packet);
         }

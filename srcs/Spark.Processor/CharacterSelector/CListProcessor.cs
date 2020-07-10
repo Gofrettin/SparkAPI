@@ -13,7 +13,7 @@ namespace Spark.Processor.CharacterSelector
 
         protected override void Process(IClient client, CList packet)
         {
-            LoginOption option = client.GetStorage<LoginOption>();
+            LoginOption option = client.GetOption<LoginOption>();
             option.SelectableCharacters.Add(new SelectableCharacter
             {
                 Name = packet.Name,

@@ -15,10 +15,10 @@ namespace Spark.Game
         {
             Id = Guid.NewGuid();
             Session = session;
-            Storage = new Dictionary<Type, object>();
+            Options = new Dictionary<Type, object>();
         }
 
-        public Dictionary<Type, object> Storage { get; }
+        public Dictionary<Type, object> Options { get; }
 
         public ISession Session
         {
@@ -45,11 +45,11 @@ namespace Spark.Game
             Session.SendPacket(packet);
         }
 
-        public T GetStorage<T>() where T : IOption => (T)Storage.GetValueOrDefault(typeof(T));
+        public T GetOption<T>() where T : IOption => (T)Options.GetValueOrDefault(typeof(T));
 
-        public void AddStorage<T>(T storage) where T : IOption
+        public void AddOption<T>(T storage) where T : IOption
         {
-            Storage[typeof(T)] = storage;
+            Options[typeof(T)] = storage;
         }
 
         private void ProcessPacket(string packet)
