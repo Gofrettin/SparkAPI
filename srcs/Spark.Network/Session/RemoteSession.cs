@@ -15,6 +15,7 @@ namespace Spark.Network.Session
 
         public void SendPacket(string packet)
         {
+            Logger.Trace($"Out: {packet}");
             Channel.WriteAndFlushAsync(packet).OnException(x => { Logger.Error(x.InnerException); });
         }
 
@@ -39,6 +40,7 @@ namespace Spark.Network.Session
 
             packet = packet.Trim();
 
+            Logger.Trace($"In: {packet}");
             PacketReceived?.Invoke(packet);
         }
 

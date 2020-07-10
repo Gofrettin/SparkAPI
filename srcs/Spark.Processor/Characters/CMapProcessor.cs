@@ -21,11 +21,11 @@ namespace Spark.Processor.Characters
             _eventPipeline = eventPipeline;
         }
 
-        protected override Task Process(IClient client, CMap packet)
+        protected override void Process(IClient client, CMap packet)
         {
             if (!packet.IsSourceMap)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             IMap map = _mapFactory.CreateMap(packet.MapId);
@@ -34,8 +34,6 @@ namespace Spark.Processor.Characters
             _eventPipeline.Emit(new MapChangeEvent(client, map));
 
             Logger.Info($"Map changed to {map.Id}");
-
-            return Task.CompletedTask;
         }
     }
 }

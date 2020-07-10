@@ -22,6 +22,9 @@ namespace Spark.Network.Session
             Bootstrap bootstrap = new Bootstrap()
                 .Channel<TcpSocketChannel>()
                 .Group(new MultithreadEventLoopGroup())
+                .Option(ChannelOption.TcpNodelay, true)
+                .Option(ChannelOption.AutoRead, true)
+                .Option(ChannelOption.SoBacklog, 100)
                 .Handler(new ActionChannelInitializer<IChannel>(x =>
                 {
                     IChannelPipeline pipeline = x.Pipeline;

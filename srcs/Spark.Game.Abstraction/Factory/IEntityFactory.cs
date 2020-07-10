@@ -8,6 +8,6 @@ namespace Spark.Game.Abstraction.Factory
         INpc CreateNpc(long entityId, int gameKey);
         ICharacter CreateCharacter(long entityId, string name, IClient client);
         IMapObject CreateMapObject(long entityId, int gameKey);
-        IPlayer CreatePlayer(long entityId);
+        IPlayer CreatePlayer(long entityId, string name);
     }
 }

@@ -16,28 +16,26 @@ namespace Spark.Processor.Entities
 
         public MvProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
 
-        protected override Task Process(IClient client, Mv packet)
+        protected override void Process(IClient client, Mv packet)
         {
             IMap map = client.Character.Map;
             if (map == null)
             {
                 Logger.Error("Can't process in packet, character map is null");
-                return Task.CompletedTask;
+                return;
             }
 
             IEntity entity = map.GetEntity(packet.EntityType, packet.EntityId);
             if (entity == null)
             {
-                Logger.Debug($"Can't found entity {packet.EntityType} with id {packet.EntityId} in map {map.Id}");
-                return Task.CompletedTask;
+                Logger.Trace($"Can't found entity {packet.EntityType} with id {packet.EntityId} in map {map.Id}");
+                return;
             }
 
             entity.Position = packet.Position;
 
             _eventPipeline.Emit(new EntityMoveEvent(entity));
             Logger.Trace($"Entity {entity.EntityType} with id {entity.Id} moved to {entity.Position.X}:{entity.Position.Y}");
-
-            return Task.CompletedTask;
         }
     }
 }

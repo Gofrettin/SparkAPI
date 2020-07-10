@@ -10,7 +10,6 @@ namespace Spark.Event
     {
         void Emit(IEvent e);
         void AddEventHandler(IEventHandler handler);
-        void AddEventHandlers(IEnumerable<IEventHandler> handlers);
     }
 
     public sealed class EventPipeline : IEventPipeline
@@ -26,16 +25,23 @@ namespace Spark.Event
             List<IEventHandler> handlers = _handlers.GetValueOrDefault(e.GetType());
             if (handlers == null)
             {
-                Logger.Debug($"No event handler found for {e.GetType().Name}, skipping.");
+                Logger.Trace($"No event handler found for {e.GetType().Name}, skipping.");
                 return;
             }
 
             foreach (IEventHandler handler in handlers)
             {
-                handler.Handle(e).OnException(x => { Logger.Error(x, $"Something happenned when handling event {e.GetType().Name} in handler {handler.GetType().Name}"); });
+                try
+                {
+                    handler.Handle(e);
+                }
+                catch (Exception exception)
+                {
+                    Logger.Error(exception);
+                }
             }
 
-            Logger.Debug($"Emitted event {e.GetType().Name} for {handlers.Count} handlers");
+            Logger.Trace($"Emitted event {e.GetType().Name} for {handlers.Count} handlers");
         }
 
         public void AddEventHandler(IEventHandler handler)
@@ -49,16 +55,6 @@ namespace Spark.Event
 
             handlers.Add(handler);
             Logger.Debug($"Registered event handler {handler.GetType().Name} for event {handler.EventType.Name}");
-        }
-
-        public void AddEventHandlers(IEnumerable<IEventHandler> handlers)
-        {
-            foreach (IEventHandler handler in handlers)
-            {
-                AddEventHandler(handler);
-            }
-
-            Logger.Info($"Registered {handlers.Count()} event handlers");
         }
     }
 }

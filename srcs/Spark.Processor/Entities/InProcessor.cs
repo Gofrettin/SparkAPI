@@ -23,13 +23,13 @@ namespace Spark.Processor.Entities
             _entityFactory = entityFactory;
         }
 
-        protected override Task Process(IClient client, In packet)
+        protected override void Process(IClient client, In packet)
         {
             IMap map = client.Character.Map;
             if (map == null)
             {
                 Logger.Warn("Can't process in packet, character map is null");
-                return Task.CompletedTask;
+                return;
             }
 
             IEntity entity;
@@ -42,20 +42,19 @@ namespace Spark.Processor.Entities
                     entity = _entityFactory.CreateNpc(packet.EntityId, packet.GameKey);
                     break;
                 case EntityType.Player:
-                    entity = _entityFactory.CreatePlayer(packet.EntityId);
+                    entity = _entityFactory.CreatePlayer(packet.EntityId, packet.Name);
                     break;
                 case EntityType.MapObject:
                     entity = _entityFactory.CreateMapObject(packet.EntityId, packet.GameKey);
                     break;
                 default:
                     Logger.Error($"Undefined switch clause for entity type {packet.EntityType}");
-                    return Task.CompletedTask;
+                    return;
             }
 
             map.AddEntity(entity);
+            
             _eventPipeline.Emit(new EntitySpawnEvent(map, entity));
-
-            return Task.CompletedTask;
         }
     }
 }

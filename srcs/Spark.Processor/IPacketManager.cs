@@ -32,8 +32,16 @@ namespace Spark.Processor
                 return;
             }
 
-            Logger.Debug($"Processing packet {packet.GetType().Name} using {processor.GetType().Name}");
-            processor.Process(client, packet).OnException(x => { Logger.Error(x); });
+            Logger.Trace($"Processing packet {packet.GetType().Name} using {processor.GetType().Name}");
+            try
+            {
+                processor.Process(client, packet);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);   
+            }
+            
         }
 
         public void AddPacketProcessor(IPacketProcessor processor)
@@ -49,7 +57,7 @@ namespace Spark.Processor
                 AddPacketProcessor(processor);
             }
 
-            Logger.Info($"Registered {processors.Count()} packet processors");
+            Logger.Debug($"Registered {processors.Count()} packet processors");
         }
     }
 }

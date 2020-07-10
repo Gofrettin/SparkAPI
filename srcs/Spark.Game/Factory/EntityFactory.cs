@@ -51,9 +51,12 @@ namespace Spark.Game.Factory
             return new MapObject(entityId, gameKey);
         }
 
-        public IPlayer CreatePlayer(long entityId)
+        public IPlayer CreatePlayer(long entityId, string name)
         {
-            return new Player(entityId);
+            return new Player(entityId)
+            {
+                Name = name
+            };
         }
     }
 }

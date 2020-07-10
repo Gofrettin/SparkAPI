@@ -21,11 +21,11 @@ namespace Spark.Processor.Characters
             _entityFactory = entityFactory;
         }
 
-        protected override Task Process(IClient client, CInfo packet)
+        protected override void Process(IClient client, CInfo packet)
         {
             if (client.Character != null)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             client.Character = _entityFactory.CreateCharacter(packet.Id, packet.Name, client);
@@ -33,8 +33,6 @@ namespace Spark.Processor.Characters
             _eventPipeline.Emit(new CharacterInitializedEvent(client.Character));
 
             Logger.Info($"Client with id {client.Id} initialized with character {client.Character.Name}");
-
-            return Task.CompletedTask;
         }
     }
 }

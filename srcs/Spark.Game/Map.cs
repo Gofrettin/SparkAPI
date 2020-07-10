@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using Spark.Core.Enum;
+using Spark.Core.Extension;
 using Spark.Database.Data;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
@@ -12,10 +14,10 @@ namespace Spark.Game
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Dictionary<long, IMonster> _monsters;
-        private readonly Dictionary<long, INpc> _npcs;
-        private readonly Dictionary<long, IMapObject> _objects;
-        private readonly Dictionary<long, IPlayer> _players;
+        private readonly IDictionary<long, IMonster> _monsters;
+        private readonly IDictionary<long, INpc> _npcs;
+        private readonly IDictionary<long, IMapObject> _objects;
+        private readonly IDictionary<long, IPlayer> _players;
 
         public Map(int id, MapData data)
         {
@@ -23,10 +25,10 @@ namespace Spark.Game
             NameKey = data.NameKey;
             Grid = data.Grid;
 
-            _monsters = new Dictionary<long, IMonster>();
-            _npcs = new Dictionary<long, INpc>();
-            _players = new Dictionary<long, IPlayer>();
-            _objects = new Dictionary<long, IMapObject>();
+            _monsters = new ConcurrentDictionary<long, IMonster>();
+            _npcs = new ConcurrentDictionary<long, INpc>();
+            _players = new ConcurrentDictionary<long, IPlayer>();
+            _objects = new ConcurrentDictionary<long, IMapObject>();
         }
 
         public IEnumerable<IEntity> Entities => _monsters.Values

@@ -11,7 +11,7 @@ namespace Spark.Processor.CharacterSelector
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected override Task Process(IClient client, CList packet)
+        protected override void Process(IClient client, CList packet)
         {
             LoginOption option = client.GetStorage<LoginOption>();
             option.SelectableCharacters.Add(new SelectableCharacter
@@ -21,8 +21,6 @@ namespace Spark.Processor.CharacterSelector
             });
 
             Logger.Debug($"Added {packet.Name} character to selectable characters");
-
-            return Task.CompletedTask;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Spark
     public sealed class Spark : ISpark
     {
         public Spark(IClientFactory clientFactory, IEventPipeline eventPipeline, IDatabase database, IPacketManager packetManager, IGameforgeService gameforgeService,
-            IEnumerable<IEventHandler> builtInEventHandlers, IEnumerable<IPacketProcessor> builtInPacketProcessors)
+            IEnumerable<IPacketProcessor> packetProcessors)
         {
             if (Created)
             {
@@ -33,9 +33,8 @@ namespace Spark
             PacketManager = packetManager;
             GameforgeService = gameforgeService;
             Database = database;
-
-            BuiltInEventHandlers = builtInEventHandlers;
-            BuildInPacketProcessors = builtInPacketProcessors;
+            
+            PacketProcessors = packetProcessors;
 
             Created = true;
         }
@@ -47,9 +46,8 @@ namespace Spark
         public IPacketManager PacketManager { get; }
         public IDatabase Database { get; }
         public IGameforgeService GameforgeService { get; }
-
-        public IEnumerable<IEventHandler> BuiltInEventHandlers { get; }
-        public IEnumerable<IPacketProcessor> BuildInPacketProcessors { get; }
+        
+        public IEnumerable<IPacketProcessor> PacketProcessors { get; }
 
         public async Task<IClient> CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
         {
@@ -75,9 +73,8 @@ namespace Spark
         public void Initialize()
         {
             Database.Load();
-
-            EventPipeline.AddEventHandlers(BuiltInEventHandlers);
-            PacketManager.AddPacketProcessors(BuildInPacketProcessors);
+            
+            PacketManager.AddPacketProcessors(PacketProcessors);
         }
 
         public static ISpark CreateInstance()

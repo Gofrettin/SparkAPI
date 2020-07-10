@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using Newtonsoft.Json;
+using NLog;
 
 namespace Spark.Database
 {
@@ -15,8 +16,15 @@ namespace Spark.Database
 
     public sealed class Repository<T> : IRepository<T>
     {
+        private readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
+        private readonly JsonSerializer _serializer = new JsonSerializer
+        {
+            Formatting = Formatting.Indented
+        };
+        
         public Repository(string path) => Path = path;
-
+        
         public string Path { get; }
         public ReadOnlyDictionary<int, T> Values { get; private set; }
 
@@ -29,7 +37,19 @@ namespace Spark.Database
                 throw new IOException($"Failed to load repository missing {Path} file");
             }
 
-            Values = JsonConvert.DeserializeObject<ReadOnlyDictionary<int, T>>(Path);
+
+            using (StreamReader stream = File.OpenText(Path))
+            {
+                Values = (ReadOnlyDictionary<int, T>)_serializer.Deserialize(stream, typeof(ReadOnlyDictionary<int, T>));
+            }
+
+            if (Values == null)
+            {
+                Logger.Error("Failed to load values");
+                return;
+            }
+            
+            Logger.Info($"Loaded {Values.Count} values");
         }
     }
 }

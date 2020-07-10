@@ -12,7 +12,7 @@ namespace Spark.Processor.CharacterSelector
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected override Task Process(IClient client, CListEnd packet)
+        protected override void Process(IClient client, CListEnd packet)
         {
             LoginOption option = client.GetStorage<LoginOption>();
             SelectableCharacter character = option.SelectableCharacters.FirstOrDefault(x => option.CharacterSelector.Invoke(x));
@@ -20,12 +20,12 @@ namespace Spark.Processor.CharacterSelector
             if (character == null)
             {
                 Logger.Error("Can't found character matching predicate");
-                return Task.CompletedTask;
+                return;
             }
 
             client.SendPacket($"select {character.Slot}");
             Logger.Info($"Character {character.Name} selected");
-            return Task.CompletedTask;
+            return;
         }
     }
 }
