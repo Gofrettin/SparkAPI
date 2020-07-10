@@ -2,6 +2,7 @@
 using System.Linq;
 using NLog;
 using Spark.Core.Enum;
+using Spark.Database.Data;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 
@@ -16,11 +17,11 @@ namespace Spark.Game
         private readonly Dictionary<long, IMapObject> _objects;
         private readonly Dictionary<long, IPlayer> _players;
 
-        public Map(int id, string name, byte[] grid)
+        public Map(int id, MapData data)
         {
             Id = id;
-            NameKey = name;
-            Grid = grid;
+            NameKey = data.NameKey;
+            Grid = data.Grid;
 
             _monsters = new Dictionary<long, IMonster>();
             _npcs = new Dictionary<long, INpc>();

@@ -90,6 +90,7 @@ namespace Spark
             services.AddTransient<IGameforgeService, GameforgeService>();
             services.AddTransient<IClientFactory, ClientFactory>();
             services.AddTransient<IMapFactory, MapFactory>();
+            services.AddTransient<IEntityFactory, EntityFactory>();
             services.AddTransient<ISessionFactory, SessionFactory>();
 
             services.AddSingleton<IPacketFactory, PacketFactory>();

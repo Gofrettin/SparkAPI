@@ -1,5 +1,6 @@
 ﻿using Spark.Core;
 using Spark.Core.Enum;
+using Spark.Database.Data;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 
@@ -7,11 +8,13 @@ namespace Spark.Game.Entities
 {
     public class Npc : INpc
     {
-        public Npc(long id, int gameKey)
+        public Npc(long id, int gameKey, MonsterData data)
         {
             Id = id;
             GameKey = gameKey;
             EntityType = EntityType.Npc;
+
+            Name = data.NameKey;
         }
 
         public long Id { get; }

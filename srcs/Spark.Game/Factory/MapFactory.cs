@@ -23,7 +23,7 @@ namespace Spark.Game.Factory
                 data = MapData.Undefined;
             }
 
-            return new Map(mapId, data.NameKey, data.Grid);
+            return new Map(mapId, data);
         }
     }
 }
