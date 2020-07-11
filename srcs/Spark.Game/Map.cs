@@ -1,7 +1,9 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Core.Extension;
 using Spark.Database.Data;
@@ -24,6 +26,8 @@ namespace Spark.Game
             Id = id;
             NameKey = data.NameKey;
             Grid = data.Grid;
+            Height = BitConverter.ToInt16(Grid.Slice(0, 2));
+            Width = BitConverter.ToInt16(Grid.Slice(2, 2));
 
             _monsters = new ConcurrentDictionary<long, IMonster>();
             _npcs = new ConcurrentDictionary<long, INpc>();
@@ -115,6 +119,17 @@ namespace Spark.Game
             entity.Map = null;
 
             Logger.Debug($"Entity {entity.EntityType} with id {entity.Id} removed from map {Id}");
+        }
+        
+        public bool IsWalkable(Position position)
+        {
+            if (position.X > Height || position.X < 0 || position.Y > Width || position.Y < 0)
+            {
+                return false;
+            }
+
+            byte b = Grid[4 + position.Y * Height + position.X];
+            return b == 0 || b == 2 || b >= 16 && b <= 19;
         }
     }
 }

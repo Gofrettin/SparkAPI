@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -47,6 +46,7 @@ namespace Spark.Network.Session
                     IEnumerable<string> decoded = Decoder.Decode(buffer, size);
                     foreach (string packet in decoded)
                     {
+                        Logger.Trace($"In: {packet}");
                         PacketReceived?.Invoke(packet);
                     }
                 }

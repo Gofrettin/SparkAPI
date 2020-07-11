@@ -25,5 +25,7 @@ namespace Spark.Game.Entities
         public int GameKey { get; set; }
         public int Hp { get; set; }
         public int Mp { get; set; }
+        public byte Speed { get; set; }
+        public Direction Direction { get; set; }
     }
 }

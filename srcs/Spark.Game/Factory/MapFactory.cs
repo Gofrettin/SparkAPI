@@ -20,7 +20,7 @@ namespace Spark.Game.Factory
             if (data == null)
             {
                 Logger.Error($"Can't get map data with id {mapId} from database");
-                data = MapData.Undefined;
+                return default;
             }
 
             return new Map(mapId, data);

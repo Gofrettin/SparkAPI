@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Game.Abstraction.Entities;
 
@@ -23,5 +24,7 @@ namespace Spark.Game.Abstraction
 
         void AddEntity(IEntity entity);
         void RemoveEntity(IEntity entity);
+
+        bool IsWalkable(Position position);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Spark.Event.Characters
 {
-    public class MapChangeEvent : IEvent
+    public class MapLeaveEvent : IEvent
     {
-        public MapChangeEvent(IClient client, IMap map)
+        public MapLeaveEvent(IClient client, IMap map)
         {
             Client = client;
             Map = map;
