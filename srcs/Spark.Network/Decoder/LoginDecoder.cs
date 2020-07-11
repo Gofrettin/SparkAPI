@@ -1,32 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using DotNetty.Buffers;
-using DotNetty.Codecs;
-using DotNetty.Transport.Channels;
 
 namespace Spark.Network.Decoder
 {
-    public class LoginDecoder : ByteToMessageDecoder
+    public class LoginDecoder : IDecoder
     {
-        protected override void Decode(IChannelHandlerContext context, IByteBuffer input, List<object> output)
+        public IEnumerable<string> Decode(byte[] bytes, int size)
         {
-            if (!input.IsReadable())
-            {
-                return;
-            }
-
-            var buffer = new byte[input.ReadableBytes];
-            input.ReadBytes(buffer);
-
             var packet = new StringBuilder();
-            foreach (byte b in buffer)
+            
+            for (int i = 0; i < size; i++)
             {
-                packet.Append(Convert.ToChar(b - 0xF));
+                packet.Append(Convert.ToChar(bytes[i] - 0xF));
             }
 
             packet.Remove(packet.Length - 1, 1);
-            output.Add(packet.ToString());
+            return new[] { packet.ToString() };
         }
     }
 }

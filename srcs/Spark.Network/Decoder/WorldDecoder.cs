@@ -1,37 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using DotNetty.Buffers;
-using DotNetty.Codecs;
-using DotNetty.Common.Utilities;
-using DotNetty.Transport.Channels;
-using NLog;
 
 namespace Spark.Network.Decoder
 {
-    public class WorldDecoder : ByteToMessageDecoder
+    public class WorldDecoder : IDecoder
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
         private static readonly char[] Keys = { ' ', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'n' };
-
-        protected override void Decode(IChannelHandlerContext context, IByteBuffer input, List<object> output)
-        {
-            var buffer = new byte[input.ReadableBytes];
-
-            input.ReadBytes(buffer);
+        
+        public IEnumerable<string> Decode(byte[] buffer, int size)
+        { 
+            var packets = new List<string>();
 
             int index = 0;
             string packet = string.Empty;
 
-            while (index < buffer.Length)
+            while (index <= size)
             {
                 byte b = buffer[index];
                 index++;
                 
                 if (b == 0xFF)
                 {
-                    output.Add(packet.Trim());
+                    packets.Add(packet.Trim());
                     packet = string.Empty;
                     continue;
                 }
@@ -40,9 +30,9 @@ namespace Spark.Network.Decoder
 
                 if ((b & 0x80) != 0)
                 {
-                    while (length != 0)
+                    while (length > 0)
                     {
-                        if (index < buffer.Length)
+                        if (index <= size)
                         {
                             b = buffer[index];
                             index++;
@@ -55,11 +45,6 @@ namespace Spark.Network.Decoder
                                 {
                                     packet += Convert.ToChar(first);
                                 }
-                            }
-
-                            if (length <= 1)
-                            {
-                                break;
                             }
 
                             int secondIndex = (b & 0xF) - 1;
@@ -84,7 +69,7 @@ namespace Spark.Network.Decoder
                 {
                     while (length != 0)
                     {
-                        if (index < buffer.Length)
+                        if (index <= size)
                         {
                             packet += Convert.ToChar(buffer[index] ^ 0xFF);
                             index++;
@@ -94,6 +79,8 @@ namespace Spark.Network.Decoder
                     }
                 }
             }
+
+            return packets;
         }
     }
 }

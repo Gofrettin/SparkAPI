@@ -8,6 +8,6 @@ namespace Spark.Game.Abstraction.Factory
 {
     public interface IClientFactory
     {
-        Task<IClient> CreateClient(IPEndPoint ip, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector);
+        IClient CreateClient(IPEndPoint ip, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector);
     }
 }

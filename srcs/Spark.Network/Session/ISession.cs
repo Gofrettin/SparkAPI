@@ -6,5 +6,6 @@ namespace Spark.Network.Session
     {
         event Action<string> PacketReceived;
         void SendPacket(string packet);
+        void Stop();
     }
 }

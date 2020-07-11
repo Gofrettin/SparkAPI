@@ -9,9 +9,9 @@ using Spark.Gameforge;
 
 namespace Spark
 {
-    public interface ISpark : IDisposable
+    public interface ISpark
     {
-        Task<IClient> CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector);
+        IClient CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector);
         Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> predicate);
 
         void AddEventHandler<T>(T handler) where T : IEventHandler;

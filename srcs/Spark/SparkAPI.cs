@@ -18,16 +18,12 @@ using Spark.Processor;
 
 namespace Spark
 {
-    public sealed class Spark : ISpark
+    public sealed class SparkAPI : ISpark
     {
-        public Spark(IClientFactory clientFactory, IEventPipeline eventPipeline, IDatabase database, IPacketManager packetManager, IGameforgeService gameforgeService,
-            IEnumerable<IPacketProcessor> packetProcessors)
+        public static ISpark Instance { get; } = CreateInstance();
+        
+        public SparkAPI(IClientFactory clientFactory, IEventPipeline eventPipeline, IDatabase database, IPacketManager packetManager, IGameforgeService gameforgeService, IEnumerable<IPacketProcessor> packetProcessors)
         {
-            if (Created)
-            {
-                throw new InvalidOperationException("Can't create multiple instance of Spark");
-            }
-
             ClientFactory = clientFactory;
             EventPipeline = eventPipeline;
             PacketManager = packetManager;
@@ -35,11 +31,7 @@ namespace Spark
             Database = database;
             
             PacketProcessors = packetProcessors;
-
-            Created = true;
         }
-
-        private static bool Created { get; set; }
 
         public IClientFactory ClientFactory { get; }
         public IEventPipeline EventPipeline { get; }
@@ -49,9 +41,9 @@ namespace Spark
         
         public IEnumerable<IPacketProcessor> PacketProcessors { get; }
 
-        public async Task<IClient> CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
+        public IClient CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
         {
-            IClient client = await ClientFactory.CreateClient(ip, serverSelector, characterSelector);
+            IClient client = ClientFactory.CreateClient(ip, serverSelector, characterSelector);
 
             client.SendPacket($"NoS0577 {token} {GameforgeService.InstallationId} 007C762C 20.9.3.3127 0 D0C4D9B41720BC5E00E1C6C7DC6B8B22");
 
@@ -66,10 +58,6 @@ namespace Spark
             EventPipeline.AddEventHandler(handler);
         }
 
-        public void Dispose()
-        {
-        }
-
         public void Initialize()
         {
             Database.Load();
@@ -77,7 +65,7 @@ namespace Spark
             PacketManager.AddPacketProcessors(PacketProcessors);
         }
 
-        public static ISpark CreateInstance()
+        private static ISpark CreateInstance()
         {
             IServiceCollection services = new ServiceCollection();
 
@@ -94,13 +82,13 @@ namespace Spark
             services.AddSingleton<IPacketManager, PacketManager>();
             services.AddSingleton<IEventPipeline, EventPipeline>();
             services.AddSingleton<IDatabase, SparkDatabase>();
-            services.AddSingleton<Spark>();
+            services.AddSingleton<SparkAPI>();
 
-            Spark spark = services.BuildServiceProvider().GetService<Spark>();
+            SparkAPI sparkApi = services.BuildServiceProvider().GetService<SparkAPI>();
 
-            spark.Initialize();
+            sparkApi.Initialize();
 
-            return spark;
+            return sparkApi;
         }
     }
 }

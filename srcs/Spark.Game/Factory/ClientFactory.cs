@@ -25,9 +25,9 @@ namespace Spark.Game.Factory
             _sessionFactory = sessionFactory;
         }
 
-        public async Task<IClient> CreateClient(IPEndPoint ip, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
+        public IClient CreateClient(IPEndPoint ip, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
         {
-            ISession session = await _sessionFactory.CreateSession(ip);
+            ISession session = _sessionFactory.CreateSession(ip);
             IClient client = new Client(session);
 
             client.AddOption(new LoginOption(serverSelector, characterSelector));

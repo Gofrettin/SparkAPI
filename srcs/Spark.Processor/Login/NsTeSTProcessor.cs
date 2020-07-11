@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using DotNetty.Common.Utilities;
 using NLog;
 using Spark.Core.Server;
 using Spark.Game.Abstraction;
@@ -23,24 +21,22 @@ namespace Spark.Processor.Login
         {
             LoginOption option = client.GetOption<LoginOption>();
             WorldServer server = packet.Servers.FirstOrDefault(x => option.ServerSelector.Invoke(x));
-
             if (server == null)
             {
                 Logger.Error("Can't found world server");
                 return;
             }
 
-            _sessionFactory.CreateSession(server.Ip, packet.EncryptionKey).ContinueWith(x =>
+            client.Session.Stop();
+            client.Session = _sessionFactory.CreateSession(server.Ip, packet.EncryptionKey);
+            
+            client.SendPacket($"{packet.EncryptionKey}");
+            Task.Delay(1000).ContinueWith(s =>
             {
-                client.Session = x.Result;
-                client.SendPacket($"{packet.EncryptionKey}");
-                
-                return Task.Delay(1000).ContinueWith(s =>
-                {
-                    client.SendPacket($"{packet.Name} GFMODE 2");
-                    client.SendPacket("thisifgamemode");
-                });
+                client.SendPacket($"{packet.Name} GFMODE 2");
+                client.SendPacket("thisifgamemode");
             });
+          
         }
     }
 }

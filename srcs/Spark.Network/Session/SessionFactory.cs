@@ -1,59 +1,51 @@
-﻿using System.Net;
-using System.Threading.Tasks;
-using DotNetty.Transport.Bootstrapping;
-using DotNetty.Transport.Channels;
-using DotNetty.Transport.Channels.Sockets;
+﻿using System;
+using System.Net;
+using System.Timers;
 using Spark.Network.Decoder;
 using Spark.Network.Encoder;
 
 namespace Spark.Network.Session
 {
-    public interface ISessionFactory
-    {
-        Task<ISession> CreateSession(IPEndPoint ip);
-        Task<ISession> CreateSession(IPEndPoint ip, int encryptionKey);
-    }
-
     public class SessionFactory : ISessionFactory
     {
-        public async Task<ISession> CreateSession(IPEndPoint ip)
+        public ISession CreateSession(IPEndPoint ip)
         {
-            var session = new RemoteSession();
-            Bootstrap bootstrap = new Bootstrap()
-                .Channel<TcpSocketChannel>()
-                .Group(new MultithreadEventLoopGroup())
-                .Handler(new ActionChannelInitializer<IChannel>(x =>
-                {
-                    IChannelPipeline pipeline = x.Pipeline;
-
-                    pipeline.AddLast(new LoginDecoder());
-                    pipeline.AddLast(session);
-                    pipeline.AddLast(new LoginEncoder());
-                }));
-
-            await bootstrap.ConnectAsync(ip);
+            var session = new RemoteSession(new LoginEncoder(), new LoginDecoder());
+            
+            session.Connect(ip);
 
             return session;
         }
 
-        public async Task<ISession> CreateSession(IPEndPoint ip, int encryptionKey)
+        public ISession CreateSession(IPEndPoint ip, int encryptionKey)
         {
-            var session = new RemoteSession();
-            Bootstrap bootstrap = new Bootstrap()
-                .Channel<TcpSocketChannel>()
-                .Group(new MultithreadEventLoopGroup())
-                .Handler(new ActionChannelInitializer<IChannel>(x =>
+            int packetId = new Random().Next(20000, 40000);
+
+            var session = new RemoteSession(new WorldEncoder(encryptionKey), new WorldDecoder())
+            {
+                Modifiers = new Func<string, string>[]
                 {
-                    IChannelPipeline pipeline = x.Pipeline;
+                    x => $"{packetId++} {x}",
+                }
+            };
 
-                    pipeline.AddLast(new KeepAlive());
-                    pipeline.AddLast(new WorldDecoder());
-                    pipeline.AddLast(session);
-                    pipeline.AddLast(new WorldEncoder(encryptionKey));
-                    pipeline.AddLast(new PacketFormatter());
-                }));
+            int keepAliveId = 0;
+            var keepAlive = new Timer
+            {
+                Interval = 60000,
+                Enabled = true,
+            };
+            keepAlive.Elapsed += (obj, e) =>
+            {
+                if (!session.Socket.Connected)
+                {
+                    keepAlive.Stop();
+                }
 
-            await bootstrap.ConnectAsync(ip);
+                session.SendPacket($"pulse {keepAliveId++ * 60} 1");
+            };
+
+            session.Connect(ip);
 
             return session;
         }

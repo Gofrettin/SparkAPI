@@ -28,7 +28,6 @@ namespace Spark.Processor.Entities
             IEntity entity = map.GetEntity(packet.EntityType, packet.EntityId);
             if (entity == null)
             {
-                Logger.Debug($"Can't found entity {packet.EntityType} with id {packet.EntityId} in map {map.Id}");
                 return;
             }
 

@@ -1,27 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DotNetty.Buffers;
-using DotNetty.Codecs;
-using DotNetty.Transport.Channels;
 
 namespace Spark.Network.Encoder
 {
-    public class WorldEncoder : MessageToMessageEncoder<string>
+    public class WorldEncoder : IEncoder
     {
         public WorldEncoder(int encryptionKey)
         {
             EncryptionKey = encryptionKey;
             IsSession = true;
         }
-
+        
         public bool IsSession { get; private set; }
         public int EncryptionKey { get; }
-
-        protected override void Encode(IChannelHandlerContext context, string message, List<object> output)
+        
+        public byte[] Encode(string packet)
         {
-            var packet = new List<byte>();
+            var encoded = new List<byte>();
 
-            string mask = new string(message.Select(c =>
+            string mask = new string(packet.Select(c =>
             {
                 sbyte b = (sbyte)c;
                 if (c == '#' || c == '/' || c == '%')
@@ -38,7 +35,7 @@ namespace Spark.Network.Encoder
                 return '0';
             }).ToArray());
 
-            int packetLength = message.Length;
+            int packetLength = packet.Length;
 
             int sequenceCounter = 0;
             int currentPosition = 0;
@@ -64,17 +61,17 @@ namespace Spark.Network.Encoder
                         {
                             if (sequences == 0)
                             {
-                                packet.Add((byte)(length - i));
+                                encoded.Add((byte)(length - i));
                             }
                             else
                             {
-                                packet.Add(0x7E);
+                                encoded.Add(0x7E);
                                 sequences--;
                                 sequenceCounter++;
                             }
                         }
 
-                        packet.Add((byte)((byte)message[lastPosition] ^ 0xFF));
+                        encoded.Add((byte)((byte)packet[lastPosition] ^ 0xFF));
                     }
                 }
 
@@ -102,17 +99,17 @@ namespace Spark.Network.Encoder
                     {
                         if (sequences == 0)
                         {
-                            packet.Add((byte)(length - i | 0x80));
+                            encoded.Add((byte)(length - i | 0x80));
                         }
                         else
                         {
-                            packet.Add(0x7E | 0x80);
+                            encoded.Add(0x7E | 0x80);
                             sequences--;
                             sequenceCounter++;
                         }
                     }
 
-                    byte currentByte = (byte)message[lastPosition];
+                    byte currentByte = (byte)packet[lastPosition];
                     switch (currentByte)
                     {
                         case 0x20:
@@ -136,16 +133,16 @@ namespace Spark.Network.Encoder
 
                     if ((i % 2) == 0)
                     {
-                        packet.Add((byte)(currentByte << 4));
+                        encoded.Add((byte)(currentByte << 4));
                     }
                     else
                     {
-                        packet[^1] = (byte)(packet.Last() | currentByte);
+                        encoded[^1] = (byte)(encoded.Last() | currentByte);
                     }
                 }
             }
 
-            packet.Add(0xFF);
+            encoded.Add(0xFF);
 
             sbyte sessionNumber = (sbyte)(EncryptionKey >> 6 & 0xFF & 0x80000003);
 
@@ -165,43 +162,43 @@ namespace Spark.Network.Encoder
             switch (sessionNumber)
             {
                 case 0:
-                    for (int i = 0; i < packet.Count; i++)
+                    for (int i = 0; i < encoded.Count; i++)
                     {
-                        packet[i] = (byte)(packet[i] + sessionKey + 0x40);
+                        encoded[i] = (byte)(encoded[i] + sessionKey + 0x40);
                     }
 
                     break;
                 case 1:
-                    for (int i = 0; i < packet.Count; i++)
+                    for (int i = 0; i < encoded.Count; i++)
                     {
-                        packet[i] = (byte)(packet[i] - (sessionKey + 0x40));
+                        encoded[i] = (byte)(encoded[i] - (sessionKey + 0x40));
                     }
 
                     break;
                 case 2:
-                    for (int i = 0; i < packet.Count; i++)
+                    for (int i = 0; i < encoded.Count; i++)
                     {
-                        packet[i] = (byte)((packet[i] ^ 0xC3) + sessionKey + 0x40);
+                        encoded[i] = (byte)((encoded[i] ^ 0xC3) + sessionKey + 0x40);
                     }
 
                     break;
                 case 3:
-                    for (int i = 0; i < packet.Count; i++)
+                    for (int i = 0; i < encoded.Count; i++)
                     {
-                        packet[i] = (byte)((packet[i] ^ 0xC3) - (sessionKey + 0x40));
+                        encoded[i] = (byte)((encoded[i] ^ 0xC3) - (sessionKey + 0x40));
                     }
 
                     break;
                 default:
-                    for (int i = 0; i < packet.Count; i++)
+                    for (int i = 0; i < encoded.Count; i++)
                     {
-                        packet[i] = (byte)(packet[i] + 0x0F);
+                        encoded[i] = (byte)(encoded[i] + 0x0F);
                     }
 
                     break;
             }
 
-            output.Add(Unpooled.WrappedBuffer(packet.ToArray()));
+            return encoded.ToArray();
         }
     }
 }
