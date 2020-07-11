@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
+using NLog;
 using Spark.Network.Decoder;
 using Spark.Network.Encoder;
 
@@ -10,31 +13,36 @@ namespace Spark.Network.Session
 {
     public class RemoteSession : ISession
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
         public event Action<string> PacketReceived;
 
         public Socket Socket { get; }
-        
+        public Task BackgroundTask { get; }
+
         public IEncoder Encoder { get; }
         public IDecoder Decoder { get; }
         public Func<string, string>[] Modifiers { get; set; }
+        
+        public CancellationTokenSource CancellationTokenSource { get; }
 
         public RemoteSession(IEncoder encoder, IDecoder decoder)
         {
             Encoder = encoder;
             Decoder = decoder;
-
+            
             Socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-        }
-
-        public void Connect(IPEndPoint ep)
-        {
-            Socket.Connect(ep);
-            Task.Run(() =>
+            BackgroundTask = new Task<Task>(async () =>
             {
-                while (Socket.Connected)
+                while (Socket.Connected && !CancellationTokenSource.IsCancellationRequested)
                 {
                     var buffer = new byte[Socket.ReceiveBufferSize];
-                    int size = Socket.Receive(buffer, SocketFlags.None);
+                    int size = await Socket.ReceiveAsync(buffer, SocketFlags.None, CancellationTokenSource.Token);
+
+                    if (CancellationTokenSource.IsCancellationRequested)
+                    {
+                        break;
+                    }
 
                     IEnumerable<string> decoded = Decoder.Decode(buffer, size);
                     foreach (string packet in decoded)
@@ -42,9 +50,20 @@ namespace Spark.Network.Session
                         PacketReceived?.Invoke(packet);
                     }
                 }
-            });
+            }, TaskCreationOptions.LongRunning);
+            
+            CancellationTokenSource = new CancellationTokenSource();
         }
-        
+
+        public void Connect(IPEndPoint ep)
+        {
+            Socket.Connect(ep);
+            
+            BackgroundTask.Start();
+            
+            Logger.Info($"Connected to {ep}");
+        }
+
         public void SendPacket(string packet)
         {
             string modified = packet;
@@ -56,13 +75,17 @@ namespace Spark.Network.Session
                 }
             }
 
+            Logger.Trace($"Out: {packet}");
             byte[] encoded = Encoder.Encode(modified);
             Socket.Send(encoded);
         }
 
         public void Stop()
         {
-            Socket.Disconnect(false);
+            CancellationTokenSource.Cancel();
+            Socket.Close();
+
+            Task.WaitAll(BackgroundTask);
         }
     }
 }
