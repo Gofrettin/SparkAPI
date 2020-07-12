@@ -69,6 +69,23 @@ namespace Spark.Game
             }
         }
 
+        public T GetEntity<T>(EntityType entityType, long id) where T : IEntity
+        {
+            IEntity entity = GetEntity(entityType, id);
+            if (entity == null)
+            {
+                return default;
+            }
+            
+            if (entity is T castedEntity)
+            {
+                return castedEntity;
+            }
+
+            Logger.Warn($"Entity {entityType} with id {id} is not of type {typeof(T).Name}");
+            return default;
+        }
+
         public void AddEntity(IEntity entity)
         {
             switch (entity.EntityType)

@@ -59,7 +59,7 @@ namespace Spark.Game.Entities
                 return;
             }
             
-            Client.SendPacket($"walk {nextPosition.X} {nextPosition.Y} 1 {Speed}");
+            Client.SendPacket($"walk {nextPosition.X} {nextPosition.Y} {((nextPosition.X + nextPosition.Y) % 3) % 2} {Speed}");
 
             Task.Delay((stepX + stepY) * (1000 / Speed)).ContinueWith(s =>
             {
@@ -67,7 +67,7 @@ namespace Spark.Game.Entities
                 if (!Position.Equals(destination))
                 {
                     Move(destination);
-                }
+                } 
                 Logger.Info($"Moved to {Position}");
             }, TaskContinuationOptions.ExecuteSynchronously);
         }

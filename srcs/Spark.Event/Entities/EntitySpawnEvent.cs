@@ -3,15 +3,13 @@ using Spark.Game.Abstraction.Entities;
 
 namespace Spark.Event.Entities
 {
-    public class EntitySpawnEvent : IEvent
+    public class EntitySpawnEvent : EntityEvent
     {
-        public EntitySpawnEvent(IMap map, IEntity entity)
+        public EntitySpawnEvent(IClient client, IMap map, IEntity entity) : base(client, entity)
         {
             Map = map;
-            Entity = entity;
         }
 
         public IMap Map { get; }
-        public IEntity Entity { get; }
     }
 }

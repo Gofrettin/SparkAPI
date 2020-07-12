@@ -33,7 +33,7 @@ namespace Spark.Processor.Entities
             }
 
             map.RemoveEntity(entity);
-            _eventPipeline.Emit(new EntityLeaveEvent(map, entity));
+            _eventPipeline.Emit(new EntityLeaveEvent(client, map, entity));
 
             return;
         }

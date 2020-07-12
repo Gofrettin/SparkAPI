@@ -32,7 +32,7 @@ namespace Spark.Processor.Characters
             client.Character.Direction = packet.Direction;
             
             map.AddEntity(client.Character);
-            _eventPipeline.Emit(new MapJoinEvent(client));
+            _eventPipeline.Emit(new MapJoinEvent(client, map));
         }
     }
 }

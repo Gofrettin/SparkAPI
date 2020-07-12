@@ -26,18 +26,19 @@ namespace Spark.Processor.Entities
                 return;
             }
 
-            IEntity entity = map.GetEntity(packet.EntityType, packet.EntityId);
+            ILivingEntity entity = map.GetEntity<ILivingEntity>(packet.EntityType, packet.EntityId);
             if (entity == null)
             {
                 return;
             }
 
-            Position from = entity.Position;
+            Position from = entity.Position.Equals(Position.Origin) ? packet.Position : entity.Position;
             Position to = packet.Position;
             
             entity.Position = to;
+            entity.Speed = packet.Speed;
 
-            _eventPipeline.Emit(new EntityMoveEvent(entity, from, to));
+            _eventPipeline.Emit(new EntityMoveEvent(client, entity, from, to));
             
             Logger.Trace($"Entity {entity.EntityType} with id {entity.Id} moved to {entity.Position}");
         }

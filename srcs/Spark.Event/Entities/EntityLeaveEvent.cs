@@ -3,15 +3,13 @@ using Spark.Game.Abstraction.Entities;
 
 namespace Spark.Event.Entities
 {
-    public class EntityLeaveEvent : IEvent
+    public class EntityLeaveEvent : EntityEvent
     {
-        public EntityLeaveEvent(IMap map, IEntity entity)
+        public EntityLeaveEvent(IClient client, IMap map, IEntity entity) : base(client, entity)
         {
             Map = map;
-            Entity = entity;
         }
 
         public IMap Map { get; }
-        public IEntity Entity { get; }
     }
 }

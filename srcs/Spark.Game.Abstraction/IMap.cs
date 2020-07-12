@@ -21,6 +21,7 @@ namespace Spark.Game.Abstraction
         public IEnumerable<IEntity> Entities { get; }
 
         IEntity GetEntity(EntityType entityType, long id);
+        T GetEntity<T>(EntityType entityType, long id) where T : IEntity;
 
         void AddEntity(IEntity entity);
         void RemoveEntity(IEntity entity);
