@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-using NLog;
+﻿using NLog;
 using Spark.Core;
+using Spark.Core.Option;
 using Spark.Game.Abstraction;
-using Spark.Network.Option;
 using Spark.Packet.CharacterSelector;
 
 namespace Spark.Processor.CharacterSelector

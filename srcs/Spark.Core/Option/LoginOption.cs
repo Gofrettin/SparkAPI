@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Spark.Core;
 using Spark.Core.Server;
 
-namespace Spark.Network.Option
+namespace Spark.Core.Option
 {
     public class LoginOption : IOption
     {

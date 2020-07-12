@@ -1,6 +1,6 @@
 ﻿using System;
+using Spark.Core.Option;
 using Spark.Game.Abstraction.Entities;
-using Spark.Network.Option;
 using Spark.Network.Session;
 
 namespace Spark.Game.Abstraction

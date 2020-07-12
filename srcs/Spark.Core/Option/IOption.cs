@@ -1,4 +1,4 @@
-﻿namespace Spark.Network.Option
+﻿namespace Spark.Core.Option
 {
     public interface IOption
     {

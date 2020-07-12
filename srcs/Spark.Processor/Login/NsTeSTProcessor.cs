@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using NLog;
+using Spark.Core.Option;
 using Spark.Core.Server;
 using Spark.Game.Abstraction;
-using Spark.Network.Option;
 using Spark.Network.Session;
 using Spark.Packet.Login;
 

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Net;
-using System.Threading.Tasks;
 using Spark.Core;
+using Spark.Core.Option;
 using Spark.Core.Server;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Factory;
-using Spark.Network.Option;
 using Spark.Network.Session;
 using Spark.Packet;
 using Spark.Processor;

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Spark.Core.Option;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
-using Spark.Network.Option;
 using Spark.Network.Session;
 
 namespace Spark.Game
