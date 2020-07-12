@@ -2,6 +2,6 @@
 {
     public interface IMonster :  ILivingEntity
     {
-        int GameId { get; }
+        int MonsterKey { get; }
     }
 }

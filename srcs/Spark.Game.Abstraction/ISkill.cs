@@ -5,7 +5,7 @@ namespace Spark.Game.Abstraction
 {
     public interface ISkill : IEquatable<ISkill>
     {
-        int GameId { get; }
+        int SkillKey { get; }
         string Name { get; }
         short Range { get; }
         short ZoneRange { get; }
@@ -16,5 +16,7 @@ namespace Spark.Game.Abstraction
         int CastId { get; }
         SkillTarget Target { get; }
         HitType HitType { get; }
+        
+        bool IsOnCooldown { get; set; }
     }
 }

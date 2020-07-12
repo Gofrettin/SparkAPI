@@ -2,6 +2,6 @@
 {
     public interface INpc : ILivingEntity
     {
-        int GameId { get; }
+        int MonsterKey { get; }
     }
 }

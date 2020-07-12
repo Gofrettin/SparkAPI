@@ -7,7 +7,7 @@ namespace Spark.Game
 {
     public class Skill : ISkill
     {
-        public int GameId { get; }
+        public int SkillKey { get; }
         public string Name { get; }
         public short Range { get; }
         public short ZoneRange { get; }
@@ -18,10 +18,12 @@ namespace Spark.Game
         public int CastId { get; }
         public SkillTarget Target { get; }
         public HitType HitType { get; }
+        
+        public bool IsOnCooldown { get; set; }
 
-        public Skill(int gameId, SkillData data)
+        public Skill(int skillKey, SkillData data)
         {
-            GameId = gameId;
+            SkillKey = skillKey;
             Name = data.NameKey;
             Range = data.Range;
             ZoneRange = data.ZoneRange;
@@ -34,6 +36,6 @@ namespace Spark.Game
             HitType = data.HitType;
         }
 
-        public bool Equals(ISkill other) => other != null && other.GameId == GameId;
+        public bool Equals(ISkill other) => other != null && other.SkillKey == SkillKey;
     }
 }

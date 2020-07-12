@@ -2,6 +2,6 @@
 {
     public interface IMapObject : IEntity
     {
-        int GameId { get; }
+        int ItemKey { get; }
     }
 }

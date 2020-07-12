@@ -11,7 +11,7 @@ namespace Spark.Game.Entities
         public Monster(long id, int gameKey, MonsterData data)
         {
             Id = id;
-            GameId = gameKey;
+            MonsterKey = gameKey;
             EntityType = EntityType.Monster;
 
             Name = data.NameKey;
@@ -22,7 +22,7 @@ namespace Spark.Game.Entities
         public string Name { get; set; }
         public IMap Map { get; set; }
         public Vector2D Position { get; set; }
-        public int GameId { get; set; }
+        public int MonsterKey { get; set; }
         public int Hp { get; set; }
         public int Mp { get; set; }
         public byte Speed { get; set; }
