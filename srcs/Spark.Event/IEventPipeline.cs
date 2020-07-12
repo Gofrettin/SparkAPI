@@ -10,6 +10,7 @@ namespace Spark.Event
     {
         void Emit(IEvent e);
         void AddEventHandler(IEventHandler handler);
+        void AddEventHandler<T>(Action<T> handler) where T : IEvent;
     }
 
     public sealed class EventPipeline : IEventPipeline
@@ -55,6 +56,11 @@ namespace Spark.Event
 
             handlers.Add(handler);
             Logger.Debug($"Registered event handler {handler.GetType().Name} for event {handler.EventType.Name}");
+        }
+
+        public void AddEventHandler<T>(Action<T> handler) where T : IEvent
+        {
+            AddEventHandler(new SimpleEventHandler<T>(handler));
         }
     }
 }

@@ -11,9 +11,13 @@ namespace Spark
 {
     public interface ISpark
     {
-        IClient CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector);
-        Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> predicate);
+        IGameforgeService GameforgeService { get; }
+        IEventPipeline EventPipeline { get; }
 
-        void AddEventHandler<T>(T handler) where T : IEventHandler;
+        IClient CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector);
+        Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> accountSelector);
+
+        void AddEventHandler(IEventHandler eventHandler);
+        void AddEventHandler<T>(Action<T> handler) where T : IEvent;
     }
 }

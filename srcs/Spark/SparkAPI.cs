@@ -50,10 +50,14 @@ namespace Spark
             return client;
         }
 
-        public Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> predicate) =>
-            GameforgeService.GetSessionToken(email, password, locale, predicate);
+        public Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> accountSelector) => GameforgeService.GetSessionToken(email, password, locale, accountSelector);
 
-        public void AddEventHandler<T>(T handler) where T : IEventHandler
+        public void AddEventHandler(IEventHandler eventHandler)
+        {
+            EventPipeline.AddEventHandler(eventHandler);
+        }
+
+        public void AddEventHandler<T>(Action<T> handler) where T : IEvent
         {
             EventPipeline.AddEventHandler(handler);
         }
@@ -70,7 +74,6 @@ namespace Spark
             IServiceCollection services = new ServiceCollection();
 
             services.AddImplementingTypes<IPacketProcessor>();
-            services.AddImplementingTypes<IEventHandler>();
 
             services.AddTransient<IGameforgeService, GameforgeService>();
             services.AddTransient<IClientFactory, ClientFactory>();
