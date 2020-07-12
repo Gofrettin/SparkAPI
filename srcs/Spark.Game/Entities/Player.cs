@@ -18,8 +18,8 @@ namespace Spark.Game.Entities
         public string Name { get; set; }
         public IMap Map { get; set; }
         public Vector2D Position { get; set; }
-        public int Hp { get; set; }
-        public int Mp { get; set; }
+        public int HpPercentage { get; set; }
+        public int MpPercentage { get; set; }
         public byte Speed { get; set; }
         public Direction Direction { get; set; }
         

@@ -52,6 +52,8 @@ namespace Spark.Processor.Entities
                     return;
             }
 
+            entity.Position = packet.Position;
+
             map.AddEntity(entity);
             
             _eventPipeline.Emit(new EntitySpawnEvent(client, map, entity));

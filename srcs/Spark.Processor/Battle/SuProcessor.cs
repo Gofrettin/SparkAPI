@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using NLog;
 using Spark.Event;
 using Spark.Event.Entities;
 using Spark.Game.Abstraction;
@@ -9,6 +10,7 @@ namespace Spark.Processor.Battle
 {
     public class SuProcessor : PacketProcessor<Su>
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IEventPipeline _eventPipeline;
 
         public SuProcessor(IEventPipeline eventPipeline)
@@ -34,8 +36,11 @@ namespace Spark.Processor.Battle
 
             if (target == null || caster == null)
             {
+                Logger.Warn("Can't found target or caster in map");
                 return;
             }
+
+            target.HpPercentage = packet.HpPercentage;
             
             _eventPipeline.Emit(new EntityDamageEvent(client, caster, target, packet.SkillKey, packet.Damage));
 
@@ -44,6 +49,7 @@ namespace Spark.Processor.Battle
                 return;
             }
             
+            Logger.Info($"Entity {target.EntityType} with id {target.Id} died");
             map.RemoveEntity(target);
             
             _eventPipeline.Emit(new EntityDeathEvent(client, target, caster));
