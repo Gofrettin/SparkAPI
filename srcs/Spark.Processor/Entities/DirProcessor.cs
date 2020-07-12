@@ -15,6 +15,12 @@ namespace Spark.Processor.Entities
             }
 
             ILivingEntity entity = map.GetEntity<ILivingEntity>(packet.EntityType, packet.EntityId);
+            if (entity == null)
+            {
+                return;
+            }
+
+            entity.Direction = packet.Direction;
         }
     }
 }

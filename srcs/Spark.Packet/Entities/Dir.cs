@@ -3,6 +3,7 @@ using Spark.Packet.Extension;
 
 namespace Spark.Packet.Entities
 {
+    [Packet("dir")]
     public class Dir : IPacket
     {
         public EntityType EntityType { get; set; }
