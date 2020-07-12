@@ -10,7 +10,7 @@ namespace Spark.Game.Entities
         public MapObject(long id, int gameKey)
         {
             Id = id;
-            GameKey = gameKey;
+            GameId = gameKey;
             EntityType = EntityType.MapObject;
         }
 
@@ -19,6 +19,8 @@ namespace Spark.Game.Entities
         public string Name { get; set; }
         public IMap Map { get; set; }
         public Vector2D Position { get; set; }
-        public int GameKey { get; set; }
+        public int GameId { get; set; }
+        
+        public bool Equals(IEntity other) => other != null && other.EntityType == EntityType && other.Id == Id;
     }
 }

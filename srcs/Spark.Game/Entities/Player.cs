@@ -22,5 +22,7 @@ namespace Spark.Game.Entities
         public int Mp { get; set; }
         public byte Speed { get; set; }
         public Direction Direction { get; set; }
+        
+        public bool Equals(IEntity other) => other != null && other.EntityType == EntityType && other.Id == Id;
     }
 }

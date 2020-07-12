@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using NLog;
+using Spark.Core.Enum;
 using Spark.Database.Data;
 using Spark.Toolkit.Reader;
 using TextReader = Spark.Toolkit.Reader.TextReader;
@@ -40,12 +41,26 @@ namespace Spark.Toolkit.Parser
             var skills = new Dictionary<int, SkillData>();
             foreach (TextRegion region in regions)
             {
-                int gameKey = region.GetLine("VNUM").GetValue<int>(1);
-                string nameKey = region.GetLine("NAME").GetValue(1);
+                TextLine vnumLine = region.GetLine(x => x.StartWith("VNUM"));
+                TextLine nameLine = region.GetLine(x => x.StartWith("NAME"));
+                TextLine typeLine = region.GetLine(x => x.StartWith("TYPE"));
+                TextLine dataLine = region.GetLine(x => x.StartWith("DATA"));
+                TextLine targetLine = region.GetLine(x => x.StartWith("TARGET"));
+                
+                int gameKey = vnumLine.GetValue<int>(1);
 
                 skills[gameKey] = new SkillData
                 {
-                    NameKey = nameKey
+                    NameKey = nameLine.GetValue(1),
+                    Category = (SkillCategory)typeLine.GetValue<int>(1),
+                    CastId = typeLine.GetValue<int>(2),
+                    CastTime = dataLine.GetValue<int>(5),
+                    Cooldown = dataLine.GetValue<int>(6),
+                    MpCost = dataLine.GetValue<int>(7),
+                    Target = (SkillTarget)targetLine.GetValue<int>(1),
+                    HitType = (HitType)targetLine.GetValue<int>(2),
+                    Range = targetLine.GetValue<short>(3),
+                    ZoneRange = targetLine.GetValue<short>(4)
                 };
             }
 

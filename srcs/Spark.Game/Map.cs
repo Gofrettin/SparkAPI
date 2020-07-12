@@ -29,10 +29,10 @@ namespace Spark.Game
             Height = BitConverter.ToInt16(Grid.Slice(0, 2));
             Width = BitConverter.ToInt16(Grid.Slice(2, 2));
 
-            _monsters = new ConcurrentDictionary<long, IMonster>();
-            _npcs = new ConcurrentDictionary<long, INpc>();
-            _players = new ConcurrentDictionary<long, IPlayer>();
-            _objects = new ConcurrentDictionary<long, IMapObject>();
+            _monsters = new Dictionary<long, IMonster>();
+            _npcs = new Dictionary<long, INpc>();
+            _players = new Dictionary<long, IPlayer>();
+            _objects = new Dictionary<long, IMapObject>();
         }
 
         public IEnumerable<IEntity> Entities => _monsters.Values

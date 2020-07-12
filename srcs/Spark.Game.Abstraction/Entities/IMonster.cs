@@ -1,6 +1,7 @@
 ﻿namespace Spark.Game.Abstraction.Entities
 {
-    public interface IMonster : IGameEntity, ILivingEntity
+    public interface IMonster :  ILivingEntity
     {
+        int GameId { get; }
     }
 }

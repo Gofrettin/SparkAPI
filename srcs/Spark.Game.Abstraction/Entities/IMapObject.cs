@@ -1,6 +1,7 @@
 ﻿namespace Spark.Game.Abstraction.Entities
 {
-    public interface IMapObject : IGameEntity
+    public interface IMapObject : IEntity
     {
+        int GameId { get; }
     }
 }

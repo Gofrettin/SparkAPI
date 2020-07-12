@@ -1,9 +1,10 @@
-﻿using Spark.Core;
+﻿using System;
+using Spark.Core;
 using Spark.Core.Enum;
 
 namespace Spark.Game.Abstraction.Entities
 {
-    public interface IEntity
+    public interface IEntity : IEquatable<IEntity>
     {
         long Id { get; }
         EntityType EntityType { get; }

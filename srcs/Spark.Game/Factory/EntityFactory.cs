@@ -21,7 +21,7 @@ namespace Spark.Game.Factory
             MonsterData data = _database.Monsters.GetValue(gameKey);
             if (data == null)
             {
-                data = MonsterData.Undefined;
+                return default;
             }
             
             return new Monster(entityId, gameKey, data);
@@ -32,7 +32,7 @@ namespace Spark.Game.Factory
             MonsterData data = _database.Monsters.GetValue(gameKey);
             if (data == null)
             {
-                data = MonsterData.Undefined;
+                return default;
             }
             
             return new Npc(entityId, gameKey, data);
