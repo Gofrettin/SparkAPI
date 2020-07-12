@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using NLog;
+using Spark.Core;
 using Spark.Event;
 using Spark.Event.Entities;
 using Spark.Game.Abstraction;
@@ -31,10 +32,14 @@ namespace Spark.Processor.Entities
                 return;
             }
 
-            entity.Position = packet.Position;
+            Position from = entity.Position;
+            Position to = packet.Position;
+            
+            entity.Position = to;
 
-            _eventPipeline.Emit(new EntityMoveEvent(entity));
-            Logger.Trace($"Entity {entity.EntityType} with id {entity.Id} moved to {entity.Position.X}:{entity.Position.Y}");
+            _eventPipeline.Emit(new EntityMoveEvent(entity, from, to));
+            
+            Logger.Trace($"Entity {entity.EntityType} with id {entity.Id} moved to {entity.Position}");
         }
     }
 }
