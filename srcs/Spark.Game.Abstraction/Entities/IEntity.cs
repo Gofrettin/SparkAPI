@@ -9,6 +9,6 @@ namespace Spark.Game.Abstraction.Entities
         EntityType EntityType { get; }
         string Name { get; set; }
         IMap Map { get; set; }
-        Position Position { get; set; }
+        Vector2D Position { get; set; }
     }
 }

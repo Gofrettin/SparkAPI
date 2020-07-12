@@ -26,6 +26,6 @@ namespace Spark.Game.Abstraction
         void AddEntity(IEntity entity);
         void RemoveEntity(IEntity entity);
 
-        bool IsWalkable(Position position);
+        bool IsWalkable(Vector2D vector2D);
     }
 }

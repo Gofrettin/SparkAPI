@@ -21,7 +21,7 @@ namespace Spark.Game.Entities
         public EntityType EntityType { get; }
         public string Name { get; set; }
         public IMap Map { get; set; }
-        public Position Position { get; set; }
+        public Vector2D Position { get; set; }
         public int GameKey { get; set; }
         public int Hp { get; set; }
         public int Mp { get; set; }

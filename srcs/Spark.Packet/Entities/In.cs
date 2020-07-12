@@ -11,7 +11,7 @@ namespace Spark.Packet.Entities
         public string Name { get; set; }
         public int GameKey { get; set; }
         public long EntityId { get; set; }
-        public Position Position { get; set; }
+        public Vector2D Position { get; set; }
 
         public void Construct(string[] packet)
         {
@@ -20,13 +20,13 @@ namespace Spark.Packet.Entities
             {
                 Name = packet[1];
                 EntityId = packet[3].ToLong();
-                Position = new Position(packet[4].ToShort(), packet[5].ToShort());
+                Position = new Vector2D(packet[4].ToShort(), packet[5].ToShort());
             }
             else if (EntityType == EntityType.Monster || EntityType == EntityType.Npc)
             {
                 GameKey = packet[1].ToInt();
                 EntityId = packet[2].ToLong();
-                Position = new Position(packet[3].ToShort(), packet[4].ToShort());
+                Position = new Vector2D(packet[3].ToShort(), packet[4].ToShort());
             }
         }
     }

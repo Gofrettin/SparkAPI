@@ -6,13 +6,14 @@ namespace Spark.Event.Entities
 {
     public class EntityMoveEvent : EntityEvent
     {
-        public EntityMoveEvent(IClient client, IEntity entity, Position from, Position to) : base(client, entity)
+        public EntityMoveEvent(IEntity entity, Vector2D from, Vector2D to)
         {
             From = from;
             To = to;
         }
         
-        public Position From { get; }
-        public Position To { get; }
+        public IEntity Entity { get; }
+        public Vector2D From { get; }
+        public Vector2D To { get; }
     }
 }

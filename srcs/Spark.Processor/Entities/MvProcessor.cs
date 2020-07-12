@@ -32,8 +32,8 @@ namespace Spark.Processor.Entities
                 return;
             }
 
-            Position from = entity.Position.Equals(Position.Origin) ? packet.Position : entity.Position;
-            Position to = packet.Position;
+            Vector2D from = entity.Position;
+            Vector2D to = packet.Position;
             
             entity.Position = to;
             entity.Speed = packet.Speed;

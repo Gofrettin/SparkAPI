@@ -8,13 +8,13 @@ namespace Spark.Packet.Characters
     public class At : IPacket
     {
         public int MapId { get; set; }
-        public Position Position { get; set; }
+        public Vector2D Position { get; set; }
         public Direction Direction { get; set; }
         
         public void Construct(string[] packet)
         {
             MapId = packet[1].ToInt();
-            Position = new Position(packet[2].ToShort(), packet[3].ToShort());
+            Position = new Vector2D(packet[2].ToShort(), packet[3].ToShort());
             Direction = packet[4].ToEnum<Direction>();
         }
     }

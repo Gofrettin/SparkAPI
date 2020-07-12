@@ -1,4 +1,5 @@
 ﻿using Spark.Core;
+using Spark.Core.Enum;
 
 namespace Spark.Game.Abstraction.Entities
 {
@@ -6,6 +7,7 @@ namespace Spark.Game.Abstraction.Entities
     {
         IClient Client { get; }
 
-        void Move(Position position);
+        void Move(Vector2D vector2D);
+        void Turn(Direction direction);
     }
 }

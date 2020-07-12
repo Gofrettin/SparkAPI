@@ -6,6 +6,7 @@ using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
+using Spark.Packet.Extension;
 
 namespace Spark.Game.Entities
 {
@@ -24,7 +25,7 @@ namespace Spark.Game.Entities
         public EntityType EntityType { get; }
         public string Name { get; set; }
         public IMap Map { get; set; }
-        public Position Position { get; set; }
+        public Vector2D Position { get; set; }
         public int Hp { get; set; }
         public int Mp { get; set; }
         public byte Speed { get; set; }
@@ -32,7 +33,7 @@ namespace Spark.Game.Entities
 
         public IClient Client { get; }
         
-        public void Move(Position destination)
+        public void Move(Vector2D destination)
         {
             if (!Map.IsWalkable(destination))
             {
@@ -43,7 +44,7 @@ namespace Spark.Game.Entities
             bool positiveX = destination.X > Position.X;
             bool positiveY = destination.Y > Position.Y;
             
-            Position distance = Position.GetDistance(destination);
+            Vector2D distance = Position.GetDistance(destination);
 
             int stepX = distance.X >= 5 ? 5 : distance.X;
             int stepY = distance.Y >= 5 ? 5 : distance.Y;
@@ -51,7 +52,7 @@ namespace Spark.Game.Entities
             short x = (short)((positiveX ? 1 : -1) * stepX + Position.X);
             short y = (short)((positiveY ? 1 : -1) * stepY + Position.Y);
             
-            var nextPosition = new Position(x, y);
+            var nextPosition = new Vector2D(x, y);
 
             if (!Map.IsWalkable(nextPosition))
             {
@@ -70,6 +71,11 @@ namespace Spark.Game.Entities
                 } 
                 Logger.Info($"Moved to {Position}");
             }, TaskContinuationOptions.ExecuteSynchronously);
+        }
+
+        public void Turn(Direction direction)
+        {
+            Client.SendPacket($"dir {direction.AsString()} {EntityType.AsString()} {Id}");
         }
     }
 }

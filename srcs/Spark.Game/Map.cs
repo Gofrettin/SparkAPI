@@ -138,14 +138,14 @@ namespace Spark.Game
             Logger.Debug($"Entity {entity.EntityType} with id {entity.Id} removed from map {Id}");
         }
         
-        public bool IsWalkable(Position position)
+        public bool IsWalkable(Vector2D vector2D)
         {
-            if (position.X > Height || position.X < 0 || position.Y > Width || position.Y < 0)
+            if (vector2D.X > Height || vector2D.X < 0 || vector2D.Y > Width || vector2D.Y < 0)
             {
                 return false;
             }
 
-            byte b = Grid[4 + position.Y * Height + position.X];
+            byte b = Grid[4 + vector2D.Y * Height + vector2D.X];
             return b == 0 || b == 2 || b >= 16 && b <= 19;
         }
     }
