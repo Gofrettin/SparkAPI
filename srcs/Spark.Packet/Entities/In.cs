@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Core.Extension;
@@ -10,7 +11,7 @@ namespace Spark.Packet.Entities
     public class In : IPacket
     {
         public EntityType EntityType { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int GameKey { get; set; }
         public long EntityId { get; set; }
         public Vector2D Position { get; set; }
@@ -26,14 +27,14 @@ namespace Spark.Packet.Entities
             
             int startIndex = EntityType == EntityType.Player ? 3 : 2;
 
-            Name = EntityType == EntityType.Player ? packet[1] : string.Empty;
+            Name = EntityType == EntityType.Player ? packet[1] == "-" ? string.Empty : packet[1] : string.Empty;
             GameKey = EntityType != EntityType.Player ? packet[1].ToInt() : 0;
             EntityId = packet[startIndex].ToLong();
             Position = new Vector2D(packet[startIndex + 1].ToShort(), packet[startIndex + 2].ToShort());
             Direction = EntityType != EntityType.MapObject ? packet[startIndex + 3].ToEnum<Direction>() : Direction.North;
 
-            packet = packet.Slice(0, startIndex + 3);
-            
+            packet = packet.Slice(startIndex + (EntityType != EntityType.MapObject ? 4 : 3), packet.Length - startIndex + (EntityType != EntityType.MapObject ? 4 : 3));
+
             switch (EntityType)
             {
                 case EntityType.Monster:
@@ -64,6 +65,8 @@ namespace Spark.Packet.Entities
                         Owner = packet[2].ToLong()
                     };
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

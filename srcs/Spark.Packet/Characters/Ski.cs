@@ -6,7 +6,7 @@ namespace Spark.Packet.Characters
     [Packet("ski")]
     public class Ski : IPacket
     {
-        public List<int> Skills { get; } = new List<int>();
+        public HashSet<int> Skills { get; } = new HashSet<int>();
         
         public void Construct(string[] packet)
         {

@@ -53,6 +53,23 @@ namespace Spark.Processor.Entities
             }
 
             entity.Position = packet.Position;
+            if (entity is ILivingEntity livingEntity)
+            {
+                livingEntity.Direction = packet.Direction;
+                
+                if (entity is IPlayer player)
+                {
+                    player.HpPercentage = packet.Player.HpPercentage;
+                    player.MpPercentage = packet.Player.MpPercentage;
+                    player.Gender = packet.Player.Gender;
+                    player.Class = packet.Player.Class;
+                }
+                else
+                {
+                    livingEntity.HpPercentage = packet.Npc.HpPercentage;
+                    livingEntity.MpPercentage = packet.Npc.MpPercentage;
+                }
+            }
 
             map.AddEntity(entity);
             

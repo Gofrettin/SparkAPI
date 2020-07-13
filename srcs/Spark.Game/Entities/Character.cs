@@ -35,6 +35,8 @@ namespace Spark.Game.Entities
         public byte Speed { get; set; }
         public Direction Direction { get; set; }
         public IEnumerable<ISkill> Skills { get; set; }
+        public Class Class { get; set; }
+        public Gender Gender { get; set; }
 
         public Task Attack(ISkill skill)
         {

@@ -39,9 +39,8 @@ namespace Spark.Processor
             }
             catch (Exception e)
             {
-                Logger.Error(e);   
+                Logger.Error(e);
             }
-            
         }
 
         public void AddPacketProcessor(IPacketProcessor processor)

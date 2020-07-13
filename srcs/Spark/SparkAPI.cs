@@ -78,6 +78,7 @@ namespace Spark
             services.AddTransient<IGameforgeService, GameforgeService>();
             services.AddTransient<IClientFactory, ClientFactory>();
             services.AddTransient<IMapFactory, MapFactory>();
+            services.AddTransient<ISkillFactory, SkillFactory>();
             services.AddTransient<IEntityFactory, EntityFactory>();
             services.AddTransient<ISessionFactory, SessionFactory>();
 

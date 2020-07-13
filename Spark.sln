@@ -22,9 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Toolkit", "srcs\Spark
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Game.Abstraction", "srcs\Spark.Game.Abstraction\Spark.Game.Abstraction.csproj", "{DB4EE534-30F7-4519-BBE2-09553CA12EDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Packet.Tests", "tests\Spark.Packet.Tests\Spark.Packet.Tests.csproj", "{71CA2814-141A-4F3D-BC93-3320C4E4128D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3B7ABF82-43A9-4F51-BCD1-6A53EE83EC02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Tests", "tests\Spark.Tests\Spark.Tests.csproj", "{2AEE662B-E54B-493A-B0BE-7F6380949E36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,12 +74,11 @@ Global
 		{DB4EE534-30F7-4519-BBE2-09553CA12EDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB4EE534-30F7-4519-BBE2-09553CA12EDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB4EE534-30F7-4519-BBE2-09553CA12EDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71CA2814-141A-4F3D-BC93-3320C4E4128D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71CA2814-141A-4F3D-BC93-3320C4E4128D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71CA2814-141A-4F3D-BC93-3320C4E4128D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71CA2814-141A-4F3D-BC93-3320C4E4128D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AEE662B-E54B-493A-B0BE-7F6380949E36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AEE662B-E54B-493A-B0BE-7F6380949E36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AEE662B-E54B-493A-B0BE-7F6380949E36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AEE662B-E54B-493A-B0BE-7F6380949E36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{71CA2814-141A-4F3D-BC93-3320C4E4128D} = {3B7ABF82-43A9-4F51-BCD1-6A53EE83EC02}
 	EndGlobalSection
 EndGlobal

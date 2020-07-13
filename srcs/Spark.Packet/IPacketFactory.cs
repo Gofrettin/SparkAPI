@@ -66,16 +66,9 @@ namespace Spark.Packet
             {
                 throw new InvalidOperationException($"Failed to create packet {type.Name}");
             }
-
-            try
-            {
-                packet.Construct(packetContent);
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e, $"Failed to construct packet {packet.GetType().Name}");
-            }
-
+            
+            packet.Construct(packetContent);
+            
             return packet;
         }
     }
