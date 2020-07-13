@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Toolkit", "srcs\Spark
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Game.Abstraction", "srcs\Spark.Game.Abstraction\Spark.Game.Abstraction.csproj", "{DB4EE534-30F7-4519-BBE2-09553CA12EDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Tests", "tests\Spark.Tests\Spark.Tests.csproj", "{2AEE662B-E54B-493A-B0BE-7F6380949E36}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Tests", "tests\Spark.Tests.csproj", "{2AEE662B-E54B-493A-B0BE-7F6380949E36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
