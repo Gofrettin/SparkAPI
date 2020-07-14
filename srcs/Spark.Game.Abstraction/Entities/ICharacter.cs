@@ -11,6 +11,11 @@ namespace Spark.Game.Abstraction.Entities
         
         IEnumerable<ISkill> Skills { get; set; }
 
+        int Hp { get; set; }
+        int Mp { get; set; }
+        int MaxHp { get; set; }
+        int MaxMp { get; set; }
+        
         Task Attack(ISkill skill);
         Task Attack(ISkill skill, ILivingEntity entity);
         Task Attack(ILivingEntity entity);

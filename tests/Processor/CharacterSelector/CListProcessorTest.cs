@@ -5,7 +5,7 @@ using Spark.Packet.CharacterSelector;
 
 namespace Spark.Tests.Processor.CharacterSelector
 {
-    public class CListProcessor : ProcessorTest<CList>
+    public class CListProcessorTest : ProcessorTest<CList>
     {
         protected override CList Packet { get; }= new CList
         {
@@ -13,7 +13,7 @@ namespace Spark.Tests.Processor.CharacterSelector
             Name = "MyNameIs"
         };
 
-        public CListProcessor()
+        public CListProcessorTest()
         {
             Client.AddOption(new LoginOption());
         }
