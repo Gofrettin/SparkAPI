@@ -1,5 +1,8 @@
 ﻿namespace Spark.Core.Enum
 {
+    /// <summary>
+    /// Represent a type of entity
+    /// </summary>
     public enum EntityType
     {
         Player = 1,

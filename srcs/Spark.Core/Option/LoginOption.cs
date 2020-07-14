@@ -13,7 +13,12 @@ namespace Spark.Core.Option
             SelectableCharacters = new List<SelectableCharacter>();
         }
 
-        public List<SelectableCharacter> SelectableCharacters { get; }
+        public LoginOption()
+        {
+            
+        }
+
+        public List<SelectableCharacter> SelectableCharacters { get; } = new List<SelectableCharacter>();
 
         public Predicate<WorldServer> ServerSelector { get; }
         public Predicate<SelectableCharacter> CharacterSelector { get; }

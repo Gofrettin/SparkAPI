@@ -1,5 +1,8 @@
 ﻿namespace Spark.Core.Enum
 {
+    /// <summary>
+    /// Represent the direction where an entity is looking
+    /// </summary>
     public enum Direction
     {
         North = 0,

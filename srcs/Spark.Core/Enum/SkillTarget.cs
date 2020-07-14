@@ -1,5 +1,8 @@
 ﻿namespace Spark.Core.Enum
 {
+    /// <summary>
+    /// Represent a skill target
+    /// </summary>
     public enum SkillTarget
     {
         Target = 0,

@@ -1,5 +1,8 @@
 ﻿namespace Spark.Core.Enum
 {
+    /// <summary>
+    /// Represent the faction of a player
+    /// </summary>
     public enum Faction
     {
         Neutral = 0,

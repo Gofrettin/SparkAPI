@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Spark.Core;
-using Spark.Core.Server;
+using Spark.Core.Enum;
+using Spark.Core.Option;
 using Spark.Database;
 using Spark.Database.Data;
 using Spark.Event;
@@ -35,7 +34,7 @@ namespace Spark.Tests.Processor
 
             Client = new Client(new Mock<ISession>().Object);
             Client.Character = new Character(123456, Client);
-            
+
             Map = new Map(1, new MapData
             {
                 Grid = new byte[123]
@@ -44,6 +43,14 @@ namespace Spark.Tests.Processor
             var dbMock = new Mock<IDatabase>();
             
             dbMock.Setup(x => x.Monsters.GetValue(It.IsAny<int>())).Returns(new MonsterData());
+            dbMock.Setup(x => x.Maps.GetValue(It.IsAny<int>())).Returns(new MapData
+            {
+                Grid = new byte[999]
+            });
+            dbMock.Setup(x => x.Skills.GetValue(It.IsAny<int>())).Returns(new SkillData
+            {
+                Category = SkillCategory.Player
+            });
             
             services.AddSingleton(dbMock.Object);
             

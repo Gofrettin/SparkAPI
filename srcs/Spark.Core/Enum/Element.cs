@@ -1,5 +1,8 @@
 ﻿namespace Spark.Core.Enum
 {
+    /// <summary>
+    /// Represent any kind of element
+    /// </summary>
     public enum Element
     {
         Neutral = 0,

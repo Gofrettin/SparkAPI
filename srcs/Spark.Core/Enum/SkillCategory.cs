@@ -1,5 +1,8 @@
 ﻿namespace Spark.Core.Enum
 {
+    /// <summary>
+    /// Represent a skill category
+    /// </summary>
     public enum SkillCategory
     {
         Passive = 0,
