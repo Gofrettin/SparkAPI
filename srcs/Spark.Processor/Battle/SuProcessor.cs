@@ -46,6 +46,7 @@ namespace Spark.Processor.Battle
 
             if (packet.IsTargetAlive)
             {
+                Logger.Info($"{target.EntityType} {target.Id} is alive");
                 return;
             }
             

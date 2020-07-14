@@ -82,7 +82,7 @@ namespace Spark.Game
                 return castedEntity;
             }
 
-            Logger.Warn($"Entity {entityType} with id {id} is not of type {typeof(T).Name}");
+            Logger.Debug($"Entity {entityType} with id {id} is not of type {typeof(T).Name}");
             return default;
         }
 
@@ -135,7 +135,7 @@ namespace Spark.Game
 
             entity.Map = null;
 
-            Logger.Debug($"Entity {entity.EntityType} with id {entity.Id} removed from map {Id}");
+            Logger.Info($"Entity {entity.EntityType} with id {entity.Id} removed from map {Id}");
         }
         
         public bool IsWalkable(Vector2D vector2D)

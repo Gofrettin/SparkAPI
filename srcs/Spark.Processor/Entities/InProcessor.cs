@@ -72,7 +72,7 @@ namespace Spark.Processor.Entities
             }
 
             map.AddEntity(entity);
-            
+
             _eventPipeline.Emit(new EntitySpawnEvent(client, map, entity));
         }
     }

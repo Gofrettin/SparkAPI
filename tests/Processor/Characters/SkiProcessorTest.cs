@@ -13,7 +13,7 @@ namespace Spark.Tests.Processor.Characters
         protected override void CheckResult()
         {
             Check.That(Client.Character.Skills).CountIs(Packet.Skills.Count);
-            Check.That(Client.Character.Skills);
+            Check.That(Client.Character.Skills).HasElementThatMatches(x => x.SkillKey == 240);
         }
     }
 }

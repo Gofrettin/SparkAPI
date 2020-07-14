@@ -58,6 +58,7 @@ namespace Spark.Game.Entities
         {
             if (!Skills.Contains(skill))
             {
+                Logger.Warn("Can't found skill in Skills");
                 return Task.CompletedTask;
             }
 
@@ -68,11 +69,13 @@ namespace Spark.Game.Entities
 
             if (entity.Equals(this))
             {
+                Logger.Warn("Can't target self");
                 return Task.CompletedTask;
             }
 
             if (skill.Target == SkillTarget.NoTarget)
             {
+                Logger.Warn("Incorrect target type");
                 return Task.CompletedTask;
             }
 
@@ -85,14 +88,10 @@ namespace Spark.Game.Entities
 
         public Task Attack(ILivingEntity entity)
         {
-            if (entity.Equals(this))
-            {
-                return Task.CompletedTask;
-            }
-
             ISkill skill = Skills.FirstOrDefault();
             if (skill == null)
             {
+                Logger.Warn("Can't found first skill");
                 return Task.CompletedTask;
             }
 
