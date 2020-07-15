@@ -24,7 +24,10 @@ namespace Spark.Game.Factory
                 return default;
             }
             
-            return new Monster(entityId, gameKey, data);
+            return new Monster(entityId, gameKey, data)
+            {
+                Name = string.Empty
+            };
         }
 
         public INpc CreateNpc(long entityId, int gameKey)
@@ -35,7 +38,10 @@ namespace Spark.Game.Factory
                 return default;
             }
             
-            return new Npc(entityId, gameKey, data);
+            return new Npc(entityId, gameKey, data)
+            {
+                Name = string.Empty
+            };
         }
 
         public ICharacter CreateCharacter(long entityId, string name, IClient client)
@@ -46,9 +52,12 @@ namespace Spark.Game.Factory
             };
         }
 
-        public IMapObject CreateMapObject(long entityId, int gameKey)
+        public IMapObject CreateMapObject(long entityId, int gameKey, int amount)
         {
-            return new MapObject(entityId, gameKey);
+            return new MapObject(entityId, gameKey, amount)
+            {
+                Name = string.Empty
+            };
         }
 
         public IPlayer CreatePlayer(long entityId, string name)

@@ -7,7 +7,7 @@ namespace Spark.Game.Abstraction.Factory
         IMonster CreateMonster(long entityId, int gameKey);
         INpc CreateNpc(long entityId, int gameKey);
         ICharacter CreateCharacter(long entityId, string name, IClient client);
-        IMapObject CreateMapObject(long entityId, int gameKey);
+        IMapObject CreateMapObject(long entityId, int gameKey, int amount);
         IPlayer CreatePlayer(long entityId, string name);
     }
 }

@@ -45,7 +45,7 @@ namespace Spark.Processor.Entities
                     entity = _entityFactory.CreatePlayer(packet.EntityId, packet.Name);
                     break;
                 case EntityType.MapObject:
-                    entity = _entityFactory.CreateMapObject(packet.EntityId, packet.GameKey);
+                    entity = _entityFactory.CreateMapObject(packet.EntityId, packet.GameKey, packet.MapObject.Amount);
                     break;
                 default:
                     Logger.Error($"Undefined switch clause for entity type {packet.EntityType}");
