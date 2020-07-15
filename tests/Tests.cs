@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Spark.Tests
 {
-    public class GlobalTests
+    public class Tests
     {
         public static readonly IEnumerable<object[]> PacketTypes = typeof(IPacket).Assembly.GetImplementingTypes<IPacket>().Select(x => new []{x});
         public static readonly IEnumerable<object[]> EventTypes = typeof(IEvent).Assembly.GetImplementingTypes<IEvent>().Select(x => new[] { x });
