@@ -12,7 +12,7 @@ namespace Spark.Packet.Entities
         public bool CanAttack { get; set; }
         public bool CanMove { get; set; }
         public byte Speed { get; set; }
-        
+
         public void Construct(string[] packet)
         {
             EntityType = packet[0].ToEnum<EntityType>();

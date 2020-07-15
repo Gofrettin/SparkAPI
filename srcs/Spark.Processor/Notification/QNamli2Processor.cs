@@ -9,7 +9,7 @@ namespace Spark.Processor.Notification
     public class QNamli2Processor : PacketProcessor<QNamli2>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
         private readonly IEventPipeline _eventPipeline;
 
         public QNamli2Processor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;

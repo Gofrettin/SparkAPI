@@ -9,7 +9,7 @@ namespace Spark.Network.Decoder
         public IEnumerable<string> Decode(byte[] bytes, int size)
         {
             var packet = new StringBuilder();
-            
+
             for (int i = 0; i < size; i++)
             {
                 packet.Append(Convert.ToChar(bytes[i] - 0xF));

@@ -11,7 +11,7 @@ namespace Spark.Network.Session
         public ISession CreateSession(IPEndPoint ip)
         {
             var session = new RemoteSession(new LoginEncoder(), new LoginDecoder());
-            
+
             session.Connect(ip);
 
             return session;
@@ -25,7 +25,7 @@ namespace Spark.Network.Session
             {
                 Modifiers = new Func<string, string>[]
                 {
-                    x => $"{packetId++} {x}",
+                    x => $"{packetId++} {x}"
                 }
             };
 
@@ -33,7 +33,7 @@ namespace Spark.Network.Session
             var keepAlive = new Timer
             {
                 Interval = 60000,
-                Enabled = true,
+                Enabled = true
             };
             keepAlive.Elapsed += (obj, e) =>
             {

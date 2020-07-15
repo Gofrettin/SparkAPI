@@ -9,11 +9,8 @@ namespace Spark.Game.Factory
     {
         private readonly IDatabase _database;
 
-        public SkillFactory(IDatabase database)
-        {
-            _database = database;
-        }
-        
+        public SkillFactory(IDatabase database) => _database = database;
+
         public ISkill CreateSkill(int gameId)
         {
             SkillData skillData = _database.Skills.GetValue(gameId);
@@ -21,7 +18,7 @@ namespace Spark.Game.Factory
             {
                 return default;
             }
-            
+
             return new Skill(gameId, skillData);
         }
     }

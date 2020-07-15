@@ -14,10 +14,11 @@ namespace Spark.Event.Entities
             Damage = damage;
         }
 
-        public IClient Client { get; }
         public ILivingEntity Caster { get; }
         public ILivingEntity Target { get; }
         public int SkillKey { get; }
         public int Damage { get; }
+
+        public IClient Client { get; }
     }
 }

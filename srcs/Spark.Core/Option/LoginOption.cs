@@ -15,7 +15,6 @@ namespace Spark.Core.Option
 
         public LoginOption()
         {
-            
         }
 
         public List<SelectableCharacter> SelectableCharacters { get; } = new List<SelectableCharacter>();

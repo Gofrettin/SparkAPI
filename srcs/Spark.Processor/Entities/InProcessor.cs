@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using NLog;
+﻿using NLog;
 using Spark.Core.Enum;
 using Spark.Event;
 using Spark.Event.Entities;
@@ -56,7 +55,7 @@ namespace Spark.Processor.Entities
             if (entity is ILivingEntity livingEntity)
             {
                 livingEntity.Direction = packet.Direction;
-                
+
                 if (entity is IPlayer player)
                 {
                     player.HpPercentage = packet.Player.HpPercentage;

@@ -5,10 +5,7 @@ namespace Spark.Event.Entities
 {
     public class EntityLeaveEvent : EntityEvent
     {
-        public EntityLeaveEvent(IClient client, IMap map, IEntity entity) : base(client, entity)
-        {
-            Map = map;
-        }
+        public EntityLeaveEvent(IClient client, IMap map, IEntity entity) : base(client, entity) => Map = map;
 
         public IMap Map { get; }
     }

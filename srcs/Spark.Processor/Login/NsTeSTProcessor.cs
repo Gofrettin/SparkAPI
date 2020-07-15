@@ -29,14 +29,13 @@ namespace Spark.Processor.Login
 
             client.Session.Stop();
             client.Session = _sessionFactory.CreateSession(server.Ip, packet.EncryptionKey);
-            
+
             client.SendPacket($"{packet.EncryptionKey}");
             Task.Delay(1000).ContinueWith(s =>
             {
                 client.SendPacket($"{packet.Name} GFMODE 2");
                 client.SendPacket("thisifgamemode");
             });
-          
         }
     }
 }

@@ -5,11 +5,8 @@ namespace Spark.Event.Entities
 {
     public class EntityDeathEvent : EntityEvent
     {
-        public EntityDeathEvent(IClient client, IEntity entity, IEntity killer) : base(client, entity)
-        {
-            Killer = killer;
-        }
-        
+        public EntityDeathEvent(IClient client, IEntity entity, IEntity killer) : base(client, entity) => Killer = killer;
+
         public IEntity Killer { get; }
     }
 }

@@ -6,7 +6,7 @@ namespace Spark.Packet.Battle
     public class Sr : IPacket
     {
         public int CastId { get; set; }
-        
+
         public void Construct(string[] packet)
         {
             CastId = packet[0].ToInt();

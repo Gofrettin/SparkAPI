@@ -5,10 +5,7 @@ namespace Spark.Event.Entities
 {
     public class EntitySpawnEvent : EntityEvent
     {
-        public EntitySpawnEvent(IClient client, IMap map, IEntity entity) : base(client, entity)
-        {
-            Map = map;
-        }
+        public EntitySpawnEvent(IClient client, IMap map, IEntity entity) : base(client, entity) => Map = map;
 
         public IMap Map { get; }
     }

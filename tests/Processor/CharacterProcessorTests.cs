@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using NFluent;
+﻿using NFluent;
 using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Event.Characters;
@@ -19,7 +18,7 @@ namespace Spark.Tests.Processor
             using (GameContext context = CreateContext())
             {
                 ICharacter character = context.Character;
-                
+
                 context.Process(new At
                 {
                     MapId = 2544,
@@ -31,7 +30,7 @@ namespace Spark.Tests.Processor
                 Check.That(character.Map.Id).IsEqualTo(2544);
                 Check.That(character.Position).IsEqualTo(new Vector2D(24, 42));
                 Check.That(character.Direction).IsEqualTo(Direction.South);
-                
+
                 context.Verify<MapJoinEvent>(x => x.Map.Equals(character.Map));
             }
         }
@@ -53,7 +52,7 @@ namespace Spark.Tests.Processor
                 Check.That(character).IsNotNull();
                 Check.That(character.Name).IsEqualTo("Isha");
                 Check.That(character.Id).IsEqualTo(123456);
-                
+
                 context.Verify<CharacterInitializedEvent>(x => x.Character.Equals(character));
             }
         }
@@ -66,12 +65,12 @@ namespace Spark.Tests.Processor
             {
                 ICharacter character = context.Character;
                 IMap map = TestFactory.CreateMap(character);
-                
+
                 context.Process(new MapOut());
 
                 Check.That(character.Map).IsNull();
                 Check.That(map.Entities).Not.Contains(character);
-                
+
                 context.Verify<MapLeaveEvent>(x => x.Map.Equals(map));
             }
         }
@@ -111,10 +110,10 @@ namespace Spark.Tests.Processor
                 Check.That(character.MaxHp).IsEqualTo(2000);
                 Check.That(character.Mp).IsEqualTo(3000);
                 Check.That(character.MaxMp).IsEqualTo(4000);
-                
+
                 Check.That(character.HpPercentage).IsEqualTo(50);
                 Check.That(character.MpPercentage).IsEqualTo(75);
-                
+
                 context.Verify<StatChangeEvent>(x => x.Character.Equals(character));
             }
         }

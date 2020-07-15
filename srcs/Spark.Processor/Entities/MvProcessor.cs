@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using NLog;
+﻿using NLog;
 using Spark.Core;
 using Spark.Event;
 using Spark.Event.Entities;
@@ -34,12 +33,12 @@ namespace Spark.Processor.Entities
 
             Vector2D from = entity.Position;
             Vector2D to = packet.Position;
-            
+
             entity.Position = to;
             entity.Speed = packet.Speed;
 
             _eventPipeline.Emit(new EntityMoveEvent(client, entity, from, to));
-            
+
             Logger.Trace($"Entity {entity.EntityType} with id {entity.Id} moved to {entity.Position}");
         }
     }

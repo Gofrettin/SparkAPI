@@ -16,19 +16,19 @@ namespace Spark.Tests.Processor
             {
                 ISkill firstSkill = TestFactory.CreateSkill(x => x.IsOnCooldown = true);
                 ISkill secondSkill = TestFactory.CreateSkill(x => x.IsOnCooldown = true);
-                
+
                 context.Character.Skills = new[] { firstSkill, secondSkill };
-                
+
                 context.Process(new Sr
                 {
                     CastId = firstSkill.CastId
                 });
-                
+
                 Check.That(firstSkill.IsOnCooldown).IsFalse();
                 Check.That(secondSkill.IsOnCooldown).IsTrue();
             }
         }
-        
+
         [ProcessorTest(typeof(Su))]
         [EventTest(typeof(EntityDamageEvent))]
         public void Su_Non_Lethal_Test()
@@ -37,10 +37,10 @@ namespace Spark.Tests.Processor
             {
                 ICharacter character = context.Character;
                 ILivingEntity target = TestFactory.CreateMonster();
-                
+
                 IMap map = TestFactory.CreateMap(character, target);
-                
-                context.Process( packet: new Su
+
+                context.Process(new Su
                 {
                     CasterType = character.EntityType,
                     CasterId = character.Id,
@@ -55,11 +55,11 @@ namespace Spark.Tests.Processor
                 Check.That(target.Map).IsNotNull();
                 Check.That(map.Entities).Contains(target);
                 Check.That(target.HpPercentage).IsEqualTo(34);
-                
+
                 context.Verify<EntityDamageEvent>(x => x.Caster.Equals(character) && x.Target.Equals(target) && x.Damage == 1000 && x.SkillKey == 254);
             }
         }
-        
+
         [ProcessorTest(typeof(Su))]
         [EventTest(typeof(EntityDamageEvent))]
         [EventTest(typeof(EntityDeathEvent))]
@@ -69,10 +69,10 @@ namespace Spark.Tests.Processor
             {
                 ICharacter character = context.Character;
                 ILivingEntity target = TestFactory.CreateMonster();
-                
+
                 IMap map = TestFactory.CreateMap(character, target);
-                
-                context.Process( packet: new Su
+
+                context.Process(new Su
                 {
                     CasterType = character.EntityType,
                     CasterId = character.Id,
@@ -87,7 +87,7 @@ namespace Spark.Tests.Processor
                 Check.That(target.Map).IsNull();
                 Check.That(map.Entities).Not.Contains(target);
                 Check.That(target.HpPercentage).IsEqualTo(0);
-                
+
                 context.Verify<EntityDamageEvent>(x => x.Caster.Equals(character) && x.Target.Equals(target) && x.Damage == 1000 && x.SkillKey == 254);
                 context.Verify<EntityDeathEvent>(x => x.Killer.Equals(character) && x.Entity.Equals(target));
             }

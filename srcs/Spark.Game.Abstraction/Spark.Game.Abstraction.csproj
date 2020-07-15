@@ -7,6 +7,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Spark.Core\Spark.Core.csproj" />
       <ProjectReference Include="..\Spark.Network\Spark.Network.csproj" />
+      <ProjectReference Include="..\Spark.Packet\Spark.Packet.csproj" />
     </ItemGroup>
 
 </Project>

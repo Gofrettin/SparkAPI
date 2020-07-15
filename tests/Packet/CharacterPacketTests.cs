@@ -25,7 +25,7 @@ namespace Spark.Tests.Packet
             CreateAndCheckValues("c_info Isha - -1 2858.917 Family 123456 0 0 1 100 2 26 0 0 0 0 0 0 0", new CInfo
             {
                 Name = "Isha",
-                Id = 123456,
+                Id = 123456
             });
         }
 

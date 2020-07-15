@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Spark.Game.Abstraction;
+﻿using Spark.Game.Abstraction;
 using Spark.Packet.CharacterSelector;
 
 namespace Spark.Processor.CharacterSelector

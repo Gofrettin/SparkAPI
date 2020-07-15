@@ -16,7 +16,7 @@ namespace Spark.Game.Abstraction
         int CastId { get; }
         SkillTarget Target { get; }
         HitType HitType { get; }
-        
+
         bool IsOnCooldown { get; set; }
     }
 }

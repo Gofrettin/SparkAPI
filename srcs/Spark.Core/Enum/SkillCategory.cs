@@ -1,7 +1,7 @@
 ﻿namespace Spark.Core.Enum
 {
     /// <summary>
-    /// Represent a skill category
+    ///     Represent a skill category
     /// </summary>
     public enum SkillCategory
     {

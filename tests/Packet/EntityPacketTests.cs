@@ -70,21 +70,22 @@ namespace Spark.Tests.Packet
         [PacketTest(typeof(In))]
         public void In_As_Player_Test()
         {
-            CreateAndCheckValues("in 1 Makalash - 1204334 69 44 2 0 0 2 2 2 204.4856.4868.4865.4031.4129.8362.4266.-1.4443 89 100 0 -1 4 1 0 40 0 0 3 2 -1 - 14 0 0 0 0 88 0 0|0|0 0 0 10 1 9313", new In
-            {
-                Name = "Makalash",
-                EntityId = 1204334,
-                Position = new Vector2D(69, 44),
-                Direction = Direction.South,
-                EntityType = EntityType.Player,
-                Player = new In.PlayerInfo
+            CreateAndCheckValues("in 1 Makalash - 1204334 69 44 2 0 0 2 2 2 204.4856.4868.4865.4031.4129.8362.4266.-1.4443 89 100 0 -1 4 1 0 40 0 0 3 2 -1 - 14 0 0 0 0 88 0 0|0|0 0 0 10 1 9313",
+                new In
                 {
-                    HpPercentage = 89,
-                    MpPercentage = 100,
-                    Class = Class.Archer,
-                    Gender = Gender.Male
-                }
-            });
+                    Name = "Makalash",
+                    EntityId = 1204334,
+                    Position = new Vector2D(69, 44),
+                    Direction = Direction.South,
+                    EntityType = EntityType.Player,
+                    Player = new In.PlayerInfo
+                    {
+                        HpPercentage = 89,
+                        MpPercentage = 100,
+                        Class = Class.Archer,
+                        Gender = Gender.Male
+                    }
+                });
         }
 
         [PacketTest(typeof(In))]

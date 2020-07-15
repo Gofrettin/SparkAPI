@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Core.Extension;
@@ -16,7 +15,7 @@ namespace Spark.Packet.Entities
         public long EntityId { get; set; }
         public Vector2D Position { get; set; }
         public Direction Direction { get; set; }
-        
+
         public PlayerInfo Player { get; set; }
         public NpcInfo Npc { get; set; }
         public MapObjectInfo MapObject { get; set; }
@@ -24,7 +23,7 @@ namespace Spark.Packet.Entities
         public void Construct(string[] packet)
         {
             EntityType = packet[0].ToEnum<EntityType>();
-            
+
             int startIndex = EntityType == EntityType.Player ? 3 : 2;
 
             Name = EntityType == EntityType.Player ? packet[1] == "-" ? string.Empty : packet[1] : string.Empty;
@@ -46,7 +45,7 @@ namespace Spark.Packet.Entities
                         Faction = packet[3].ToEnum<Faction>(),
                         Owner = packet[5].ToNullableLong(),
                         Name = packet[9]
-                    }; 
+                    };
                     break;
                 case EntityType.Player:
                     Player = new PlayerInfo

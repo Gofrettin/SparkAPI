@@ -11,7 +11,7 @@ namespace Spark.Packet.Characters
         public int MapId { get; set; }
         public Vector2D Position { get; set; }
         public Direction Direction { get; set; }
-        
+
         public void Construct(string[] packet)
         {
             EntityId = packet[0].ToLong();

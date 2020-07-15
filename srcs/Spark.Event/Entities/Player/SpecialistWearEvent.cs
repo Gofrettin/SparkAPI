@@ -5,11 +5,8 @@ namespace Spark.Event.Entities.Player
 {
     public class SpecialistWearEvent : EntityEvent
     {
-        public SpecialistWearEvent(IClient client, IEntity entity, int specialistId) : base(client, entity)
-        {
-            SpecialistId = specialistId;
-        }
-        
+        public SpecialistWearEvent(IClient client, IEntity entity, int specialistId) : base(client, entity) => SpecialistId = specialistId;
+
         public int SpecialistId { get; }
     }
 }

@@ -14,7 +14,7 @@ namespace Spark.Tests.Processor
             using (GameContext context = CreateContext())
             {
                 context.Process(new CListEnd());
-                
+
                 // Nothing to check just processing to make sure everything is ok
             }
         }
@@ -25,9 +25,9 @@ namespace Spark.Tests.Processor
             using (GameContext context = CreateContext())
             {
                 IClient client = context.Client;
-                
+
                 client.AddOption(new LoginOption());
-                
+
                 context.Process(new CList
                 {
                     Name = "MyNameIs",
@@ -35,7 +35,7 @@ namespace Spark.Tests.Processor
                 });
 
                 LoginOption option = client.GetOption<LoginOption>();
-                
+
                 Check.That(option).IsNotNull();
                 Check.That(option.SelectableCharacters).HasElementThatMatches(x => x.Name.Equals("MyNameIs") && x.Slot == 2);
             }
@@ -47,7 +47,7 @@ namespace Spark.Tests.Processor
             using (GameContext context = CreateContext())
             {
                 context.Process(new Ok());
-                
+
                 // Nothing to check just processing to make sure everything is ok
             }
         }

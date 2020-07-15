@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using NLog;
+﻿using NLog;
 using Spark.Event;
 using Spark.Event.Characters;
 using Spark.Game.Abstraction;

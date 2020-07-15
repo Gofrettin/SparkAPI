@@ -9,7 +9,7 @@ namespace Spark.Packet.Entities
         public EntityType EntityType { get; set; }
         public long EntityId { get; set; }
         public Direction Direction { get; set; }
-        
+
         public void Construct(string[] packet)
         {
             EntityType = packet[0].ToEnum<EntityType>();

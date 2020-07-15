@@ -9,7 +9,7 @@ namespace Spark.Packet.Characters
         public int Mp { get; set; }
         public int MaxHp { get; set; }
         public int MaxMp { get; set; }
-        
+
         public void Construct(string[] packet)
         {
             Hp = packet[0].ToInt();

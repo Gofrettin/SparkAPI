@@ -7,7 +7,7 @@ namespace Spark.Packet.Characters
     public class Ski : IPacket
     {
         public HashSet<int> Skills { get; } = new HashSet<int>();
-        
+
         public void Construct(string[] packet)
         {
             foreach (string value in packet)
@@ -18,7 +18,7 @@ namespace Spark.Packet.Characters
                     Skills.Add(Convert.ToInt32(skillId[0]));
                     continue;
                 }
-                
+
                 Skills.Add(Convert.ToInt32(value));
             }
         }

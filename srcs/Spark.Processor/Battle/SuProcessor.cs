@@ -13,11 +13,8 @@ namespace Spark.Processor.Battle
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IEventPipeline _eventPipeline;
 
-        public SuProcessor(IEventPipeline eventPipeline)
-        {
-            _eventPipeline = eventPipeline;
-        }
-        
+        public SuProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+
         protected override void Process(IClient client, Su packet)
         {
             IMap map = client.Character.Map;
@@ -41,7 +38,7 @@ namespace Spark.Processor.Battle
             }
 
             target.HpPercentage = packet.HpPercentage;
-            
+
             _eventPipeline.Emit(new EntityDamageEvent(client, caster, target, packet.SkillKey, packet.Damage));
 
             if (packet.IsTargetAlive)
@@ -49,10 +46,10 @@ namespace Spark.Processor.Battle
                 Logger.Info($"{target.EntityType} {target.Id} is alive");
                 return;
             }
-            
+
             Logger.Info($"Entity {target.EntityType} with id {target.Id} died");
             map.RemoveEntity(target);
-            
+
             _eventPipeline.Emit(new EntityDeathEvent(client, target, caster));
         }
     }

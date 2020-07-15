@@ -1,6 +1,4 @@
-﻿using Spark.Packet.Extension;
-
-namespace Spark.Packet.Notification
+﻿namespace Spark.Packet.Notification
 {
     [Packet("qnamli2")]
     public class QNamli2 : IPacket

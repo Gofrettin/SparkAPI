@@ -11,6 +11,13 @@ namespace Spark.Tests
 {
     public class GameContext : IDisposable
     {
+        public GameContext(IClient client, IPacketManager packetManager, Mock<IEventPipeline> eventPipeline)
+        {
+            Client = client;
+            PacketManager = packetManager;
+            EventPipeline = eventPipeline;
+        }
+
         public IClient Client { get; }
 
         public ICharacter Character
@@ -24,15 +31,12 @@ namespace Spark.Tests
             get => Character.Map;
             set => value.AddEntity(Character);
         }
-        
+
         private IPacketManager PacketManager { get; }
         private Mock<IEventPipeline> EventPipeline { get; }
 
-        public GameContext(IClient client, IPacketManager packetManager, Mock<IEventPipeline> eventPipeline)
+        public void Dispose()
         {
-            Client = client;
-            PacketManager = packetManager;
-            EventPipeline = eventPipeline;
         }
 
         public void Process<T>(T packet) where T : IPacket
@@ -41,16 +45,11 @@ namespace Spark.Tests
         }
 
         /// <summary>
-        /// Check if defined event is successfully called by event pipeline
+        ///     Check if defined event is successfully called by event pipeline
         /// </summary>
         public void Verify<T>(Expression<Func<T, bool>> check) where T : IEvent
         {
             EventPipeline.Verify(x => x.Emit(It.Is<T>(check)));
-        }
-
-        public void Dispose()
-        {
-            
         }
     }
 }

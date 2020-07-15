@@ -5,13 +5,13 @@ namespace Spark.Event.Entities
 {
     public abstract class EntityEvent : IEvent
     {
-        public IClient Client { get; }
-        public IEntity Entity { get; }
-
         protected EntityEvent(IClient client, IEntity entity)
         {
             Client = client;
             Entity = entity;
         }
+
+        public IEntity Entity { get; }
+        public IClient Client { get; }
     }
 }

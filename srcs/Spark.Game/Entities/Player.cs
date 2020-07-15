@@ -25,7 +25,7 @@ namespace Spark.Game.Entities
         public Direction Direction { get; set; }
         public Class Class { get; set; }
         public Gender Gender { get; set; }
-        
+
         public bool Equals(IEntity other) => other != null && other.EntityType == EntityType && other.Id == Id;
     }
 }

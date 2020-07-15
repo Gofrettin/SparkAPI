@@ -46,7 +46,7 @@ namespace Spark.Toolkit.Parser
                 TextLine typeLine = region.GetLine(x => x.StartWith("TYPE"));
                 TextLine dataLine = region.GetLine(x => x.StartWith("DATA"));
                 TextLine targetLine = region.GetLine(x => x.StartWith("TARGET"));
-                
+
                 int gameKey = vnumLine.GetValue<int>(1);
 
                 skills[gameKey] = new SkillData

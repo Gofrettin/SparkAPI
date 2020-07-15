@@ -13,11 +13,8 @@ namespace Spark.Processor.Entities
 
         private readonly IEventPipeline _eventPipeline;
 
-        public CModeProcessor(IEventPipeline eventPipeline)
-        {
-            _eventPipeline = eventPipeline;
-        }
-        
+        public CModeProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+
         protected override void Process(IClient client, CMode packet)
         {
             IMap map = client.Character.Map;

@@ -20,10 +20,10 @@ namespace Spark.Tests.Processor
                     Servers =
                     {
                         new WorldServer("Galaxie", 0, 2, 5, IPEndPoint.Parse("79.110.84.37:4014")),
-                        new WorldServer("Cosmos", 1, 1, 6, IPEndPoint.Parse("79.110.84.250:4015")),
+                        new WorldServer("Cosmos", 1, 1, 6, IPEndPoint.Parse("79.110.84.250:4015"))
                     }
                 });
-                
+
                 // Nothing to check just processing to make sure everything is ok
             }
         }
@@ -37,7 +37,7 @@ namespace Spark.Tests.Processor
                 {
                     Reason = 1
                 });
-                
+
                 // Nothing to check just processing to make sure everything is ok
             }
         }

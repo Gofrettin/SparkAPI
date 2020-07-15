@@ -5,7 +5,6 @@
     {
         public void Construct(string[] packet)
         {
-            
         }
     }
 }

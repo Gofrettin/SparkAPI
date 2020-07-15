@@ -20,9 +20,9 @@ namespace Spark.Tests.Processor
             {
                 ICharacter character = context.Character;
                 ILivingEntity entity = TestFactory.CreatePlayer();
-                
+
                 IMap map = TestFactory.CreateMap(character, entity);
-                
+
                 context.Process(new CMode
                 {
                     EntityType = entity.EntityType,
@@ -33,14 +33,14 @@ namespace Spark.Tests.Processor
                     MorphBonus = 0,
                     Size = 10
                 });
-                
+
                 Check.That(map.Entities).Contains(entity);
                 Check.That(entity.MorphId).IsEqualTo(11);
-                
+
                 context.Verify<SpecialistWearEvent>(x => x.Entity.Equals(entity) && x.SpecialistId == 11);
             }
         }
-        
+
         [ProcessorTest(typeof(CMode))]
         [EventTest(typeof(SpecialistUnwearEvent))]
         public void CMode_Unwear_Test()
@@ -49,9 +49,9 @@ namespace Spark.Tests.Processor
             {
                 ICharacter character = context.Character;
                 ILivingEntity entity = TestFactory.CreatePlayer();
-                
+
                 IMap map = TestFactory.CreateMap(character, entity);
-                
+
                 context.Process(new CMode
                 {
                     EntityType = entity.EntityType,
@@ -62,10 +62,10 @@ namespace Spark.Tests.Processor
                     MorphBonus = 0,
                     Size = 10
                 });
-                
+
                 Check.That(map.Entities).Contains(entity);
                 Check.That(entity.MorphId).IsEqualTo(0);
-                
+
                 context.Verify<SpecialistUnwearEvent>(x => x.Entity.Equals(entity));
             }
         }
@@ -79,7 +79,7 @@ namespace Spark.Tests.Processor
                 ILivingEntity entity = TestFactory.CreatePlayer();
 
                 IMap map = TestFactory.CreateMap(character, entity);
-                
+
                 context.Process(new Cond
                 {
                     EntityType = entity.EntityType,
@@ -103,7 +103,7 @@ namespace Spark.Tests.Processor
                 ILivingEntity entity = TestFactory.CreatePlayer();
 
                 IMap map = TestFactory.CreateMap(character, entity);
-                
+
                 context.Process(new Dir
                 {
                     EntityType = entity.EntityType,
@@ -123,9 +123,9 @@ namespace Spark.Tests.Processor
             using (GameContext context = CreateContext())
             {
                 ICharacter character = context.Character;
-                
+
                 IMap map = TestFactory.CreateMap(character);
-                
+
                 context.Process(new In
                 {
                     EntityType = EntityType.Npc,
@@ -153,11 +153,11 @@ namespace Spark.Tests.Processor
                 Check.That(npc.HpPercentage).IsEqualTo(100);
                 Check.That(npc.MpPercentage).IsEqualTo(100);
                 Check.That(npc.Name).IsEmpty();
-                
+
                 context.Verify<EntitySpawnEvent>(x => x.Entity.Id == 9326 && x.Entity.EntityType == EntityType.Npc && x.Map.Equals(map));
             }
         }
-        
+
         [ProcessorTest(typeof(In))]
         [EventTest(typeof(EntitySpawnEvent))]
         public void In_As_Player_Test()
@@ -165,9 +165,9 @@ namespace Spark.Tests.Processor
             using (GameContext context = CreateContext())
             {
                 ICharacter character = context.Character;
-                
+
                 IMap map = TestFactory.CreateMap(character);
-                
+
                 context.Process(new In
                 {
                     Name = "Makalash",
@@ -195,11 +195,11 @@ namespace Spark.Tests.Processor
                 Check.That(player.Name).IsEqualTo("Makalash");
                 Check.That(player.Class).IsEqualTo(Class.Archer);
                 Check.That(player.Gender).IsEqualTo(Gender.Male);
-                
+
                 context.Verify<EntitySpawnEvent>(x => x.Entity.Id == 1204334 && x.Entity.EntityType == EntityType.Player && x.Map.Equals(map));
             }
         }
-        
+
         [ProcessorTest(typeof(In))]
         [EventTest(typeof(EntitySpawnEvent))]
         public void In_As_MapObject_Test()
@@ -207,9 +207,9 @@ namespace Spark.Tests.Processor
             using (GameContext context = CreateContext())
             {
                 ICharacter character = context.Character;
-                
+
                 IMap map = TestFactory.CreateMap(character);
-                
+
                 context.Process(new In
                 {
                     EntityType = EntityType.MapObject,
@@ -247,7 +247,7 @@ namespace Spark.Tests.Processor
                 ILivingEntity entity = TestFactory.CreatePlayer();
 
                 IMap map = TestFactory.CreateMap(character, entity);
-                
+
                 context.Process(new Mv
                 {
                     EntityType = entity.EntityType,
@@ -258,7 +258,7 @@ namespace Spark.Tests.Processor
 
                 Check.That(map.Entities).Contains(entity);
                 Check.That(entity.Position).IsEqualTo(new Vector2D(120, 143));
-                
+
                 context.Verify<EntityMoveEvent>(x => x.Entity.Equals(entity) && x.From.Equals(new Vector2D(0, 0)) && x.To.Equals(new Vector2D(120, 143)));
             }
         }
@@ -273,7 +273,7 @@ namespace Spark.Tests.Processor
                 ILivingEntity entity = TestFactory.CreateMonster();
 
                 IMap map = TestFactory.CreateMap(character, entity);
-                
+
                 context.Process(new Out
                 {
                     EntityType = entity.EntityType,
@@ -282,7 +282,7 @@ namespace Spark.Tests.Processor
 
                 Check.That(map.Entities).Not.Contains(entity);
                 Check.That(entity.Map).IsNull();
-                
+
                 context.Verify<EntityLeaveEvent>(x => x.Entity.Equals(entity) && x.Map.Equals(map));
             }
         }

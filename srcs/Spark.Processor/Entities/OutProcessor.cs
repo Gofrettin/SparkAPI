@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using NLog;
+﻿using NLog;
 using Spark.Event;
 using Spark.Event.Entities;
 using Spark.Game.Abstraction;
@@ -34,8 +33,6 @@ namespace Spark.Processor.Entities
 
             map.RemoveEntity(entity);
             _eventPipeline.Emit(new EntityLeaveEvent(client, map, entity));
-
-            return;
         }
     }
 }

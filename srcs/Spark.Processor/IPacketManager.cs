@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using Spark.Core.Extension;
 using Spark.Game.Abstraction;
 using Spark.Packet;
 

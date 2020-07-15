@@ -1,7 +1,7 @@
 ﻿namespace Spark.Core.Enum
 {
     /// <summary>
-    /// Represent a player class
+    ///     Represent a player class
     /// </summary>
     public enum Class
     {

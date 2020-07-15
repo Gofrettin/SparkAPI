@@ -10,15 +10,15 @@ namespace Spark.Processor.Characters
     public class AtProcessor : PacketProcessor<At>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly IMapFactory _mapFactory;
         private readonly IEventPipeline _eventPipeline;
+        private readonly IMapFactory _mapFactory;
 
         public AtProcessor(IMapFactory mapFactory, IEventPipeline eventPipeline)
         {
             _mapFactory = mapFactory;
             _eventPipeline = eventPipeline;
         }
-        
+
         protected override void Process(IClient client, At packet)
         {
             IMap map = _mapFactory.CreateMap(packet.MapId);
@@ -30,7 +30,7 @@ namespace Spark.Processor.Characters
 
             client.Character.Position = packet.Position;
             client.Character.Direction = packet.Direction;
-            
+
             map.AddEntity(client.Character);
             _eventPipeline.Emit(new MapJoinEvent(client, map));
         }

@@ -26,7 +26,7 @@ namespace Spark.Core.Extension
                 yield return t;
             }
         }
-        
+
         public static bool AnyBaseType(this Type type, Func<Type, bool> predicate) => type.BaseTypes().Any(predicate);
 
         public static bool IsParticularGeneric(this Type type, Type generic)

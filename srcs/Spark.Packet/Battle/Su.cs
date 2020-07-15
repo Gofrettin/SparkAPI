@@ -14,7 +14,7 @@ namespace Spark.Packet.Battle
         public bool IsTargetAlive { get; set; }
         public byte HpPercentage { get; set; }
         public int Damage { get; set; }
-        
+
         public void Construct(string[] packet)
         {
             CasterType = packet[0].ToEnum<EntityType>();

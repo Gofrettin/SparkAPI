@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using NLog;
-using NLog.Fluent;
 using Spark.Core.Enum;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Factory;
@@ -11,14 +10,11 @@ namespace Spark.Processor.Characters
     public class SkiProcessor : PacketProcessor<Ski>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
         private readonly ISkillFactory _skillFactory;
 
-        public SkiProcessor(ISkillFactory skillFactory)
-        {
-            _skillFactory = skillFactory;
-        }
-        
+        public SkiProcessor(ISkillFactory skillFactory) => _skillFactory = skillFactory;
+
         protected override void Process(IClient client, Ski packet)
         {
             var skills = new List<ISkill>();
@@ -31,7 +27,7 @@ namespace Spark.Processor.Characters
                     skills.Add(skill);
                 }
             }
-            
+
             client.Character.Skills = skills;
             Logger.Info($"Added {skills.Count} skills to {client.Character.Name}");
         }

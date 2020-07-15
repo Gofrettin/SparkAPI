@@ -11,7 +11,8 @@ namespace Spark.Event.Characters
             Client = client;
         }
 
-        public IClient Client { get; }
         public ICharacter Character { get; }
+
+        public IClient Client { get; }
     }
 }

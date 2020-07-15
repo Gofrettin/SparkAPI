@@ -12,11 +12,8 @@ namespace Spark.Processor.Characters
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IEventPipeline _eventPipeline;
 
-        public StatProcessor(IEventPipeline eventPipeline)
-        {
-            _eventPipeline = eventPipeline;
-        }
-        
+        public StatProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+
         protected override void Process(IClient client, Stat packet)
         {
             ICharacter character = client.Character;
@@ -27,7 +24,7 @@ namespace Spark.Processor.Characters
             {
                 return;
             }
-            
+
             character.Hp = packet.Hp;
             character.Mp = packet.Mp;
             character.MaxHp = packet.MaxHp;
@@ -37,7 +34,7 @@ namespace Spark.Processor.Characters
             character.MpPercentage = (byte)(character.Mp == 0 ? 0 : (double)character.Mp / character.MaxMp * 100);
 
             _eventPipeline.Emit(new StatChangeEvent(client, character));
-        
+
             Logger.Debug($"{client.Character.Name} Hp/Mp updated (HP {character.Hp}/{character.MaxHp} - MP {character.Mp}/{character.MaxMp})");
         }
     }

@@ -13,23 +13,12 @@ namespace Spark.Network.Session
     public class RemoteSession : ISession
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
-        public event Action<string> PacketReceived;
-
-        public Socket Socket { get; }
-        public Task BackgroundTask { get; }
-
-        public IEncoder Encoder { get; }
-        public IDecoder Decoder { get; }
-        public Func<string, string>[] Modifiers { get; set; }
-        
-        public CancellationTokenSource CancellationTokenSource { get; }
 
         public RemoteSession(IEncoder encoder, IDecoder decoder)
         {
             Encoder = encoder;
             Decoder = decoder;
-            
+
             Socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
             BackgroundTask = new Task<Task>(async () =>
             {
@@ -51,18 +40,20 @@ namespace Spark.Network.Session
                     }
                 }
             }, TaskCreationOptions.LongRunning);
-            
+
             CancellationTokenSource = new CancellationTokenSource();
         }
 
-        public void Connect(IPEndPoint ep)
-        {
-            Socket.Connect(ep);
-            
-            BackgroundTask.Start();
-            
-            Logger.Info($"Connected to {ep}");
-        }
+        public Socket Socket { get; }
+        public Task BackgroundTask { get; }
+
+        public IEncoder Encoder { get; }
+        public IDecoder Decoder { get; }
+        public Func<string, string>[] Modifiers { get; set; }
+
+        public CancellationTokenSource CancellationTokenSource { get; }
+
+        public event Action<string> PacketReceived;
 
         public void SendPacket(string packet)
         {
@@ -86,6 +77,15 @@ namespace Spark.Network.Session
             Socket.Close();
 
             Task.WaitAll(BackgroundTask);
+        }
+
+        public void Connect(IPEndPoint ep)
+        {
+            Socket.Connect(ep);
+
+            BackgroundTask.Start();
+
+            Logger.Info($"Connected to {ep}");
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Spark.Event.Entities
             From = from;
             To = to;
         }
-        
+
         public Vector2D From { get; }
         public Vector2D To { get; }
     }

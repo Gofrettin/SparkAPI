@@ -22,7 +22,7 @@ namespace Spark.Game.Entities
         public Vector2D Position { get; set; }
         public int ItemKey { get; set; }
         public int Amount { get; }
-        
+
         public bool Equals(IEntity other) => other != null && other.EntityType == EntityType && other.Id == Id;
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Spark.Core.Enum
 {
     /// <summary>
-    /// Represent any kind of element
+    ///     Represent any kind of element
     /// </summary>
     public enum Element
     {

@@ -19,7 +19,7 @@ namespace Spark.Tests.Processor
                         Owner = "MyNameIs"
                     }
                 });
-                
+
                 context.Verify<RaidNotifyEvent>(x => x.Owner == "MyNameIs");
             }
         }

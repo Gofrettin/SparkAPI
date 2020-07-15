@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -76,7 +75,7 @@ namespace Spark.Game
             {
                 return default;
             }
-            
+
             if (entity is T castedEntity)
             {
                 return castedEntity;
@@ -137,7 +136,7 @@ namespace Spark.Game
 
             Logger.Info($"Entity {entity.EntityType} with id {entity.Id} removed from map {Id}");
         }
-        
+
         public bool IsWalkable(Vector2D vector2D)
         {
             if (vector2D.X > Height || vector2D.X < 0 || vector2D.Y > Width || vector2D.Y < 0)

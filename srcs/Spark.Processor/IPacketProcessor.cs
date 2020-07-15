@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Spark.Game.Abstraction;
 using Spark.Packet;
 

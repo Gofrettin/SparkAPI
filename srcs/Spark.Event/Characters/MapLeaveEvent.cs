@@ -10,7 +10,8 @@ namespace Spark.Event.Characters
             Map = map;
         }
 
-        public IClient Client { get; }
         public IMap Map { get; }
+
+        public IClient Client { get; }
     }
 }

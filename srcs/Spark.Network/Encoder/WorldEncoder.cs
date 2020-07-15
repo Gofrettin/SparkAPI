@@ -10,10 +10,10 @@ namespace Spark.Network.Encoder
             EncryptionKey = encryptionKey;
             IsSession = true;
         }
-        
+
         public bool IsSession { get; private set; }
         public int EncryptionKey { get; }
-        
+
         public byte[] Encode(string packet)
         {
             var encoded = new List<byte>();

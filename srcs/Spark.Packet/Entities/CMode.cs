@@ -13,7 +13,7 @@ namespace Spark.Packet.Entities
         public short MorphDesign { get; set; }
         public byte MorphBonus { get; set; }
         public byte Size { get; set; }
-        
+
         public void Construct(string[] packet)
         {
             EntityType = packet[0].ToEnum<EntityType>();
@@ -22,7 +22,7 @@ namespace Spark.Packet.Entities
             MorphId = packet[2].ToShort();
             MorphUpgrade = packet[3].ToByte();
             MorphDesign = packet[4].ToShort();
-            
+
             if (EntityType == EntityType.Player)
             {
                 MorphBonus = packet[5].ToByte();

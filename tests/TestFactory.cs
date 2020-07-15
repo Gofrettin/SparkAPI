@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Spark.Database.Data;
 using Spark.Game;
 using Spark.Game.Abstraction;
@@ -22,7 +20,7 @@ namespace Spark.Tests
             {
                 CastId = castId
             });
-            
+
             setup?.Invoke(skill);
 
             return skill;
@@ -49,7 +47,7 @@ namespace Spark.Tests
             long monsterId = Random.Next(1, 999999);
             int monsterKey = Random.Next(1, 9999);
             IMonster monster = new Monster(monsterId, monsterKey, new MonsterData());
-            
+
             setup?.Invoke(monster);
             return monster;
         }
@@ -58,7 +56,7 @@ namespace Spark.Tests
         {
             long playerId = Random.Next(1, 999999);
             IPlayer player = new Player(playerId);
-            
+
             setup?.Invoke(player);
             return player;
         }

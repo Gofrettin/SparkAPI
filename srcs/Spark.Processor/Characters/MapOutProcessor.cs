@@ -12,11 +12,8 @@ namespace Spark.Processor.Characters
 
         private readonly IEventPipeline _eventPipeline;
 
-        public MapOutProcessor(IEventPipeline eventPipeline)
-        {
-            _eventPipeline = eventPipeline;
-        }
-        
+        public MapOutProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+
         protected override void Process(IClient client, MapOut packet)
         {
             IMap map = client.Character.Map;
@@ -25,7 +22,7 @@ namespace Spark.Processor.Characters
                 Logger.Error("Received MapOut packet but map is null");
                 return;
             }
-            
+
             map.RemoveEntity(client.Character);
             _eventPipeline.Emit(new MapLeaveEvent(client, map));
         }
