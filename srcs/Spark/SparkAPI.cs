@@ -78,6 +78,8 @@ namespace Spark
             services.AddSingleton<IPacketFactory, PacketFactory>();
             services.AddSingleton<IPacketManager, PacketManager>();
             services.AddSingleton<IEventPipeline, EventPipeline>();
+            services.AddSingleton<IClientFactory, ClientFactory>();
+            services.AddSingleton<IGameforgeService, GameforgeService>();
             
             services.AddSingleton<SparkAPI>();
 

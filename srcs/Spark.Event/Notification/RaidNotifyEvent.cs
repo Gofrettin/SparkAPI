@@ -2,9 +2,9 @@
 
 namespace Spark.Event.Notification
 {
-    public class RaidNotifyEvent : IEvent
+    public class RaidListNotifyEvent : IEvent
     {
-        public RaidNotifyEvent(IClient client, string owner)
+        public RaidListNotifyEvent(IClient client, string owner)
         {
             Client = client;
             Owner = owner;

@@ -7,7 +7,7 @@ namespace Spark.Tests.Processor
     public class NotificationProcessorTests : ProcessorTests
     {
         [ProcessorTest(typeof(QNamli2))]
-        [EventTest(typeof(RaidNotifyEvent))]
+        [EventTest(typeof(RaidListNotifyEvent))]
         public void QNamli2_Test()
         {
             using (GameContext context = CreateContext())
@@ -20,7 +20,7 @@ namespace Spark.Tests.Processor
                     }
                 });
 
-                context.Verify<RaidNotifyEvent>(x => x.Owner == "MyNameIs");
+                context.Verify<RaidListNotifyEvent>(x => x.Owner == "MyNameIs");
             }
         }
     }
