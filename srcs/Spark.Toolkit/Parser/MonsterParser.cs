@@ -5,8 +5,8 @@ using System.Linq;
 using Newtonsoft.Json;
 using NLog;
 using Spark.Database.Data;
-using Spark.Toolkit.Reader;
-using TextReader = Spark.Toolkit.Reader.TextReader;
+using Spark.Database.Reader;
+using TextReader = Spark.Database.Reader.TextReader;
 
 namespace Spark.Toolkit.Parser
 {

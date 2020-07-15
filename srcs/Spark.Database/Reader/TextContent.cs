@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Spark.Toolkit.Reader
+namespace Spark.Database.Reader
 {
     public class TextContent : TextRegion
     {

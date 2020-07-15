@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Spark.Toolkit.Reader
+namespace Spark.Database.Reader
 {
     public class TextLine
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Spark.Toolkit.Reader
+namespace Spark.Database.Reader
 {
     public class TextReader
     {
