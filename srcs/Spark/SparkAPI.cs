@@ -45,7 +45,7 @@ namespace Spark
         {
             IClient client = ClientFactory.CreateClient(ip, serverSelector, characterSelector);
 
-            client.SendPacket($"NoS0577 {token} {GameforgeService.InstallationId} 007C762C 20.9.3.3130 0 E97CE1B0D879D7C0623EFEE3F21723CE");
+            client.SendPacket($"NoS0577 {token} {GameforgeService.InstallationId} 007C762C 20.9.3.3131 0 35A4AA7A09325A8BDEF01C188C7BF295");
 
             return client;
         }
