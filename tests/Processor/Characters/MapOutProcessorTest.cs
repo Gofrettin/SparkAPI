@@ -1,4 +1,7 @@
-﻿using NFluent;
+﻿using Moq;
+using NFluent;
+using Spark.Event.Characters;
+using Spark.Game.Abstraction;
 using Spark.Packet.Characters;
 
 namespace Spark.Tests.Processor.Characters
@@ -12,9 +15,14 @@ namespace Spark.Tests.Processor.Characters
             Map.AddEntity(Client.Character);
         }
         
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             Check.That(Client.Character.Map).IsNull();
+        }
+
+        protected override void CheckEvent()
+        {
+            EventPipelineMock.Verify(x => x.Emit(It.Is<MapLeaveEvent>(s => s.Map.Equals(Map))), Times.Once);
         }
     }
 }

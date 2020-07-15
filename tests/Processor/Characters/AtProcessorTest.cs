@@ -1,6 +1,8 @@
-﻿using NFluent;
+﻿using Moq;
+using NFluent;
 using Spark.Core;
 using Spark.Core.Enum;
+using Spark.Event.Characters;
 using Spark.Packet.Characters;
 
 namespace Spark.Tests.Processor.Characters
@@ -15,12 +17,17 @@ namespace Spark.Tests.Processor.Characters
             Direction = Direction.South
         };
             
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             Check.That(Client.Character.Map).IsNotNull();
             Check.That(Client.Character.Map.Id).IsEqualTo(Packet.MapId);
             Check.That(Client.Character.Position).IsEqualTo(Packet.Position);
             Check.That(Client.Character.Direction).IsEqualTo(Packet.Direction);
+        }
+
+        protected override void CheckEvent()
+        {
+            EventPipelineMock.Verify(x => x.Emit(It.Is<MapJoinEvent>(s => s.Map.Equals(Client.Character.Map))), Times.Once);
         }
     }
 }

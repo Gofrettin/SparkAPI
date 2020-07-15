@@ -10,7 +10,7 @@ namespace Spark.Tests.Processor.Characters
             Skills = { 240, 241, 242, 243 }
         };
         
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             Check.That(Client.Character.Skills).CountIs(Packet.Skills.Count);
             Check.That(Client.Character.Skills).HasElementThatMatches(x => x.SkillKey == 240);

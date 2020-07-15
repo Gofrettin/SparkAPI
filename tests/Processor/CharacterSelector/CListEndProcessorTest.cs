@@ -6,7 +6,7 @@ namespace Spark.Tests.Processor.CharacterSelector
     {
         protected override CListEnd Packet { get; } = new CListEnd();
         
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             
         }

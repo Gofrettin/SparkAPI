@@ -23,7 +23,7 @@ namespace Spark.Tests.Processor.Battle
             Client.Character.Skills = new[] { Skill };
         }
         
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             Check.That(Skill.IsOnCooldown).IsFalse();
         }

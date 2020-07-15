@@ -23,7 +23,7 @@ namespace Spark.Tests.Processor.Entities
             Map.AddEntity(Client.Character);
         }
 
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             Check.That(Client.Character.Speed).IsEqualTo(12);
         }

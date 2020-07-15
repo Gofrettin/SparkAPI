@@ -1,7 +1,11 @@
-﻿using NFluent;
+﻿using Moq;
+using NFluent;
 using Spark.Core;
 using Spark.Core.Enum;
+using Spark.Database.Data;
+using Spark.Event.Entities;
 using Spark.Game.Abstraction.Entities;
+using Spark.Game.Entities;
 using Spark.Packet.Entities;
 
 namespace Spark.Tests.Processor.Entities
@@ -25,21 +29,29 @@ namespace Spark.Tests.Processor.Entities
             }
         };
 
+        public INpc Entity { get; } = new Npc(9326, 3093, new MonsterData());
+
         public InNpcProcessorTest()
         {
             Map.AddEntity(Client.Character);
         }
 
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             INpc npc = Map.GetEntity<INpc>(Packet.EntityType, Packet.EntityId);
 
             Check.That(npc).IsNotNull();
+            Check.That(npc.Map).IsNotNull();
             Check.That(npc.MonsterKey).IsEqualTo(Packet.GameKey);
             Check.That(npc.Position).IsEqualTo(Packet.Position);
             Check.That(npc.Direction).IsEqualTo(Packet.Direction);
             Check.That(npc.HpPercentage).IsEqualTo(Packet.Npc.HpPercentage);
             Check.That(npc.MpPercentage).IsEqualTo(Packet.Npc.MpPercentage);
+        }
+
+        protected override void CheckEvent()
+        {
+            EventPipelineMock.Verify(x => x.Emit(It.Is<EntitySpawnEvent>(s => s.Entity.Equals(Entity) && s.Map.Equals(Client.Character.Map))), Times.Once);
         }
     }
     
@@ -60,13 +72,18 @@ namespace Spark.Tests.Processor.Entities
                 Gender = Gender.Male
             }
         };
-
+        
+        public IPlayer Entity { get; } = new Player(1204334)
+        {
+            Name = "Makalash"
+        };
+        
         public InPlayerProcessorTest()
         {
             Map.AddEntity(Client.Character);
         }
 
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             IPlayer player = Map.GetEntity<IPlayer>(Packet.EntityType, Packet.EntityId);
 
@@ -77,6 +94,11 @@ namespace Spark.Tests.Processor.Entities
             Check.That(player.MpPercentage).IsEqualTo(Packet.Player.MpPercentage);
             Check.That(player.Class).IsEqualTo(Packet.Player.Class);
             Check.That(player.Gender).IsEqualTo(Packet.Player.Gender);
+        }
+        
+        protected override void CheckEvent()
+        {
+            EventPipelineMock.Verify(x => x.Emit(It.Is<EntitySpawnEvent>(s => s.Entity.Equals(Entity) && s.Map.Equals(Client.Character.Map))), Times.Once);
         }
     }
 }

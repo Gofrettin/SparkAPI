@@ -1,7 +1,10 @@
-﻿using NFluent;
+﻿using Moq;
+using NFluent;
 using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Database.Data;
+using Spark.Event.Characters;
+using Spark.Event.Entities;
 using Spark.Game;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
@@ -28,12 +31,17 @@ namespace Spark.Tests.Processor.Entities
             Map.AddEntity(Entity);
         }
 
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             Check.That(Entity.Id).IsEqualTo(2102);
             Check.That(Entity.EntityType).IsEqualTo(EntityType.Monster);
             Check.That(Entity.Position).IsEqualTo(new Vector2D(24, 143));
             Check.That(Entity.Speed).IsEqualTo(4);
+        }
+
+        protected override void CheckEvent()
+        {
+            EventPipelineMock.Verify(x => x.Emit(It.Is<EntityMoveEvent>(s => s.Entity.Equals(Entity) && s.To.Equals(Packet.Position))), Times.Once);
         }
     }
 }

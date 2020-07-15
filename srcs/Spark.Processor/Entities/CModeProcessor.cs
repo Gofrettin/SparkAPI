@@ -1,6 +1,6 @@
 ﻿using NLog;
 using Spark.Event;
-using Spark.Event.Entities;
+using Spark.Event.Entities.Player;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 using Spark.Packet.Entities;
@@ -26,28 +26,28 @@ namespace Spark.Processor.Entities
                 return;
             }
 
-            IEntity entity = map.GetEntity(packet.EntityType, packet.EntityId);
+            ILivingEntity entity = map.GetEntity<ILivingEntity>(packet.EntityType, packet.EntityId);
             if (entity == null)
             {
                 Logger.Warn($"Can't found entity {packet.EntityType} with id {packet.EntityId} in map {map.Id}");
                 return;
             }
 
-            if (entity.Equals(client.Character))
-            {
-                return;
-            }
+            entity.MorphId = packet.MorphId;
 
-            if (packet.SpecialistId > 0 && packet.SpecialistId <= 34)
+            if (!entity.Equals(client.Character))
             {
-                _eventPipeline.Emit(new SpecialistWearEvent(client, entity, packet.SpecialistId));
-                Logger.Info($"Entity {entity.EntityType} with id {entity.Id} wear SP {packet.SpecialistId}");
-            }
+                if (entity.MorphId > 0 && entity.MorphId <= 34)
+                {
+                    _eventPipeline.Emit(new SpecialistWearEvent(client, entity, packet.MorphId));
+                    Logger.Info($"Entity {entity.EntityType} with id {entity.Id} wear SP {packet.MorphId}");
+                }
 
-            if (packet.SpecialistId == 0)
-            {
-                _eventPipeline.Emit(new SpecialistUnwearEvent(client, entity));
-                Logger.Info($"Entity {entity.EntityType} with id {entity.Id} removed SP");
+                if (entity.MorphId == 0)
+                {
+                    _eventPipeline.Emit(new SpecialistUnwearEvent(client, entity));
+                    Logger.Info($"Entity {entity.EntityType} with id {entity.Id} removed SP");
+                }
             }
         }
     }

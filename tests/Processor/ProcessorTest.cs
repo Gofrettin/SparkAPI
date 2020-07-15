@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Spark.Core.Enum;
-using Spark.Core.Option;
 using Spark.Database;
 using Spark.Database.Data;
 using Spark.Event;
@@ -27,6 +26,7 @@ namespace Spark.Tests.Processor
         protected IMap Map { get; }
         
         private IPacketManager PacketManager { get; }
+        protected Mock<IEventPipeline> EventPipelineMock { get; }
 
         protected ProcessorTest()
         {
@@ -41,7 +41,8 @@ namespace Spark.Tests.Processor
             });
 
             var dbMock = new Mock<IDatabase>();
-            
+            EventPipelineMock = new Mock<IEventPipeline>();
+
             dbMock.Setup(x => x.Monsters.GetValue(It.IsAny<int>())).Returns(new MonsterData());
             dbMock.Setup(x => x.Maps.GetValue(It.IsAny<int>())).Returns(new MapData
             {
@@ -58,7 +59,7 @@ namespace Spark.Tests.Processor
             services.AddTransient<ISkillFactory, SkillFactory>();
             services.AddTransient<IEntityFactory, EntityFactory>();
             services.AddTransient<ISessionFactory, SessionFactory>();
-            services.AddSingleton<IEventPipeline, EventPipeline>();
+            services.AddSingleton<IEventPipeline>(EventPipelineMock.Object);
             
             services.AddImplementingTypes<IPacketProcessor>();
 
@@ -67,15 +68,24 @@ namespace Spark.Tests.Processor
             PacketManager = new PacketManager();
             PacketManager.AddPacketProcessors(provider.GetServices<IPacketProcessor>());
         }
-        
-        
+
         [Fact]
-        public void Execute()
+        public void Process_Test()
         {
             PacketManager.Process(Client, Packet);
-            CheckResult();
-        }
             
-        protected abstract void CheckResult();
+            CheckOutput();
+            CheckEvent();
+        }
+
+        protected virtual void CheckOutput()
+        {
+            
+        }
+
+        protected virtual void CheckEvent()
+        {
+            
+        }
     }
 }

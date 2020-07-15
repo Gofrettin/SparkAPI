@@ -32,6 +32,7 @@ namespace Spark.Game.Entities
         public Vector2D Position { get; set; }
         public int HpPercentage { get; set; }
         public int MpPercentage { get; set; }
+        public short MorphId { get; set; }
         public byte Speed { get; set; }
         public Direction Direction { get; set; }
         public IEnumerable<ISkill> Skills { get; set; }

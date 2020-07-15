@@ -6,7 +6,7 @@ namespace Spark.Tests.Processor.CharacterSelector
     {
         protected override Ok Packet { get; } = new Ok();
         
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             
         }

@@ -9,7 +9,7 @@ namespace Spark.Tests.Processor.Login
             Reason = 1
         };
         
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             
         }

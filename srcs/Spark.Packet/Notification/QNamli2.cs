@@ -5,24 +5,22 @@ namespace Spark.Packet.Notification
     [Packet("qnamli2")]
     public class QNamli2 : IPacket
     {
-        public RaidListInfo Raid { get; set; }
-        
+        public RaidInfo Raid { get; set; }
+
         public void Construct(string[] packet)
         {
-            string id = packet[1];
-            if (id == "#rl")
+            string identifier = packet[1];
+            if (identifier == "#rl")
             {
-                Raid = new RaidListInfo
+                Raid = new RaidInfo
                 {
-                    RaidId = packet[4].ToInt(),
                     Owner = packet[5]
                 };
             }
         }
 
-        public class RaidListInfo
+        public class RaidInfo
         {
-            public int RaidId { get; set; }
             public string Owner { get; set; }
         }
     }

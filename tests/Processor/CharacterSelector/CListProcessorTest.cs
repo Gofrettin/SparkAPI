@@ -18,7 +18,7 @@ namespace Spark.Tests.Processor.CharacterSelector
             Client.AddOption(new LoginOption());
         }
         
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             LoginOption option = Client.GetOption<LoginOption>();
 

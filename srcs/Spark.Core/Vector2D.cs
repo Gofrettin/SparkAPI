@@ -6,20 +6,17 @@ namespace Spark.Core
     {
         private static readonly double Sqrt = Math.Sqrt(2);
         
-        public short X { get; }
-        public short Y { get; }
+        public int X { get; }
+        public int Y { get; }
 
-        public Vector2D(short x, short y)
+        public Vector2D(int x, int y)
         {
             X = x;
             Y = y;
         }
 
-        public Vector2D GetDistanceTo(Vector2D vector2D)
-        {
-            return new Vector2D(Math.Abs((short)(vector2D.X - X)), Math.Abs((short)(vector2D.Y - Y)));
-        }
-        
+        public Vector2D GetDistanceTo(Vector2D vector2D) => new Vector2D(Math.Abs((vector2D.X - X)), Math.Abs((vector2D.Y - Y)));
+
         public int GetDistance(Vector2D destination)
         {
             int x = Math.Abs(X - destination.X);

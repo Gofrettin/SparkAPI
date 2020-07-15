@@ -1,4 +1,6 @@
-﻿using NFluent;
+﻿using Moq;
+using NFluent;
+using Spark.Event.Characters;
 using Spark.Packet.Characters;
 
 namespace Spark.Tests.Processor.Characters
@@ -13,7 +15,7 @@ namespace Spark.Tests.Processor.Characters
             MaxMp = 4000
         };
         
-        protected override void CheckResult()
+        protected override void CheckOutput()
         {
             Check.That(Client.Character.Hp).IsEqualTo(1000);
             Check.That(Client.Character.Mp).IsEqualTo(2000);
@@ -22,6 +24,11 @@ namespace Spark.Tests.Processor.Characters
 
             Check.That(Client.Character.HpPercentage).IsEqualTo(33);
             Check.That(Client.Character.MpPercentage).IsEqualTo(50);
+        }
+
+        protected override void CheckEvent()
+        {
+            EventPipelineMock.Verify(x => x.Emit(It.Is<StatChangeEvent>(s => s.Character.Equals(Client.Character))), Times.Once);
         }
     }
 }
