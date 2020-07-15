@@ -65,13 +65,6 @@ namespace Spark
             EventPipeline.AddEventHandler(handler);
         }
 
-        public void Initialize()
-        {
-            Database.Load();
-
-            PacketManager.AddPacketProcessors(PacketProcessors);
-        }
-
         private static ISpark CreateInstance()
         {
             IServiceCollection services = new ServiceCollection();
@@ -85,6 +78,7 @@ namespace Spark
             services.AddTransient<IEntityFactory, EntityFactory>();
             services.AddTransient<ISessionFactory, SessionFactory>();
             services.AddTransient<IObjectFactory, ObjectFactory>();
+            services.AddTransient<IBuffFactory, BuffFactory>();
             
             services.AddSingleton<IPacketFactory, PacketFactory>();
             services.AddSingleton<IPacketManager, PacketManager>();
@@ -93,8 +87,8 @@ namespace Spark
             services.AddSingleton<SparkAPI>();
 
             SparkAPI sparkApi = services.BuildServiceProvider().GetService<SparkAPI>();
-
-            sparkApi.Initialize();
+            
+            sparkApi.Database.Load();
 
             return sparkApi;
         }

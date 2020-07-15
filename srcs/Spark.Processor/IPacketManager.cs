@@ -10,8 +10,6 @@ namespace Spark.Processor
     public interface IPacketManager
     {
         void Process(IClient client, IPacket packet);
-        void AddPacketProcessor(IPacketProcessor processor);
-        void AddPacketProcessors(IEnumerable<IPacketProcessor> processors);
     }
 
     public class PacketManager : IPacketManager
@@ -20,7 +18,10 @@ namespace Spark.Processor
 
         private readonly Dictionary<Type, IPacketProcessor> _processors;
 
-        public PacketManager() => _processors = new Dictionary<Type, IPacketProcessor>();
+        public PacketManager(IEnumerable<IPacketProcessor> processors)
+        {
+            _processors = processors.ToDictionary(x => x.PacketType, x => x);
+        }
 
         public void Process(IClient client, IPacket packet)
         {
@@ -40,22 +41,6 @@ namespace Spark.Processor
             {
                 Logger.Error(e);
             }
-        }
-
-        public void AddPacketProcessor(IPacketProcessor processor)
-        {
-            _processors[processor.PacketType] = processor;
-            Logger.Debug($"Registered {processor.GetType().Name} for packet {processor.PacketType.Name}");
-        }
-
-        public void AddPacketProcessors(IEnumerable<IPacketProcessor> processors)
-        {
-            foreach (IPacketProcessor processor in processors)
-            {
-                AddPacketProcessor(processor);
-            }
-
-            Logger.Debug($"Registered {processors.Count()} packet processors");
         }
     }
 }

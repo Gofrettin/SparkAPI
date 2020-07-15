@@ -25,12 +25,12 @@ namespace Spark.Tests.Processor
             EventPipelineMock = new Mock<IEventPipeline>();
 
             services.AddDependencies();
+            services.AddSingleton<IPacketManager, PacketManager>();
             services.AddSingleton<IEventPipeline>(EventPipelineMock.Object);
 
             IServiceProvider provider = services.BuildServiceProvider();
 
-            PacketManager = new PacketManager();
-            PacketManager.AddPacketProcessors(provider.GetServices<IPacketProcessor>());
+            PacketManager = provider.GetService<IPacketManager>();
         }
 
         private IPacketManager PacketManager { get; }

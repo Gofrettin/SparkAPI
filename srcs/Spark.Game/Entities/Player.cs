@@ -1,6 +1,8 @@
-﻿using Spark.Core;
+﻿using System.Collections.Generic;
+using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Game.Abstraction;
+using Spark.Game.Abstraction.Battle;
 using Spark.Game.Abstraction.Entities;
 
 namespace Spark.Game.Entities
@@ -11,6 +13,8 @@ namespace Spark.Game.Entities
         {
             Id = id;
             EntityType = EntityType.Player;
+            
+            Buffs = new List<IBuff>();
         }
 
         public long Id { get; }
@@ -21,6 +25,7 @@ namespace Spark.Game.Entities
         public int HpPercentage { get; set; }
         public int MpPercentage { get; set; }
         public short MorphId { get; set; }
+        public List<IBuff> Buffs { get; }
         public byte Speed { get; set; }
         public Direction Direction { get; set; }
         public Class Class { get; set; }

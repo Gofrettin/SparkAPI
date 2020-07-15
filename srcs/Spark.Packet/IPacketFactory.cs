@@ -67,7 +67,14 @@ namespace Spark.Packet
                 throw new InvalidOperationException($"Failed to create packet {type.Name}");
             }
 
-            packet.Construct(packetContent);
+            try
+            {
+                packet.Construct(packetContent);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
 
             return packet;
         }

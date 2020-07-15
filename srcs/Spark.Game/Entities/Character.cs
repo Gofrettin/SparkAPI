@@ -2,6 +2,7 @@
 using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Game.Abstraction;
+using Spark.Game.Abstraction.Battle;
 using Spark.Game.Abstraction.Entities;
 using Spark.Game.Abstraction.Inventory;
 using Spark.Game.Inventory;
@@ -17,6 +18,7 @@ namespace Spark.Game.Entities
             Client = client;
 
             Skills = new List<ISkill>();
+            Buffs = new List<IBuff>();
             Inventory = new CharacterInventory();
         }
 
@@ -30,6 +32,7 @@ namespace Spark.Game.Entities
         public int HpPercentage { get; set; }
         public int MpPercentage { get; set; }
         public short MorphId { get; set; }
+        public List<IBuff> Buffs { get; }
         public byte Speed { get; set; }
         public Direction Direction { get; set; }
         public ICharacterInventory Inventory { get; }
