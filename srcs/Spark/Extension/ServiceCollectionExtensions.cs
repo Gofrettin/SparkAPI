@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Spark.Core.Extension;
+using Spark.Game.Abstraction.Factory;
+using Spark.Game.Factory;
+using Spark.Network.Session;
+using ObjectFactory = Spark.Game.Factory.ObjectFactory;
 
 namespace Spark.Extension
 {
@@ -14,6 +18,16 @@ namespace Spark.Extension
             {
                 services.AddTransient(typeof(T), type);
             }
+        }
+
+        public static void AddGameFactories(this IServiceCollection services)
+        {
+            services.AddTransient<IMapFactory, MapFactory>();
+            services.AddTransient<ISkillFactory, SkillFactory>();
+            services.AddTransient<IEntityFactory, EntityFactory>();
+            services.AddTransient<ISessionFactory, SessionFactory>();
+            services.AddTransient<IObjectFactory, ObjectFactory>();
+            services.AddTransient<IBuffFactory, BuffFactory>();
         }
     }
 }

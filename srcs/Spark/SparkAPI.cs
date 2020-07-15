@@ -71,19 +71,14 @@ namespace Spark
 
             services.AddImplementingTypes<IPacketProcessor>();
 
-            services.AddTransient<IGameforgeService, GameforgeService>();
-            services.AddTransient<IClientFactory, ClientFactory>();
-            services.AddTransient<IMapFactory, MapFactory>();
-            services.AddTransient<ISkillFactory, SkillFactory>();
-            services.AddTransient<IEntityFactory, EntityFactory>();
-            services.AddTransient<ISessionFactory, SessionFactory>();
-            services.AddTransient<IObjectFactory, ObjectFactory>();
-            services.AddTransient<IBuffFactory, BuffFactory>();
+            services.AddSingleton<IDatabase, SparkDatabase>();
+            
+            services.AddGameFactories();
             
             services.AddSingleton<IPacketFactory, PacketFactory>();
             services.AddSingleton<IPacketManager, PacketManager>();
             services.AddSingleton<IEventPipeline, EventPipeline>();
-            services.AddSingleton<IDatabase, SparkDatabase>();
+            
             services.AddSingleton<SparkAPI>();
 
             SparkAPI sparkApi = services.BuildServiceProvider().GetService<SparkAPI>();

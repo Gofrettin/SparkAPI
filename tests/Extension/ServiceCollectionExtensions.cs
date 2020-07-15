@@ -5,6 +5,7 @@ using Spark.Database;
 using Spark.Database.Data;
 using Spark.Extension;
 using Spark.Game.Abstraction.Factory;
+using Spark.Game.Battle;
 using Spark.Game.Factory;
 using Spark.Network.Session;
 using Spark.Processor;
@@ -29,13 +30,9 @@ namespace Spark.Tests.Extension
             });
 
             services.AddSingleton(dbMock.Object);
-
-            services.AddTransient<IMapFactory, MapFactory>();
-            services.AddTransient<ISkillFactory, SkillFactory>();
-            services.AddTransient<IEntityFactory, EntityFactory>();
-            services.AddTransient<ISessionFactory, SessionFactory>();
-            services.AddTransient<IObjectFactory, ObjectFactory>();
             
+            services.AddGameFactories();
+
             services.AddImplementingTypes<IPacketProcessor>();
         }
     }
