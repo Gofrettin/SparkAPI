@@ -15,6 +15,7 @@ using Spark.Gameforge;
 using Spark.Network.Session;
 using Spark.Packet;
 using Spark.Processor;
+using ObjectFactory = Spark.Game.Factory.ObjectFactory;
 
 namespace Spark
 {
@@ -83,7 +84,8 @@ namespace Spark
             services.AddTransient<ISkillFactory, SkillFactory>();
             services.AddTransient<IEntityFactory, EntityFactory>();
             services.AddTransient<ISessionFactory, SessionFactory>();
-
+            services.AddTransient<IObjectFactory, ObjectFactory>();
+            
             services.AddSingleton<IPacketFactory, PacketFactory>();
             services.AddSingleton<IPacketManager, PacketManager>();
             services.AddSingleton<IEventPipeline, EventPipeline>();

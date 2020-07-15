@@ -4,6 +4,7 @@ using Spark.Game;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 using Spark.Game.Entities;
+using Spark.Packet.Inventory;
 
 namespace Spark.Tests
 {

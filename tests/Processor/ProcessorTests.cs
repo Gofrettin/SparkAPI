@@ -12,6 +12,7 @@ using Spark.Game.Entities;
 using Spark.Game.Factory;
 using Spark.Network.Session;
 using Spark.Processor;
+using Spark.Tests.Extension;
 
 namespace Spark.Tests.Processor
 {
@@ -22,27 +23,9 @@ namespace Spark.Tests.Processor
             IServiceCollection services = new ServiceCollection();
 
             EventPipelineMock = new Mock<IEventPipeline>();
-            var dbMock = new Mock<IDatabase>();
 
-            dbMock.Setup(x => x.Monsters.GetValue(It.IsAny<int>())).Returns(new MonsterData());
-            dbMock.Setup(x => x.Maps.GetValue(It.IsAny<int>())).Returns(new MapData
-            {
-                Grid = new byte[999]
-            });
-            dbMock.Setup(x => x.Skills.GetValue(It.IsAny<int>())).Returns(new SkillData
-            {
-                Category = SkillCategory.Player
-            });
-
-            services.AddSingleton(dbMock.Object);
-
-            services.AddTransient<IMapFactory, MapFactory>();
-            services.AddTransient<ISkillFactory, SkillFactory>();
-            services.AddTransient<IEntityFactory, EntityFactory>();
-            services.AddTransient<ISessionFactory, SessionFactory>();
+            services.AddDependencies();
             services.AddSingleton<IEventPipeline>(EventPipelineMock.Object);
-
-            services.AddImplementingTypes<IPacketProcessor>();
 
             IServiceProvider provider = services.BuildServiceProvider();
 

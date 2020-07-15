@@ -67,5 +67,12 @@ namespace Spark.Tests
         {
             Check.WithCustomMessage($"Missing event test for {type.Name} event").That(EventTests).Contains(type);
         }
+
+        [Theory]
+        [MemberData(nameof(PacketTypes))]
+        public void All_Packet_Have_Attribute(Type type)
+        {
+            Check.WithCustomMessage($"Missing PacketAttribute for packet {type.Name}").That(type.GetCustomAttribute<PacketAttribute>()).IsNotNull();
+        }
     }
 }
