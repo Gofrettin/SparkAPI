@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Spark.Core.Option;
 using Spark.Core.Server;
 using Spark.Packet.Login;
 using Spark.Tests.Attributes;
@@ -12,6 +13,8 @@ namespace Spark.Tests.Processor
         {
             using (GameContext context = CreateContext())
             {
+                context.Client.AddOption(new LoginOption());
+                
                 context.Process(new NsTeST
                 {
                     Name = "MyNameIs",

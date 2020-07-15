@@ -51,13 +51,22 @@ namespace Spark.Processor.Battle
             
                 entity.Buffs.Add(buff);
             
-                _eventPipeline.Emit(new EntityBuffedEvent(client, entity, buff));
+                _eventPipeline.Emit(new EntityReceiveBuffEvent(client, entity, buff));
             
                 Logger.Info($"Buff with id {packet.BuffId} successfully added to entity {entity.EntityType} with id {entity.Id}");
                 return;
             }
+
+            IBuff existingBuff = entity.Buffs.FirstOrDefault(x => x.Id == packet.BuffId);
+            if (existingBuff == null)
+            {
+                Logger.Warn($"Can't found buff to remove ({packet.BuffId})");
+                return;
+            }
+
+            entity.Buffs.Remove(existingBuff);
+            _eventPipeline.Emit(new EntityRemoveBuffEvent(client, entity, existingBuff));
             
-            entity.Buffs.RemoveIf(x => x.Id == packet.BuffId);
             Logger.Info($"Buff with id {packet.BuffId} successfully removed from entity {entity.EntityType} with id {entity.Id}");
         }
     }

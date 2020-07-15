@@ -2,6 +2,7 @@
 using Spark.Event.Entities;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
+using Spark.Game.Battle;
 using Spark.Packet.Battle;
 using Spark.Tests.Attributes;
 
@@ -90,6 +91,58 @@ namespace Spark.Tests.Processor
 
                 context.Verify<EntityDamageEvent>(x => x.Caster.Equals(character) && x.Target.Equals(target) && x.Damage == 1000 && x.SkillKey == 254);
                 context.Verify<EntityDeathEvent>(x => x.Killer.Equals(character) && x.Entity.Equals(target));
+            }
+        }
+
+        [ProcessorTest(typeof(Bf))]
+        [EventTest(typeof(EntityReceiveBuffEvent))]
+        public void Bf_Add_Test()
+        {
+            using (GameContext context = CreateContext())
+            {
+                ICharacter character = context.Character;
+                ILivingEntity target = TestFactory.CreateMonster();
+
+                IMap map = TestFactory.CreateMap(character, target);
+
+                context.Process(new Bf
+                {
+                    EntityType = target.EntityType,
+                    EntityId = target.Id,
+                    BuffId = 150,
+                    Duration = 1 * 600
+                });
+
+                Check.That(target.Buffs).HasElementThatMatches(x => x.Id == 150);
+
+                context.Verify<EntityReceiveBuffEvent>(x => x.Entity.Equals(target) && x.Buff.Id == 150);
+            }
+        }
+        
+        [ProcessorTest(typeof(Bf))]
+        [EventTest(typeof(EntityRemoveBuffEvent))]
+        public void Bf_Remove_Test()
+        {
+            using (GameContext context = CreateContext())
+            {
+                ICharacter character = context.Character;
+                ILivingEntity target = TestFactory.CreateMonster();
+
+                target.Buffs.Add(new Buff(150, 600));
+                
+                TestFactory.CreateMap(character, target);
+
+                context.Process(new Bf
+                {
+                    EntityType = target.EntityType,
+                    EntityId = target.Id,
+                    BuffId = 150,
+                    Duration = 0
+                });
+
+                Check.That(target.Buffs).Not.HasElementThatMatches(x => x.Id == 150);
+
+                context.Verify<EntityRemoveBuffEvent>(x => x.Entity.Equals(target) && x.Buff.Id == 150);
             }
         }
     }

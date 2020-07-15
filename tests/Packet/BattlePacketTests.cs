@@ -46,5 +46,17 @@ namespace Spark.Tests.Packet
                 HpPercentage = 0
             });
         }
+
+        [PacketTest(typeof(Bf))]
+        public void Bf_Test()
+        {
+            CreateAndCheckValues("bf 1 123456 0.145.150 80", new Bf
+            {
+                EntityType = EntityType.Player,
+                EntityId = 123456,
+                BuffId = 145,
+                Duration = 150
+            });
+        }
     }
 }
