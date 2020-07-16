@@ -28,6 +28,7 @@ namespace Spark.Extension
             services.AddTransient<ISessionFactory, SessionFactory>();
             services.AddTransient<IObjectFactory, ObjectFactory>();
             services.AddTransient<IBuffFactory, BuffFactory>();
+            services.AddTransient<IPortalFactory, PortalFactory>();
         }
     }
 }

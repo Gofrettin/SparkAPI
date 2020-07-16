@@ -19,7 +19,8 @@ namespace Spark.Game
         private readonly IDictionary<long, INpc> _npcs;
         private readonly IDictionary<long, IMapObject> _objects;
         private readonly IDictionary<long, IPlayer> _players;
-
+        private readonly IDictionary<int, IPortal> _portals;
+        
         public Map(int id, MapData data)
         {
             Id = id;
@@ -32,7 +33,10 @@ namespace Spark.Game
             _npcs = new Dictionary<long, INpc>();
             _players = new Dictionary<long, IPlayer>();
             _objects = new Dictionary<long, IMapObject>();
+            _portals = new Dictionary<int, IPortal>();
         }
+
+        public IEnumerable<IPortal> Portals => _portals.Values;
 
         public IEnumerable<IEntity> Entities => _monsters.Values
             .Concat<IEntity>(_npcs.Values)
@@ -135,6 +139,12 @@ namespace Spark.Game
             entity.Map = null;
 
             Logger.Info($"Entity {entity.EntityType} with id {entity.Id} removed from map {Id}");
+        }
+
+        public void AddPortal(IPortal portal)
+        {
+            _portals[portal.Id] = portal;
+            Logger.Info($"Portal {portal.Id} of type {portal.PortalType} added to map {Id}");
         }
 
         public bool IsWalkable(Vector2D vector2D)

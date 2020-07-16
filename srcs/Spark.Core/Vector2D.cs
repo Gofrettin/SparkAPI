@@ -27,6 +27,14 @@ namespace Spark.Core
 
             return (int)(min * Sqrt + max - min);
         }
+        
+        public bool IsInRange(Vector2D position, int range)
+        {
+            int dx = Math.Abs(X - position.X);
+            int dy = Math.Abs(Y - position.Y);
+            
+            return dx <= range && dy <= range && dx + dy <= range + range / 2;
+        }
 
         public override string ToString() => $"{X}/{Y}";
     }

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using NLog;
 using Spark.Core;
@@ -13,6 +15,16 @@ namespace Spark.Game.Abstraction.Extension
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        public static void WearSp(this ICharacter character)
+        {
+            character.Client.SendPacket("sl 1");
+        }
+        
+        public static void UnwearSp(this ICharacter character)
+        {
+            character.Client.SendPacket("sl 0");
+        }
+        
         public static Task Walk(this ICharacter character, Vector2D destination)
         {
             if (!character.Map.IsWalkable(destination))
@@ -47,10 +59,26 @@ namespace Spark.Game.Abstraction.Extension
                 character.Position = nextPosition;
                 if (!character.Position.Equals(destination))
                 {
-                    character.Walk(destination);
+                    return character.Walk(destination);
                 }
-
+                
                 Logger.Info($"Moved to {character.Position}");
+
+                IMap map = character.Map;
+                IPortal closestPortal = map.Portals.OrderBy(p => p.Position.GetDistance(character.Position)).FirstOrDefault();
+
+                if (closestPortal == null)
+                {
+                    return Task.CompletedTask;
+                }
+                
+                if (character.Position.IsInRange(closestPortal.Position, 2))
+                {
+                    character.Client.SendPacket("preq");
+                    Logger.Info("Character on portal, switching map");
+                }
+                
+                return Task.CompletedTask;
             }, TaskContinuationOptions.ExecuteSynchronously);
         }
 
