@@ -107,13 +107,6 @@ namespace Spark.Network
             }
         }
 
-        public void Stop()
-        {
-            CancellationTokenSource.Cancel();
-            Client.Close();
-            Task.WaitAll(BackgroundTask);
-        }
-
         public void Connect(IPEndPoint ep)
         {
             Client.Connect(ep);

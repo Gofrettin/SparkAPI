@@ -29,12 +29,6 @@ namespace Spark.Tests.Packet
             });
         }
 
-        [PacketTest(typeof(MapOut))]
-        public void MapOut_Test()
-        {
-            CreateAndCheckValues("mapout", new MapOut());
-        }
-
         [PacketTest(typeof(Ski))]
         public void Ski_Test()
         {

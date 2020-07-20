@@ -13,12 +13,14 @@ namespace Spark.Tests.Processor
     {
         [ProcessorTest(typeof(At))]
         [EventTest(typeof(MapJoinEvent))]
+        [EventTest(typeof(MapLeaveEvent))]
         public void At_Test()
         {
             using (GameContext context = CreateContext())
             {
                 ICharacter character = context.Character;
-
+                IMap currentMap = character.Map;
+                
                 context.Process(new At
                 {
                     MapId = 2544,
@@ -32,6 +34,7 @@ namespace Spark.Tests.Processor
                 Check.That(character.Direction).IsEqualTo(Direction.South);
 
                 context.Verify<MapJoinEvent>(x => x.Map.Equals(character.Map));
+                context.Verify<MapLeaveEvent>(x => x.Map.Equals(currentMap));
             }
         }
 
@@ -54,24 +57,6 @@ namespace Spark.Tests.Processor
                 Check.That(character.Id).IsEqualTo(123456);
 
                 context.Verify<CharacterInitializedEvent>(x => x.Character.Equals(character));
-            }
-        }
-
-        [ProcessorTest(typeof(MapOut))]
-        [EventTest(typeof(MapLeaveEvent))]
-        public void MapOut_Test()
-        {
-            using (GameContext context = CreateContext())
-            {
-                ICharacter character = context.Character;
-                IMap map = TestFactory.CreateMap(character);
-
-                context.Process(new MapOut());
-
-                Check.That(character.Map).IsNull();
-                Check.That(map.Entities).Not.Contains(character);
-
-                context.Verify<MapLeaveEvent>(x => x.Map.Equals(map));
             }
         }
 

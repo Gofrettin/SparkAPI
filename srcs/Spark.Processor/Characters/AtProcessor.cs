@@ -28,6 +28,12 @@ namespace Spark.Processor.Characters
                 return;
             }
 
+            IMap currentMap = client.Character.Map;
+            if (currentMap != null)
+            {
+                _eventPipeline.Emit(new MapLeaveEvent(client, currentMap));
+            }
+            
             client.Character.Position = packet.Position;
             client.Character.Direction = packet.Direction;
 
