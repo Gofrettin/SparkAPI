@@ -26,7 +26,7 @@ namespace Spark.Processor.Entities
             ILivingEntity entity = map.GetEntity<ILivingEntity>(packet.EntityType, packet.EntityId);
             if (entity == null)
             {
-                Logger.Warn($"Can't found entity {packet.EntityType} with id {packet.EntityId} in map {map.Id}");
+                Logger.Debug($"Can't found entity {packet.EntityType} with id {packet.EntityId} in map {map.Id} (happens when joining a map)");
                 return;
             }
 
@@ -37,13 +37,13 @@ namespace Spark.Processor.Entities
                 if (entity.MorphId > 0 && entity.MorphId <= 34)
                 {
                     _eventPipeline.Emit(new SpecialistWearEvent(client, entity, packet.MorphId));
-                    Logger.Info($"Entity {entity.EntityType} with id {entity.Id} wear SP {packet.MorphId}");
+                    Logger.Debug($"Entity {entity.EntityType} with id {entity.Id} wear SP {packet.MorphId}");
                 }
 
                 if (entity.MorphId == 0)
                 {
                     _eventPipeline.Emit(new SpecialistUnwearEvent(client, entity));
-                    Logger.Info($"Entity {entity.EntityType} with id {entity.Id} removed SP");
+                    Logger.Debug($"Entity {entity.EntityType} with id {entity.Id} removed SP");
                 }
             }
         }

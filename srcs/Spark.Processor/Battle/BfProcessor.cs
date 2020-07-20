@@ -53,7 +53,7 @@ namespace Spark.Processor.Battle
             
                 _eventPipeline.Emit(new EntityReceiveBuffEvent(client, entity, buff));
             
-                Logger.Info($"Buff with id {packet.BuffId} successfully added to entity {entity.EntityType} with id {entity.Id}");
+                Logger.Debug($"Buff with id {packet.BuffId} successfully added to entity {entity.EntityType} with id {entity.Id}");
                 return;
             }
 
@@ -67,7 +67,7 @@ namespace Spark.Processor.Battle
             entity.Buffs.Remove(existingBuff);
             _eventPipeline.Emit(new EntityRemoveBuffEvent(client, entity, existingBuff));
             
-            Logger.Info($"Buff with id {packet.BuffId} successfully removed from entity {entity.EntityType} with id {entity.Id}");
+            Logger.Debug($"Buff with id {packet.BuffId} successfully removed from entity {entity.EntityType} with id {entity.Id}");
         }
     }
 }

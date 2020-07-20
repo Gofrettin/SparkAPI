@@ -34,8 +34,12 @@ namespace Spark.Processor.Inventory
                 
                 character.Inventory.AddObject(objectStack);
             }
-            
-            Logger.Info($"Inventory {bagType} successfully initialized");
+
+            Logger.Debug($"Inventory {bagType} successfully initialized");
+            if (bagType == BagType.Costume)
+            {
+                Logger.Info($"{character.Name} inventory successfully initialized");
+            }
         }
     }
 }

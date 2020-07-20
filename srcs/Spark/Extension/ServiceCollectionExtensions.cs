@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Spark.Core.Extension;
 using Spark.Game.Abstraction.Factory;
 using Spark.Game.Factory;
-using Spark.Network.Session;
+using Spark.Network;
 using ObjectFactory = Spark.Game.Factory.ObjectFactory;
 
 namespace Spark.Extension
@@ -25,7 +25,7 @@ namespace Spark.Extension
             services.AddTransient<IMapFactory, MapFactory>();
             services.AddTransient<ISkillFactory, SkillFactory>();
             services.AddTransient<IEntityFactory, EntityFactory>();
-            services.AddTransient<ISessionFactory, SessionFactory>();
+            services.AddTransient<INetworkFactory, NetworkFactory>();
             services.AddTransient<IObjectFactory, ObjectFactory>();
             services.AddTransient<IBuffFactory, BuffFactory>();
             services.AddTransient<IPortalFactory, PortalFactory>();

@@ -6,11 +6,11 @@ using Spark.Database.Data;
 
 namespace Spark.Database
 {
-    public sealed class SparkDatabase : IDatabase
+    public sealed class FileDatabase : IDatabase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public SparkDatabase()
+        public FileDatabase()
         {
             Directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException(), "Database");
 
@@ -29,6 +29,8 @@ namespace Spark.Database
 
         public void Load()
         {
+            Logger.Info("Loading database");
+            
             if (!System.IO.Directory.Exists(Directory))
             {
                 throw new IOException($"Can't load database missing {Directory} directory");

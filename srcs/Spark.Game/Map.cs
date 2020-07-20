@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -29,11 +30,11 @@ namespace Spark.Game
             Height = BitConverter.ToInt16(Grid.Slice(0, 2));
             Width = BitConverter.ToInt16(Grid.Slice(2, 2));
 
-            _monsters = new Dictionary<long, IMonster>();
-            _npcs = new Dictionary<long, INpc>();
-            _players = new Dictionary<long, IPlayer>();
-            _objects = new Dictionary<long, IMapObject>();
-            _portals = new Dictionary<int, IPortal>();
+            _monsters = new ConcurrentDictionary<long, IMonster>();
+            _npcs = new ConcurrentDictionary<long, INpc>();
+            _players = new ConcurrentDictionary<long, IPlayer>();
+            _objects = new ConcurrentDictionary<long, IMapObject>();
+            _portals = new ConcurrentDictionary<int, IPortal>();
         }
 
         public IEnumerable<IPortal> Portals => _portals.Values;
@@ -138,13 +139,13 @@ namespace Spark.Game
 
             entity.Map = null;
 
-            Logger.Info($"Entity {entity.EntityType} with id {entity.Id} removed from map {Id}");
+            Logger.Debug($"Entity {entity.EntityType} with id {entity.Id} removed from map {Id}");
         }
 
         public void AddPortal(IPortal portal)
         {
             _portals[portal.Id] = portal;
-            Logger.Info($"Portal {portal.Id} of type {portal.PortalType} added to map {Id}");
+            Logger.Debug($"Portal {portal.Id} of type {portal.PortalType} added to map {Id}");
         }
 
         public bool IsWalkable(Vector2D vector2D)
@@ -155,7 +156,7 @@ namespace Spark.Game
             }
 
             byte b = Grid[4 + vector2D.Y * Height + vector2D.X];
-            return b == 0 || b == 2 || b >= 16 && b <= 19;
+            return b == 0 || b == 2 || (b >= 16 && b <= 19);
         }
     }
 }

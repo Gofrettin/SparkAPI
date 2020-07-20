@@ -4,7 +4,7 @@ using NLog;
 using Spark.Core.Option;
 using Spark.Core.Server;
 using Spark.Game.Abstraction;
-using Spark.Network.Session;
+using Spark.Network;
 using Spark.Packet.Login;
 
 namespace Spark.Processor.Login
@@ -13,9 +13,9 @@ namespace Spark.Processor.Login
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ISessionFactory _sessionFactory;
+        private readonly INetworkFactory _networkFactory;
 
-        public NsTeSTProcessor(ISessionFactory sessionFactory) => _sessionFactory = sessionFactory;
+        public NsTeSTProcessor(INetworkFactory networkFactory) => _networkFactory = networkFactory;
 
         protected override void Process(IClient client, NsTeST packet)
         {
@@ -26,9 +26,9 @@ namespace Spark.Processor.Login
                 Logger.Error("Can't found world server");
                 return;
             }
-
-            client.Session.Stop();
-            client.Session = _sessionFactory.CreateSession(server.Ip, packet.EncryptionKey);
+            
+            client.Network.Close();
+            client.Network = _networkFactory.CreateRemoteNetwork(server.Ip, packet.EncryptionKey);
 
             client.SendPacket($"{packet.EncryptionKey}");
             Task.Delay(1000).ContinueWith(s =>

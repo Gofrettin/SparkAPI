@@ -4,12 +4,7 @@ using Spark.Core.Enum;
 using Spark.Database;
 using Spark.Database.Data;
 using Spark.Extension;
-using Spark.Game.Abstraction.Factory;
-using Spark.Game.Battle;
-using Spark.Game.Factory;
-using Spark.Network.Session;
 using Spark.Processor;
-using ObjectFactory = Spark.Game.Factory.ObjectFactory;
 
 namespace Spark.Tests.Extension
 {

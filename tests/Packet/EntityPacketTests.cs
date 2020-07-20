@@ -2,6 +2,7 @@
 using Spark.Core.Enum;
 using Spark.Packet.Entities;
 using Spark.Tests.Attributes;
+using Xunit;
 
 namespace Spark.Tests.Packet
 {

@@ -12,7 +12,7 @@ namespace Spark.Network.Decoder
 
             for (int i = 0; i < size; i++)
             {
-                packet.Append(Convert.ToChar(bytes[i] - 0xF));
+                packet.Append(Convert.ToChar(bytes[i] - 15));
             }
 
             packet.Remove(packet.Length - 1, 1);

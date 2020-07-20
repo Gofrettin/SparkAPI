@@ -23,7 +23,10 @@ namespace Spark.Game.Factory
                 return default;
             }
 
-            return new Map(mapId, data);
+            var map = new Map(mapId, data);
+            
+            Logger.Info($"Map {map.Id} created ({map.Height} / {map.Width})");
+            return map;
         }
     }
 }

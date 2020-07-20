@@ -1,11 +1,12 @@
 ﻿using System;
 
-namespace Spark.Network.Session
+namespace Spark.Network
 {
-    public interface ISession
+    public interface INetwork
     {
         event Action<string> PacketReceived;
         void SendPacket(string packet);
-        void Stop();
+
+        void Close();
     }
 }

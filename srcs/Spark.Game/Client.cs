@@ -3,35 +3,35 @@ using System.Collections.Generic;
 using Spark.Core.Option;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
-using Spark.Network.Session;
+using Spark.Network;
 
 namespace Spark.Game
 {
     public sealed class Client : IClient
     {
-        private ISession _session;
+        private INetwork _network;
 
-        public Client(ISession session)
+        public Client(INetwork network)
         {
             Id = Guid.NewGuid();
-            Session = session;
+            Network = network;
             Options = new Dictionary<Type, object>();
         }
 
         public Dictionary<Type, object> Options { get; }
 
-        public ISession Session
+        public INetwork Network
         {
-            get => _session;
+            get => _network;
             set
             {
-                if (_session != null)
+                if (_network != null)
                 {
-                    _session.PacketReceived -= ProcessPacket;
+                    _network.PacketReceived -= ProcessPacket;
                 }
 
-                _session = value;
-                _session.PacketReceived += ProcessPacket;
+                _network = value;
+                _network.PacketReceived += ProcessPacket;
             }
         }
 
@@ -42,7 +42,7 @@ namespace Spark.Game
 
         public void SendPacket(string packet)
         {
-            Session.SendPacket(packet);
+            Network.SendPacket(packet);
         }
 
         public T GetOption<T>() where T : IOption => (T)Options.GetValueOrDefault(typeof(T));
@@ -56,5 +56,7 @@ namespace Spark.Game
         {
             PacketReceived?.Invoke(packet);
         }
+
+        public bool Equals(IClient other) => other != null && other.Id.Equals(Id);
     }
 }

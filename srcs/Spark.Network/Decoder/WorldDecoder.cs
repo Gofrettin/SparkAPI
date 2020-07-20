@@ -1,59 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Spark.Network.Decoder
 {
     public class WorldDecoder : IDecoder
     {
-        private static readonly char[] Keys = { ' ', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'n' };
+        private static readonly char[] Keys = { ' ', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'n', };
 
-        public IEnumerable<string> Decode(byte[] buffer, int size)
+        private List<byte> Cache { get; } = new List<byte>();
+        
+        public IEnumerable<string> Decode(byte[] bytes, int size)
         {
-            var packets = new List<string>();
-
             int index = 0;
-            string packet = string.Empty;
-
-            while (index <= size)
+            var output = new List<string>();
+            string currentPacket = string.Empty;
+            while (index < size)
             {
-                byte b = buffer[index];
-                index++;
-
-                if (b == 0xFF)
+                byte currentByte = bytes[index++];
+                if (currentByte == 0xFF)
                 {
-                    packets.Add(packet.Trim());
-                    packet = string.Empty;
+                    if (currentPacket != string.Empty)
+                    {
+                        output.Add(currentPacket.Trim());
+                        currentPacket = "";
+                    }
                     continue;
                 }
 
-                int length = b & 0x7F;
-
-                if ((b & 0x80) != 0)
+                int length = currentByte & 0x7F;
+                if ((currentByte & 0x80) != 0)
                 {
-                    while (length > 0)
+                    while (length != 0)
                     {
                         if (index <= size)
                         {
-                            b = buffer[index];
-                            index++;
+                            currentByte = bytes[index++];
 
-                            int firstIndex = ((b & 0xF0) >> 4) - 1;
-                            if (firstIndex >= 0 && firstIndex < Keys.Length)
+                            uint firstIndex = ((currentByte & 0xF0U) >> 4) - 1;
+                            if (firstIndex < Keys.Length)
                             {
-                                int first = Keys[firstIndex];
-                                if (first != 0x6E)
+                                char c = Keys[firstIndex];
+                                if (c != 0x6E)
                                 {
-                                    packet += Convert.ToChar(first);
+                                    currentPacket += c;
                                 }
                             }
 
-                            int secondIndex = (b & 0xF) - 1;
-                            if (secondIndex >= 0 && secondIndex < Keys.Length)
+                            if (length <= 1)
                             {
-                                int second = Keys[secondIndex];
-                                if (second != 0x6E)
+                                break;
+                            }
+
+                            uint secondIndex = (currentByte & 0xFU) - 1;
+                            if (secondIndex < Keys.Length)
+                            {
+                                char c = Keys[secondIndex];
+                                if (c != 0x6E)
                                 {
-                                    packet += Convert.ToChar(second);
+                                    currentPacket += c;
                                 }
                             }
 
@@ -71,7 +76,7 @@ namespace Spark.Network.Decoder
                     {
                         if (index <= size)
                         {
-                            packet += Convert.ToChar(buffer[index] ^ 0xFF);
+                            currentPacket += (char)(bytes[index] ^ 0xFF);
                             index++;
                         }
 
@@ -79,8 +84,7 @@ namespace Spark.Network.Decoder
                     }
                 }
             }
-
-            return packets;
+            return output;
         }
     }
 }

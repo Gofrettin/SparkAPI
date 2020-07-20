@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using Spark.Core;
 using Spark.Core.Option;
 using Spark.Core.Server;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Factory;
-using Spark.Network.Session;
+using Spark.Network;
 using Spark.Packet;
 using Spark.Processor;
 
@@ -15,19 +16,19 @@ namespace Spark.Game.Factory
     {
         private readonly IPacketFactory _packetFactory;
         private readonly IPacketManager _packetManager;
-        private readonly ISessionFactory _sessionFactory;
+        private readonly INetworkFactory _networkFactory;
 
-        public ClientFactory(IPacketManager packetManager, IPacketFactory packetFactory, ISessionFactory sessionFactory)
+        public ClientFactory(IPacketManager packetManager, IPacketFactory packetFactory, INetworkFactory networkFactory)
         {
             _packetManager = packetManager;
             _packetFactory = packetFactory;
-            _sessionFactory = sessionFactory;
+            _networkFactory = networkFactory;
         }
 
-        public IClient CreateClient(IPEndPoint ip, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
+        public IClient CreateRemoteClient(IPEndPoint ip, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
         {
-            ISession session = _sessionFactory.CreateSession(ip);
-            IClient client = new Client(session);
+            INetwork network = _networkFactory.CreateRemoteNetwork(ip);
+            IClient client = new Client(network);
 
             client.AddOption(new LoginOption(serverSelector, characterSelector));
 
@@ -44,5 +45,7 @@ namespace Spark.Game.Factory
 
             return client;
         }
+
+        public IClient CreateLocalClient(Process process) => new Client(_networkFactory.CreateLocalNetwork(process));
     }
 }

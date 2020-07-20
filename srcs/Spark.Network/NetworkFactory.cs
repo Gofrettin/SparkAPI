@@ -1,27 +1,28 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Timers;
 using Spark.Network.Decoder;
 using Spark.Network.Encoder;
 
-namespace Spark.Network.Session
+namespace Spark.Network
 {
-    public class SessionFactory : ISessionFactory
+    public class NetworkFactory : INetworkFactory
     {
-        public ISession CreateSession(IPEndPoint ip)
+        public INetwork CreateRemoteNetwork(IPEndPoint ip)
         {
-            var session = new RemoteSession(new LoginEncoder(), new LoginDecoder());
+            var network = new RemoteNetwork(new LoginEncoder(), new LoginDecoder(), 25);
 
-            session.Connect(ip);
+            network.Connect(ip);
 
-            return session;
+            return network;
         }
 
-        public ISession CreateSession(IPEndPoint ip, int encryptionKey)
+        public INetwork CreateRemoteNetwork(IPEndPoint ip, int encryptionKey)
         {
             int packetId = new Random().Next(20000, 40000);
 
-            var session = new RemoteSession(new WorldEncoder(encryptionKey), new WorldDecoder())
+            var session = new RemoteNetwork(new WorldEncoder(encryptionKey), new WorldDecoder(), 0xFF)
             {
                 Modifiers = new Func<string, string>[]
                 {
@@ -37,7 +38,7 @@ namespace Spark.Network.Session
             };
             keepAlive.Elapsed += (obj, e) =>
             {
-                if (!session.Socket.Connected)
+                if (!session.Client.Connected)
                 {
                     keepAlive.Stop();
                 }
@@ -49,5 +50,7 @@ namespace Spark.Network.Session
 
             return session;
         }
+
+        public INetwork CreateLocalNetwork(Process process) => throw new NotImplementedException();
     }
 }

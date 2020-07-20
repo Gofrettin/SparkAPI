@@ -1,15 +1,15 @@
 ﻿using System;
 using Spark.Core.Option;
 using Spark.Game.Abstraction.Entities;
-using Spark.Network.Session;
+using Spark.Network;
 
 namespace Spark.Game.Abstraction
 {
-    public interface IClient
+    public interface IClient : IEquatable<IClient>
     {
         Guid Id { get; }
         ICharacter Character { get; set; }
-        ISession Session { get; set; }
+        INetwork Network { get; set; }
 
         event Action<string> PacketReceived;
 

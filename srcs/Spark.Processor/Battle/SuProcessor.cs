@@ -33,7 +33,7 @@ namespace Spark.Processor.Battle
 
             if (target == null || caster == null)
             {
-                Logger.Warn("Can't found target or caster in map");
+                Logger.Debug("Can't found target or caster in map");
                 return;
             }
 
@@ -43,11 +43,12 @@ namespace Spark.Processor.Battle
 
             if (packet.IsTargetAlive)
             {
-                Logger.Info($"{target.EntityType} {target.Id} is alive");
                 return;
             }
 
-            Logger.Info($"Entity {target.EntityType} with id {target.Id} died");
+            target.HpPercentage = 0;
+
+            Logger.Debug($"Entity {target.EntityType} with id {target.Id} died");
             map.RemoveEntity(target);
 
             _eventPipeline.Emit(new EntityDeathEvent(client, target, caster));

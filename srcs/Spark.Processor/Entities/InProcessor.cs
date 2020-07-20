@@ -51,6 +51,12 @@ namespace Spark.Processor.Entities
                     return;
             }
 
+            if (entity == null)
+            {
+                Logger.Error($"Failed to create entity {packet.EntityType} {packet.EntityId}");
+                return;
+            }
+            
             entity.Position = packet.Position;
             if (entity is ILivingEntity livingEntity)
             {

@@ -12,10 +12,8 @@ using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Factory;
 using Spark.Game.Factory;
 using Spark.Gameforge;
-using Spark.Network.Session;
 using Spark.Packet;
 using Spark.Processor;
-using ObjectFactory = Spark.Game.Factory.ObjectFactory;
 
 namespace Spark
 {
@@ -45,7 +43,7 @@ namespace Spark
 
         public IClient CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
         {
-            IClient client = ClientFactory.CreateClient(ip, serverSelector, characterSelector);
+            IClient client = ClientFactory.CreateRemoteClient(ip, serverSelector, characterSelector);
 
             client.SendPacket($"NoS0577 {token} {GameforgeService.InstallationId} 007C762C 20.9.3.3131 0 35A4AA7A09325A8BDEF01C188C7BF295");
 
@@ -71,7 +69,7 @@ namespace Spark
 
             services.AddImplementingTypes<IPacketProcessor>();
 
-            services.AddSingleton<IDatabase, SparkDatabase>();
+            services.AddSingleton<IDatabase, FileDatabase>();
             
             services.AddGameFactories();
             
