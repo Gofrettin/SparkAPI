@@ -40,8 +40,8 @@ namespace Spark.Packet.Entities
                 case EntityType.Npc:
                     Npc = new NpcInfo
                     {
-                        HpPercentage = packet[0].ToByte(),
-                        MpPercentage = packet[1].ToByte(),
+                        HpPercentage = packet[0].ToInt(),
+                        MpPercentage = packet[1].ToInt(),
                         Faction = packet[3].ToEnum<Faction>(),
                         Owner = packet[5].ToNullableLong(),
                         Name = packet[9]
@@ -71,8 +71,8 @@ namespace Spark.Packet.Entities
 
         public class NpcInfo
         {
-            public byte HpPercentage { get; set; }
-            public byte MpPercentage { get; set; }
+            public int HpPercentage { get; set; }
+            public int MpPercentage { get; set; }
             public Faction Faction { get; set; }
             public long? Owner { get; set; }
             public string Name { get; set; }

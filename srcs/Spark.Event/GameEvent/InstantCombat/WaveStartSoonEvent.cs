@@ -2,10 +2,10 @@
 
 namespace Spark.Event.GameEvent.InstantCombat
 {
-    public class WaveStartEvent : IEvent
+    public class WaveStartSoonEvent : IEvent
     {
         public IClient Client { get; }
 
-        public WaveStartEvent(IClient client) => Client = client;
+        public WaveStartSoonEvent(IClient client) => Client = client;
     }
 }

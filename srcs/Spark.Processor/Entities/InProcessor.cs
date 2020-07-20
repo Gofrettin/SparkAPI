@@ -71,8 +71,8 @@ namespace Spark.Processor.Entities
                 }
                 else
                 {
-                    livingEntity.HpPercentage = packet.Npc.HpPercentage;
-                    livingEntity.MpPercentage = packet.Npc.MpPercentage;
+                    livingEntity.HpPercentage = packet.Npc.HpPercentage > 100 ? 100 : packet.Npc.HpPercentage;
+                    livingEntity.MpPercentage = packet.Npc.MpPercentage > 100 ? 100 : packet.Npc.MpPercentage;
                 }
             }
 

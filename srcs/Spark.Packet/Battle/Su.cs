@@ -12,7 +12,7 @@ namespace Spark.Packet.Battle
         public long TargetId { get; set; }
         public int SkillKey { get; set; }
         public bool IsTargetAlive { get; set; }
-        public byte HpPercentage { get; set; }
+        public int HpPercentage { get; set; }
         public int Damage { get; set; }
 
         public void Construct(string[] packet)
@@ -23,7 +23,7 @@ namespace Spark.Packet.Battle
             TargetId = packet[3].ToLong();
             SkillKey = packet[4].ToInt();
             IsTargetAlive = packet[10].ToBool();
-            HpPercentage = packet[11].ToByte();
+            HpPercentage = packet[11].ToInt();
             Damage = packet[12].ToInt();
         }
     }

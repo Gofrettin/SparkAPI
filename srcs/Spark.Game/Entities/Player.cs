@@ -26,7 +26,7 @@ namespace Spark.Game.Entities
         public int MpPercentage { get; set; }
         public short MorphId { get; set; }
         public List<IBuff> Buffs { get; }
-        public byte Speed { get; set; }
+        public short Speed { get; set; }
         public Direction Direction { get; set; }
         public Class Class { get; set; }
         public Gender Gender { get; set; }

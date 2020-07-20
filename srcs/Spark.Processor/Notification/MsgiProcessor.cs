@@ -29,7 +29,12 @@ namespace Spark.Processor.Notification
                 
                 if (packet.MessageId == 387)
                 {
-                    _eventPipeline.Emit(new WaveStartEvent(client));
+                    _eventPipeline.Emit(new ICStartEvent(client));
+                }
+
+                if (packet.MessageId == 384)
+                {
+                    _eventPipeline.Emit(new WaveStartSoonEvent(client));
                 }
             }
         }

@@ -12,7 +12,7 @@ namespace Spark.Game.Abstraction.Entities
 
         List<IBuff> Buffs { get; }
         
-        byte Speed { get; set; }
+        short Speed { get; set; }
         Direction Direction { get; set; }
     }
 }

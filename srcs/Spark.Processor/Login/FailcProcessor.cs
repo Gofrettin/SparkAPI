@@ -10,6 +10,7 @@ namespace Spark.Processor.Login
 
         protected override void Process(IClient client, Failc packet)
         {
+            client.Network.Close();
             Logger.Info($"Failed to connect (reason: {packet.Reason})");
         }
     }

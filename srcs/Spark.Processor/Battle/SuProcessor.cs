@@ -37,7 +37,7 @@ namespace Spark.Processor.Battle
                 return;
             }
 
-            target.HpPercentage = packet.HpPercentage;
+            target.HpPercentage = packet.HpPercentage > 100 ? 100 : packet.HpPercentage;
 
             _eventPipeline.Emit(new EntityDamageEvent(client, caster, target, packet.SkillKey, packet.Damage));
 
