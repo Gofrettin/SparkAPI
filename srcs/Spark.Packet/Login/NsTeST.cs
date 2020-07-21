@@ -6,7 +6,6 @@ using Spark.Packet.Extension;
 
 namespace Spark.Packet.Login
 {
-    [Packet("NsTeST")]
     public class NsTeST : IPacket
     {
         public string Name { get; set; }

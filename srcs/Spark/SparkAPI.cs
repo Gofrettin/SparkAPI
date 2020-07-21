@@ -12,7 +12,7 @@ using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Factory;
 using Spark.Game.Factory;
 using Spark.Gameforge;
-using Spark.Packet;
+using Spark.Packet.Factory;
 using Spark.Packet.Processor;
 
 namespace Spark
@@ -66,7 +66,8 @@ namespace Spark
         private static ISpark CreateInstance()
         {
             IServiceCollection services = new ServiceCollection();
-
+            
+            services.AddImplementingTypes<IPacketCreator>();
             services.AddImplementingTypes<IPacketProcessor>();
 
             services.AddSingleton<IDatabase, FileDatabase>();
