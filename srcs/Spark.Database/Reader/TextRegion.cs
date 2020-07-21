@@ -31,11 +31,25 @@ namespace Spark.Database.Reader
             return regions.Select(x => new TextRegion(x));
         }
 
-        public IEnumerable<TextLine> GetLines(Predicate<TextLine> predicate) => Lines.Where(predicate.Invoke);
-        public IEnumerable<TextLine> GetLines(string start) => GetLines(x => x.StartWith(start));
-        public TextLine GetLine(Predicate<TextLine> predicate) => Lines.FirstOrDefault(predicate.Invoke);
+        public IEnumerable<TextLine> GetLines(Predicate<TextLine> predicate)
+        {
+            return Lines.Where(predicate.Invoke);
+        }
 
-        public TextLine GetLine(string start) => GetLine(x => x.StartWith(start));
+        public IEnumerable<TextLine> GetLines(string start)
+        {
+            return GetLines(x => x.StartWith(start));
+        }
+
+        public TextLine GetLine(Predicate<TextLine> predicate)
+        {
+            return Lines.FirstOrDefault(predicate.Invoke);
+        }
+
+        public TextLine GetLine(string start)
+        {
+            return GetLine(x => x.StartWith(start));
+        }
 
         public string AsString()
         {

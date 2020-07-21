@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net;
 using Spark.Core.Server;
-using Spark.Packet.Extension;
+using Spark.Core.Extension;
 
 namespace Spark.Packet.Login
 {

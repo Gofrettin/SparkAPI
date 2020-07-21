@@ -10,11 +10,8 @@ namespace Spark.Packet.Processor.Notification
     {
         private readonly IEventPipeline _eventPipeline;
 
-        public SayiProcessor(IEventPipeline eventPipeline)
-        {
-            _eventPipeline = eventPipeline;
-        }
-        
+        public SayiProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+
         protected override void Process(IClient client, Sayi packet)
         {
             _eventPipeline.Emit(new ChatMessageReceivedEvent(client, packet.MessageId, packet.Color));

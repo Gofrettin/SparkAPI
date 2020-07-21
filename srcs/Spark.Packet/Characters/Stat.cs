@@ -1,7 +1,7 @@
-﻿using Spark.Packet.Extension;
+﻿using Spark.Core.Extension;
 
 namespace Spark.Packet.Characters
-{
+{ 
     public class Stat : IPacket
     {
         public int Hp { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Spark.Packet.Characters;
-using Spark.Packet.Extension;
+using Spark.Core.Extension;
 
 namespace Spark.Packet.Factory.Characters
 {

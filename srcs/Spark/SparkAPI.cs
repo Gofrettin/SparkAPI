@@ -50,8 +50,10 @@ namespace Spark
             return client;
         }
 
-        public Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> accountSelector) =>
-            GameforgeService.GetSessionToken(email, password, locale, accountSelector);
+        public Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> accountSelector)
+        {
+            return GameforgeService.GetSessionToken(email, password, locale, accountSelector);
+        }
 
         public void AddEventHandler(IEventHandler eventHandler)
         {

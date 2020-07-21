@@ -23,6 +23,9 @@ namespace Spark.Game.Entities
         public int ItemKey { get; set; }
         public int Amount { get; }
 
-        public bool Equals(IEntity other) => other != null && other.EntityType == EntityType && other.Id == Id;
+        public bool Equals(IEntity other)
+        {
+            return other != null && other.EntityType == EntityType && other.Id == Id;
+        }
     }
 }

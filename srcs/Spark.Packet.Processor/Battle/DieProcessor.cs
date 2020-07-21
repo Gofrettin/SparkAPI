@@ -10,11 +10,8 @@ namespace Spark.Packet.Processor.Battle
     {
         private readonly IEventPipeline _eventPipeline;
 
-        public DieProcessor(IEventPipeline eventPipeline)
-        {
-            _eventPipeline = eventPipeline;
-        }
-        
+        public DieProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+
         protected override void Process(IClient client, Die packet)
         {
             IMap map = client.Character.Map;

@@ -11,11 +11,8 @@ namespace Spark.Packet.Processor.Notification
     {
         private readonly IEventPipeline _eventPipeline;
 
-        public MsgiProcessor(IEventPipeline eventPipeline)
-        {
-            _eventPipeline = eventPipeline;
-        }
-        
+        public MsgiProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+
         protected override void Process(IClient client, Msgi packet)
         {
             _eventPipeline.Emit(new ServerMessageReceivedEvent(client, packet.MessageId, packet.MessageType));

@@ -6,7 +6,7 @@ using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Game.Abstraction.Entities;
 using Spark.Game.Abstraction.Inventory;
-using Spark.Packet.Extension;
+using Spark.Core.Extension;
 
 namespace Spark.Game.Abstraction.Extension
 {

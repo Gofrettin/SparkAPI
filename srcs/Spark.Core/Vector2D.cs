@@ -21,7 +21,10 @@ public readonly struct Vector2D : IEquatable<Vector2D>
         Y = y;
     }
 
-    public Vector2D GetDistanceTo(Vector2D vector2D) => new Vector2D(Math.Abs(vector2D.X - X), Math.Abs(vector2D.Y - Y));
+    public Vector2D GetDistanceTo(Vector2D vector2D)
+    {
+        return new Vector2D(Math.Abs(vector2D.X - X), Math.Abs(vector2D.Y - Y));
+    }
 
     public double GetDistance(Vector2D destination)
     {
@@ -47,8 +50,14 @@ public readonly struct Vector2D : IEquatable<Vector2D>
         return new Vector2D(X + Random.Next(-range, range), Y + Random.Next(-range, range));
     }
 
-    public bool Equals(Vector2D other) => other.X == X && other.Y == Y;
+    public bool Equals(Vector2D other)
+    {
+        return other.X == X && other.Y == Y;
+    }
 
-    public override string ToString() => $"{X}/{Y}";
+    public override string ToString()
+    {
+        return $"{X}/{Y}";
+    }
 }
 }

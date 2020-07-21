@@ -1,4 +1,4 @@
-﻿using Spark.Packet.Extension;
+﻿using Spark.Core.Extension;
 
 namespace Spark.Packet.Battle
 {

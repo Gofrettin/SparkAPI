@@ -41,22 +41,28 @@ namespace Spark.Game.Factory
             };
         }
 
-        public ICharacter CreateCharacter(long entityId, string name, IClient client) =>
-            new Character(entityId, client)
+        public ICharacter CreateCharacter(long entityId, string name, IClient client)
+        {
+            return new Character(entityId, client)
             {
                 Name = name
             };
+        }
 
-        public IMapObject CreateMapObject(long entityId, int gameKey, int amount) =>
-            new MapObject(entityId, gameKey, amount)
+        public IMapObject CreateMapObject(long entityId, int gameKey, int amount)
+        {
+            return new MapObject(entityId, gameKey, amount)
             {
                 Name = string.Empty
             };
+        }
 
-        public IPlayer CreatePlayer(long entityId, string name) =>
-            new Player(entityId)
+        public IPlayer CreatePlayer(long entityId, string name)
+        {
+            return new Player(entityId)
             {
                 Name = name
             };
+        }
     }
 }

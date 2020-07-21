@@ -1,6 +1,5 @@
 ﻿using Spark.Core.Enum;
 using Spark.Core.Extension;
-using Spark.Packet.Extension;
 
 namespace Spark.Packet.Entities
 {

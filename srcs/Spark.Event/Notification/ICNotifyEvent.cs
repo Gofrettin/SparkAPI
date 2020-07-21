@@ -6,9 +6,6 @@ namespace Spark.Event.Notification
     {
         public IClient Client { get; }
 
-        public ICNotifyEvent(IClient client)
-        {
-            Client = client;
-        }
+        public ICNotifyEvent(IClient client) => Client = client;
     }
 }

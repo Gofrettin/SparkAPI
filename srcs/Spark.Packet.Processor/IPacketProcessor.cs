@@ -14,7 +14,10 @@ namespace Spark.Packet.Processor
     {
         public Type PacketType { get; } = typeof(TPacket);
 
-        public void Process(IClient client, IPacket packet) => Process(client, (TPacket)packet);
+        public void Process(IClient client, IPacket packet)
+        {
+            Process(client, (TPacket)packet);
+        }
 
         protected abstract void Process(IClient client, TPacket packet);
     }

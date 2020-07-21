@@ -12,7 +12,10 @@ namespace Spark.Packet.Factory
     {
         public abstract string Header { get; }
         
-        IPacket IPacketCreator.Create(string[] content) => Create(content);
+        IPacket IPacketCreator.Create(string[] content)
+        {
+            return Create(content);
+        }
 
         public abstract T Create(string[] content);
     }

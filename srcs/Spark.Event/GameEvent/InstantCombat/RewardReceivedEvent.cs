@@ -6,9 +6,6 @@ namespace Spark.Event.GameEvent.InstantCombat
     {
         public IClient Client { get; }
 
-        public RewardReceivedEvent(IClient client)
-        {
-            Client = client;
-        }
+        public RewardReceivedEvent(IClient client) => Client = client;
     }
 }

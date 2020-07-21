@@ -46,6 +46,9 @@ namespace Spark.Game.Factory
             return client;
         }
 
-        public IClient CreateLocalClient(Process process) => new Client(_networkFactory.CreateLocalNetwork(process));
+        public IClient CreateLocalClient(Process process)
+        {
+            return new Client(_networkFactory.CreateLocalNetwork(process));
+        }
     }
 }

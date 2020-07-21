@@ -13,7 +13,10 @@ namespace Spark.Game.Inventory
         public Dictionary<BagType, List<IObjectStack>> Objects { get; }
 
         public int Gold { get; set; }
-        public IEnumerable<IObjectStack> GetObjects(BagType bagType) => Objects.GetValueOrDefault(bagType, new List<IObjectStack>());
+        public IEnumerable<IObjectStack> GetObjects(BagType bagType)
+        {
+            return Objects.GetValueOrDefault(bagType, new List<IObjectStack>());
+        }
 
         public void AddObject(IObjectStack objectStack)
         {
@@ -27,7 +30,14 @@ namespace Spark.Game.Inventory
             objects.Add(objectStack);
         }
 
-        public IEnumerator<IObjectStack> GetEnumerator() => Objects.Values.SelectMany(x => x).GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<IObjectStack> GetEnumerator()
+        {
+            return Objects.Values.SelectMany(x => x).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

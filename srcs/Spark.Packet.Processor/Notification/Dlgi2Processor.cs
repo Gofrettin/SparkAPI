@@ -13,11 +13,8 @@ namespace Spark.Packet.Processor.Notification
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IEventPipeline _eventPipeline;
 
-        public Dlgi2Processor(IEventPipeline eventPipeline)
-        {
-            _eventPipeline = eventPipeline;
-        }
-        
+        public Dlgi2Processor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+
         protected override void Process(IClient client, Dlgi2 packet)
         {
             if (packet.ExchangeRequest != null)

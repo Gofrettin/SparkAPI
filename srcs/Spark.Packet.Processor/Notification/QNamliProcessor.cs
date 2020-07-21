@@ -9,11 +9,8 @@ namespace Spark.Packet.Processor.Notification
     {
         private readonly IEventPipeline _eventPipeline;
 
-        public QNamliProcessor(IEventPipeline eventPipeline)
-        {
-            _eventPipeline = eventPipeline;
-        }
-        
+        public QNamliProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+
         protected override void Process(IClient client, QNamli packet)
         {
             if (packet.Request.Equals("#guri^506"))

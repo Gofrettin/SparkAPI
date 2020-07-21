@@ -6,7 +6,10 @@ namespace Spark.Event
     {
         public Type EventType { get; } = typeof(T);
 
-        public void Handle(IEvent e) => Handle((T)e);
+        public void Handle(IEvent e)
+        {
+            Handle((T)e);
+        }
 
         protected abstract void Handle(T e);
     }

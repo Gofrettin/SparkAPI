@@ -14,11 +14,8 @@ namespace Spark.Packet.Processor.Inventory
         
         private readonly IObjectFactory _objectFactory;
 
-        public InvProcessor(IObjectFactory objectFactory)
-        {
-            _objectFactory = objectFactory;
-        }
-        
+        public InvProcessor(IObjectFactory objectFactory) => _objectFactory = objectFactory;
+
         protected override void Process(IClient client, Inv packet)
         {
             ICharacter character = client.Character;

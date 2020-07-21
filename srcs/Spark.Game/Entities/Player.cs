@@ -32,6 +32,9 @@ namespace Spark.Game.Entities
         public Class Class { get; set; }
         public Gender Gender { get; set; }
 
-        public bool Equals(IEntity other) => other != null && other.EntityType == EntityType && other.Id == Id;
+        public bool Equals(IEntity other)
+        {
+            return other != null && other.EntityType == EntityType && other.Id == Id;
+        }
     }
 }

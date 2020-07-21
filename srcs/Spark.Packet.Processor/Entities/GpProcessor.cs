@@ -8,11 +8,8 @@ namespace Spark.Packet.Processor.Entities
     {
         private readonly IPortalFactory _portalFactory;
 
-        public GpProcessor(IPortalFactory portalFactory)
-        {
-            _portalFactory = portalFactory;
-        }
-        
+        public GpProcessor(IPortalFactory portalFactory) => _portalFactory = portalFactory;
+
         protected override void Process(IClient client, Gp packet)
         {
             IMap map = client.Character.Map;

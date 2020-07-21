@@ -6,9 +6,6 @@ namespace Spark.Event.Exchange
     {
         public IClient Client { get; }
 
-        public ExchangeCompletedEvent(IClient client)
-        {
-            Client = client;
-        }
+        public ExchangeCompletedEvent(IClient client) => Client = client;
     }
 }

@@ -23,20 +23,49 @@ namespace Spark.Database.Reader
             return _content[index];
         }
 
-        public T GetValue<T>(int index) => (T)Convert.ChangeType(GetValue(index), typeof(T));
+        public T GetValue<T>(int index)
+        {
+            return (T)Convert.ChangeType(GetValue(index), typeof(T));
+        }
 
-        public string[] GetValues() => _content;
+        public string[] GetValues()
+        {
+            return _content;
+        }
 
-        public string GetFirstValue() => _content[0];
+        public string GetFirstValue()
+        {
+            return _content[0];
+        }
 
-        public string GetLastValue() => _content[_content.Length - 1];
+        public string GetLastValue()
+        {
+            return _content[_content.Length - 1];
+        }
 
-        public T GetFirstValue<T>() => (T)Convert.ChangeType(GetFirstValue(), typeof(T));
-        public T GetLastValue<T>() => (T)Convert.ChangeType(GetLastValue(), typeof(T));
+        public T GetFirstValue<T>()
+        {
+            return (T)Convert.ChangeType(GetFirstValue(), typeof(T));
+        }
 
-        public bool StartWith(string value) => _content[0].Equals(value);
-        public bool EndWith(string value) => _content[_content.Length - 1].Equals(value);
+        public T GetLastValue<T>()
+        {
+            return (T)Convert.ChangeType(GetLastValue(), typeof(T));
+        }
 
-        public string AsString() => string.Join(_separator.ToString(), _content);
+        public bool StartWith(string value)
+        {
+            return _content[0].Equals(value);
+        }
+
+        public bool EndWith(string value)
+        {
+            return _content[_content.Length - 1].Equals(value);
+        }
+
+        public string AsString()
+        {
+            return string.Join(_separator.ToString(), _content);
+        }
     }
 }

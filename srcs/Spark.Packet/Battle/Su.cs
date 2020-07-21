@@ -1,5 +1,5 @@
 ﻿using Spark.Core.Enum;
-using Spark.Packet.Extension;
+using Spark.Core.Extension;
 
 namespace Spark.Packet.Battle
 {

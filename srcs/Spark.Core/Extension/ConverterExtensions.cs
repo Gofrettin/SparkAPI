@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Spark.Packet.Extension
+namespace Spark.Core.Extension
 {
     /// <summary>
     ///     Contains some extension method used for easily convert string to selected value
@@ -14,63 +14,90 @@ namespace Spark.Packet.Extension
         /// </summary>
         /// <param name="value">string value to convert</param>
         /// <returns>parsed long value</returns>
-        public static long ToLong(this string value) => long.Parse(value);
+        public static long ToLong(this string value)
+        {
+            return long.Parse(value);
+        }
 
         /// <summary>
         ///     Convert a string to a nullable long
         /// </summary>
         /// <param name="value">string value to convert</param>
         /// <returns>parsed long value or null</returns>
-        public static long? ToNullableLong(this string value) => value == "-1" || value == "-" ? (long?)null : long.Parse(value);
+        public static long? ToNullableLong(this string value)
+        {
+            return value == "-1" || value == "-" ? (long?)null : long.Parse(value);
+        }
 
         /// <summary>
         ///     Convert a string to a nullable int
         /// </summary>
         /// <param name="value">string value to convert</param>
         /// <returns>parsed int value or null</returns>
-        public static int? ToNullableInt(this string value) => value == "-1" || value == "-" ? (int?)null : int.Parse(value);
+        public static int? ToNullableInt(this string value)
+        {
+            return value == "-1" || value == "-" ? (int?)null : int.Parse(value);
+        }
 
         /// <summary>
         ///     Convert a string to a nullable byte
         /// </summary>
         /// <param name="value">string value to convert</param>
         /// <returns>parsed byte value or null</returns>
-        public static byte? ToNullableByte(this string value) => value == "-1" || value == "-" ? (byte?)null : byte.Parse(value);
+        public static byte? ToNullableByte(this string value)
+        {
+            return value == "-1" || value == "-" ? (byte?)null : byte.Parse(value);
+        }
 
         /// <summary>
         ///     Convert a string to a nullable short
         /// </summary>
         /// <param name="value">string value to convert</param>
         /// <returns>parsed short value or null</returns>
-        public static short? ToNullableShort(this string value) => value == "-1" || value == "-" ? (short?)null : short.Parse(value);
+        public static short? ToNullableShort(this string value)
+        {
+            return value == "-1" || value == "-" ? (short?)null : short.Parse(value);
+        }
 
         /// <summary>
         ///     Convert a string to short
         /// </summary>
         /// <param name="value">string value to convert</param>
         /// <returns>parsed short value</returns>
-        public static short ToShort(this string value) => short.Parse(value);
+        public static short ToShort(this string value)
+        {
+            return short.Parse(value);
+        }
 
         /// <summary>
         ///     Convert a string to byte
         /// </summary>
         /// <param name="value">string value to convert</param>
         /// <returns>parsed byte value</returns>
-        public static byte ToByte(this string value) => byte.Parse(value);
+        public static byte ToByte(this string value)
+        {
+            return byte.Parse(value);
+        }
 
         /// <summary>
         ///     Convert a string to int
         /// </summary>
         /// <param name="value">string value to convert</param>
         /// <returns>parsed int value</returns>
-        public static int ToInt(this string value) => int.Parse(value);
+        public static int ToInt(this string value)
+        {
+            return int.Parse(value);
+        }
 
         /// <summary>
         ///     Convert a string to bool
         /// </summary>
         /// <param name="value">string value to convert</param>
         /// <returns>parsed bool value</returns>
-        public static bool ToBool(this string value) => value == "1";
+        public static bool ToBool(this string value)
+        {
+            return value == "1";
+        }
 
         /// <summary>
         ///     Convert a string to a nullable short array
@@ -115,16 +142,25 @@ namespace Spark.Packet.Extension
         /// <param name="value">string value to convert</param>
         /// <typeparam name="T">Enum type</typeparam>
         /// <returns>parsed value as selected enum type</returns>
-        public static T ToEnum<T>(this string value) where T : Enum => (T)Enum.Parse(typeof(T), value);
+        public static T ToEnum<T>(this string value) where T : System.Enum
+        {
+            return (T)System.Enum.Parse(typeof(T), value);
+        }
 
-        public static Guid ToGuid(this string value) => Guid.Parse(value);
+        public static Guid ToGuid(this string value)
+        {
+            return Guid.Parse(value);
+        }
 
         /// <summary>
         ///     Convert a nullable long to string
         /// </summary>
         /// <param name="value">nullable long to convert</param>
         /// <returns>converted nullable long as string</returns>
-        public static string AsString(this long? value) => value == null ? "-1" : value.ToString();
+        public static string AsString(this long? value)
+        {
+            return value == null ? "-1" : value.ToString();
+        }
 
         /// <summary>
         ///     Convert an enum to int string
@@ -132,13 +168,25 @@ namespace Spark.Packet.Extension
         /// <param name="value">Enum value to convert</param>
         /// <typeparam name="T">Type of the enum</typeparam>
         /// <returns>converter enum as string</returns>
-        public static string AsString<T>(this T value) where T : Enum => ((int)(object)value).ToString();
+        public static string AsString<T>(this T value) where T : System.Enum
+        {
+            return ((int)(object)value).ToString();
+        }
 
-        public static string AsString(this bool boolean) => boolean ? "1" : "0";
+        public static string AsString(this bool boolean)
+        {
+            return boolean ? "1" : "0";
+        }
 
-        public static string AsString(this short? value) => value == null ? "-1" : value.ToString();
+        public static string AsString(this short? value)
+        {
+            return value == null ? "-1" : value.ToString();
+        }
 
-        public static string AsString(this int? value) => value == null ? "-1" : value.ToString();
+        public static string AsString(this int? value)
+        {
+            return value == null ? "-1" : value.ToString();
+        }
 
         public static string AsString(this IEnumerable<short?> values, char separator = '.')
         {
@@ -162,6 +210,9 @@ namespace Spark.Packet.Extension
             return sb.ToString();
         }
 
-        public static string AsString(this string value) => value ?? "-";
+        public static string AsString(this string value)
+        {
+            return value ?? "-";
+        }
     }
 }
