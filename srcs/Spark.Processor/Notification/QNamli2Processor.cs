@@ -19,7 +19,7 @@ namespace Spark.Processor.Notification
             if (packet.Raid != null)
             {
                 _eventPipeline.Emit(new RaidListNotifyEvent(client, packet.Raid.Owner));
-                Logger.Info($"Raid notification received from {packet.Raid.Owner}");
+                Logger.Debug($"Raid notification received from {packet.Raid.Owner}");
             }
         }
     }

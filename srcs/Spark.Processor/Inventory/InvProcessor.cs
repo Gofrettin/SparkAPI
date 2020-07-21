@@ -38,7 +38,7 @@ namespace Spark.Processor.Inventory
             Logger.Debug($"Inventory {bagType} successfully initialized");
             if (bagType == BagType.Costume)
             {
-                Logger.Info($"{character.Name} inventory successfully initialized");
+                Logger.Debug($"{character.Name} inventory successfully initialized");
             }
         }
     }

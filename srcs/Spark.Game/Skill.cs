@@ -19,6 +19,7 @@ namespace Spark.Game
             CastId = data.CastId;
             Target = data.Target;
             HitType = data.HitType;
+            SkillType = data.SkillType;
         }
 
         public int SkillKey { get; }
@@ -32,6 +33,7 @@ namespace Spark.Game
         public int CastId { get; }
         public SkillTarget Target { get; }
         public HitType HitType { get; }
+        public SkillType SkillType { get; }
 
         public bool IsOnCooldown { get; set; }
 

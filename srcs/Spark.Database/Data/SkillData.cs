@@ -14,5 +14,6 @@ namespace Spark.Database.Data
         public int CastId { get; set; }
         public SkillTarget Target { get; set; }
         public HitType HitType { get; set; }
+        public SkillType SkillType { get; set; }
     }
 }

@@ -49,7 +49,10 @@ namespace Spark.Processor.Battle
             target.HpPercentage = 0;
 
             Logger.Debug($"Entity {target.EntityType} with id {target.Id} died");
-            map.RemoveEntity(target);
+            if (!target.Equals(client.Character))
+            {
+                map.RemoveEntity(target);
+            }
 
             _eventPipeline.Emit(new EntityDeathEvent(client, target, caster));
         }

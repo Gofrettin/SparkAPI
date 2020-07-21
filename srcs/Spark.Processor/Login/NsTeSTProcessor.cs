@@ -33,7 +33,7 @@ namespace Spark.Processor.Login
             client.SendPacket($"{packet.EncryptionKey}");
             Task.Delay(1000).ContinueWith(s =>
             {
-                client.SendPacket($"{packet.Name} GFMODE 2");
+                client.SendPacket($"{packet.Name} GF 2");
                 client.SendPacket("thisifgamemode");
             });
         }

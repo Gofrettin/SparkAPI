@@ -23,7 +23,7 @@ namespace Spark.Processor.CharacterSelector
             }
 
             client.SendPacket($"select {character.Slot}");
-            Logger.Info($"Character {character.Name} selected");
+            Logger.Debug($"Character {character.Name} selected");
         }
     }
 }

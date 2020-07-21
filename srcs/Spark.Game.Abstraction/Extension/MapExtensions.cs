@@ -35,15 +35,15 @@ namespace Spark.Game.Abstraction.Extension
             int x = -1;
             int y = -1;
             double max = -1;
-
-            IEnumerable<Vector2D> positions = map.Players.Select(s => s.Position);
+            
             for (int cy = 0; cy < mapY; cy++)
             {
                 for (int cx = 0; cx < mapX; cx++)
                 {
                     double score = 0;
-                    foreach (Vector2D vector in positions)
+                    foreach (IPlayer player in map.Players)
                     {
+                        Vector2D vector = player.Position;
                         double d = vector.GetDistance(new Vector2D(cx, cy));
                         if (d == 0)
                         {

@@ -31,7 +31,7 @@ namespace Spark.Processor.Characters
 
             _eventPipeline.Emit(new CharacterInitializedEvent(client, client.Character));
 
-            Logger.Info($"Client with id {client.Id} initialized with character {client.Character.Name}");
+            Logger.Debug($"Client with id {client.Id} initialized with character {client.Character.Name}");
         }
     }
 }

@@ -111,7 +111,7 @@ namespace Spark.Network
         {
             Client.Connect(ep);
             BackgroundTask.Start();
-            Logger.Info($"Connected to {ep}");
+            Logger.Debug($"Connected to {ep}");
         }
     }
 }

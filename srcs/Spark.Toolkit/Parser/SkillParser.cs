@@ -60,7 +60,8 @@ namespace Spark.Toolkit.Parser
                     Target = (SkillTarget)targetLine.GetValue<int>(1),
                     HitType = (HitType)targetLine.GetValue<int>(2),
                     Range = targetLine.GetValue<short>(3),
-                    ZoneRange = targetLine.GetValue<short>(4)
+                    ZoneRange = targetLine.GetValue<short>(4),
+                    SkillType = (SkillType)targetLine.GetValue<int>(5)
                 };
             }
 

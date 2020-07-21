@@ -15,7 +15,7 @@ namespace Spark.Game.Entities
             Id = id;
             MonsterKey = monsterKey;
             EntityType = EntityType.Npc;
-
+            Level = data.Level;
             Name = data.NameKey;
             Buffs = new List<IBuff>();
         }
@@ -29,6 +29,7 @@ namespace Spark.Game.Entities
         public int HpPercentage { get; set; }
         public int MpPercentage { get; set; }
         public short MorphId { get; set; }
+        public int Level { get; set; }
         public List<IBuff> Buffs { get; }
         public short Speed { get; set; }
         public Direction Direction { get; set; }

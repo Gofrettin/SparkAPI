@@ -29,23 +29,21 @@ namespace Spark.Database
 
         public void Load()
         {
-            Logger.Info("Loading database");
-            
             if (!System.IO.Directory.Exists(Directory))
             {
                 throw new IOException($"Can't load database missing {Directory} directory");
             }
 
-            Logger.Info("Loading maps");
+            Logger.Debug("Loading maps");
             Maps.Load();
 
-            Logger.Info("Loading monsters");
+            Logger.Debug("Loading monsters");
             Monsters.Load();
 
-            Logger.Info("Loading items");
+            Logger.Debug("Loading items");
             Items.Load();
 
-            Logger.Info("Loading skills");
+            Logger.Debug("Loading skills");
             Skills.Load();
         }
     }

@@ -40,7 +40,7 @@ namespace Spark.Database
                 return;
             }
 
-            Logger.Info($"Loaded {Values.Count} values");
+            Logger.Debug($"Loaded {Values.Count} values");
         }
     }
 }

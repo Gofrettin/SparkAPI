@@ -25,7 +25,7 @@ namespace Spark.Game.Factory
 
             var map = new Map(mapId, data);
             
-            Logger.Info($"Map {map.Id} created ({map.Height} / {map.Width})");
+            Logger.Debug($"Map {map.Id} created");
             return map;
         }
     }

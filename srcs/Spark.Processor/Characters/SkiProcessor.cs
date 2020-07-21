@@ -29,7 +29,7 @@ namespace Spark.Processor.Characters
             }
 
             client.Character.Skills = skills;
-            Logger.Info($"{skills.Count} skills loaded for {client.Character.Name}");
+            Logger.Debug($"{skills.Count} skills loaded for {client.Character.Name}");
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Spark.Packet.Notification
         public long EntityId { get; set; }
         public MessageColor Color { get; set; }
         public int MessageId { get; set; }
-        public List<short> Parameters { get; set; }
+        public List<int> Parameters { get; set; }
 
         public void Construct(string[] packet)
         {
@@ -20,11 +20,11 @@ namespace Spark.Packet.Notification
             EntityId = packet[1].ToLong();
             Color = packet[2].ToEnum<MessageColor>();
             MessageId = packet[3].ToInt();
-            Parameters = new List<short>();
+            Parameters = new List<int>();
 
             foreach (string value in packet.Skip(4))
             {
-                Parameters.Add(value.ToShort());
+                Parameters.Add(value.ToInt());
             }
         }
     }

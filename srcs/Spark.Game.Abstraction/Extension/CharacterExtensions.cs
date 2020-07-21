@@ -119,9 +119,10 @@ namespace Spark.Game.Abstraction.Extension
             }
 
             Logger.Debug($"Using skill with id {skill.SkillKey} on self");
+
             character.Client.SendPacket($"u_s {skill.CastId} {character.EntityType.AsString()} {character.Id}");
-            
-            Thread.Sleep(skill.CastTime * 100);
+
+            Thread.Sleep(skill.CastTime * 200);
         }
 
         public static void Attack(this ICharacter character, ILivingEntity entity)
@@ -172,7 +173,10 @@ namespace Spark.Game.Abstraction.Extension
             character.WalkInRange(entity.Position, skill.Range);
             
             Logger.Debug($"Attacking {entity.EntityType} with id {entity.Id} using {skill.SkillKey}");
+            
             character.Client.SendPacket($"u_s {skill.CastId} {entity.EntityType.AsString()} {entity.Id}");
+
+            Thread.Sleep(skill.CastTime * 200);
         }
 
         public static void Rotate(this ICharacter character, Direction direction)
