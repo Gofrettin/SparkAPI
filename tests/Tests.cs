@@ -6,7 +6,7 @@ using NFluent;
 using Spark.Core.Extension;
 using Spark.Event;
 using Spark.Packet;
-using Spark.Processor;
+using Spark.Packet.Processor;
 using Spark.Tests.Attributes;
 using Spark.Tests.Packet;
 using Spark.Tests.Processor;

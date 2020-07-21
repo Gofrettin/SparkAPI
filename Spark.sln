@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Gameforge", "srcs\Spa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Packet", "srcs\Spark.Packet\Spark.Packet.csproj", "{A3266671-2735-4867-831A-CB71A8BC0685}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Processor", "srcs\Spark.Processor\Spark.Processor.csproj", "{7F3D54E6-1650-4A7A-95A2-1D7118A2F9A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Packet.Processor", "srcs\Spark.Packet.Processor\Spark.Packet.Processor.csproj", "{7F3D54E6-1650-4A7A-95A2-1D7118A2F9A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Game", "srcs\Spark.Game\Spark.Game.csproj", "{BAE5AF17-B3F3-4A2D-BEB1-DF5BA4F837A9}"
 EndProject
@@ -23,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Game.Abstraction", "srcs\Spark.Game.Abstraction\Spark.Game.Abstraction.csproj", "{DB4EE534-30F7-4519-BBE2-09553CA12EDB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Tests", "tests\Spark.Tests.csproj", "{2AEE662B-E54B-493A-B0BE-7F6380949E36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spark.Packet.Creator", "srcs\Spark.Packet.Creator\Spark.Packet.Creator.csproj", "{AF25F892-45C5-4399-9050-C45B39FAFE6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,10 @@ Global
 		{2AEE662B-E54B-493A-B0BE-7F6380949E36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AEE662B-E54B-493A-B0BE-7F6380949E36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AEE662B-E54B-493A-B0BE-7F6380949E36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF25F892-45C5-4399-9050-C45B39FAFE6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF25F892-45C5-4399-9050-C45B39FAFE6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF25F892-45C5-4399-9050-C45B39FAFE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF25F892-45C5-4399-9050-C45B39FAFE6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

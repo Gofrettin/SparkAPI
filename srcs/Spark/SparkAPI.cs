@@ -13,7 +13,7 @@ using Spark.Game.Abstraction.Factory;
 using Spark.Game.Factory;
 using Spark.Gameforge;
 using Spark.Packet;
-using Spark.Processor;
+using Spark.Packet.Processor;
 
 namespace Spark
 {

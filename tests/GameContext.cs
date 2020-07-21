@@ -5,7 +5,7 @@ using Spark.Event;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 using Spark.Packet;
-using Spark.Processor;
+using Spark.Packet.Processor;
 
 namespace Spark.Tests
 {
