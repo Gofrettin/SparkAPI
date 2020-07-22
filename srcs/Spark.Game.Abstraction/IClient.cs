@@ -1,5 +1,5 @@
 ﻿using System;
-using Spark.Core.Option;
+using Spark.Core.Configuration;
 using Spark.Game.Abstraction.Entities;
 using Spark.Network;
 
@@ -15,7 +15,7 @@ namespace Spark.Game.Abstraction
 
         void SendPacket(string packet);
 
-        T GetOption<T>() where T : IOption;
-        void AddOption<T>(T storage) where T : IOption;
+        T GetConfiguration<T>() where T : IConfiguration;
+        void AddConfiguration<T>(T storage) where T : IConfiguration;
     }
 }

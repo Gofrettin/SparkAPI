@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Net;
 using Spark.Core;
-using Spark.Core.Option;
+using Spark.Core.Configuration;
 using Spark.Core.Server;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Factory;
@@ -31,7 +31,7 @@ namespace Spark.Game.Factory
             INetwork network = _networkFactory.CreateRemoteNetwork(ip);
             IClient client = new Client(network);
 
-            client.AddOption(new LoginOption(serverSelector, characterSelector));
+            client.AddConfiguration(new LoginConfiguration(serverSelector, characterSelector));
 
             client.PacketReceived += packet =>
             {

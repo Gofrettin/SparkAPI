@@ -1,5 +1,5 @@
 ﻿using NFluent;
-using Spark.Core.Option;
+using Spark.Core.Configuration;
 using Spark.Game.Abstraction;
 using Spark.Packet.CharacterSelector;
 using Spark.Packet.Processor.CharacterSelector;
@@ -27,7 +27,7 @@ namespace Spark.Tests.Processor
             {
                 IClient client = context.Client;
 
-                client.AddOption(new LoginOption());
+                client.AddConfiguration(new LoginConfiguration());
 
                 context.Process(new CList
                 {
@@ -35,10 +35,10 @@ namespace Spark.Tests.Processor
                     Slot = 2
                 });
 
-                LoginOption option = client.GetOption<LoginOption>();
+                LoginConfiguration configuration = client.GetConfiguration<LoginConfiguration>();
 
-                Check.That(option).IsNotNull();
-                Check.That(option.SelectableCharacters).HasElementThatMatches(x => x.Name.Equals("MyNameIs") && x.Slot == 2);
+                Check.That(configuration).IsNotNull();
+                Check.That(configuration.SelectableCharacters).HasElementThatMatches(x => x.Name.Equals("MyNameIs") && x.Slot == 2);
             }
         }
 

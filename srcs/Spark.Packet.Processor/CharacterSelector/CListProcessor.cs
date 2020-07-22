@@ -1,6 +1,6 @@
 ﻿using NLog;
 using Spark.Core;
-using Spark.Core.Option;
+using Spark.Core.Configuration;
 using Spark.Game.Abstraction;
 using Spark.Packet.CharacterSelector;
 
@@ -12,8 +12,8 @@ namespace Spark.Packet.Processor.CharacterSelector
 
         protected override void Process(IClient client, CList packet)
         {
-            LoginOption option = client.GetOption<LoginOption>();
-            option.SelectableCharacters.Add(new SelectableCharacter
+            LoginConfiguration configuration = client.GetConfiguration<LoginConfiguration>();
+            configuration.SelectableCharacters.Add(new SelectableCharacter
             {
                 Name = packet.Name,
                 Slot = packet.Slot

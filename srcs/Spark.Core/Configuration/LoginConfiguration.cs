@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using Spark.Core.Server;
 
-namespace Spark.Core.Option
+namespace Spark.Core.Configuration
 {
-    public class LoginOption : IOption
+    public class LoginConfiguration : IConfiguration
     {
-        public LoginOption(Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
+        public LoginConfiguration(Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
         {
             ServerSelector = serverSelector;
             CharacterSelector = characterSelector;
             SelectableCharacters = new List<SelectableCharacter>();
         }
 
-        public LoginOption()
+        public LoginConfiguration()
         {
         }
 

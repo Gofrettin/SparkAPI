@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Spark.Core.Option;
+using Spark.Core.Configuration;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 using Spark.Network;
@@ -45,12 +45,9 @@ namespace Spark.Game
             Network.SendPacket(packet);
         }
 
-        public T GetOption<T>() where T : IOption
-        {
-            return (T)Options.GetValueOrDefault(typeof(T));
-        }
+        public T GetConfiguration<T>() where T : IConfiguration => (T)Options.GetValueOrDefault(typeof(T));
 
-        public void AddOption<T>(T storage) where T : IOption
+        public void AddConfiguration<T>(T storage) where T : IConfiguration
         {
             Options[typeof(T)] = storage;
         }

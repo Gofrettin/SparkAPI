@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using Spark.Core.Option;
+﻿using System.Net;
+using Spark.Core.Configuration;
 using Spark.Core.Server;
 using Spark.Packet.Login;
 using Spark.Packet.Processor.Login;
@@ -15,7 +14,7 @@ namespace Spark.Tests.Processor
         {
             using (GameContext context = CreateContext())
             {
-                context.Client.AddOption(new LoginOption());
+                context.Client.AddConfiguration(new LoginConfiguration());
                 
                 context.Process(new NsTeST
                 {
