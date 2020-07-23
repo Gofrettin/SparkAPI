@@ -21,7 +21,7 @@ namespace Spark.Game
         private readonly IDictionary<long, IMapObject> _objects;
         private readonly IDictionary<long, IPlayer> _players;
         private readonly IDictionary<int, IPortal> _portals;
-        
+
         public Map(int id, MapData data)
         {
             Id = id;
@@ -29,7 +29,8 @@ namespace Spark.Game
             Grid = data.Grid;
             Height = BitConverter.ToInt16(Grid.Slice(0, 2));
             Width = BitConverter.ToInt16(Grid.Slice(2, 2));
-
+            Pathfinder = new Pathfinder(this);
+            
             _monsters = new ConcurrentDictionary<long, IMonster>();
             _npcs = new ConcurrentDictionary<long, INpc>();
             _players = new ConcurrentDictionary<long, IPlayer>();
@@ -49,6 +50,7 @@ namespace Spark.Game
         public byte[] Grid { get; }
         public int Height { get; }
         public int Width { get; }
+        public IPathfinder Pathfinder { get; }
 
         public IEnumerable<IMonster> Monsters => _monsters.Values;
         public IEnumerable<IPlayer> Players => _players.Values;

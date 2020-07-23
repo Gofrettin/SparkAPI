@@ -12,6 +12,8 @@ namespace Spark.Game.Abstraction
         byte[] Grid { get; }
         int Height { get; }
         int Width { get; }
+        
+        IPathfinder Pathfinder { get; }
 
         IEnumerable<IMonster> Monsters { get; }
         IEnumerable<IPlayer> Players { get; }
