@@ -4,13 +4,14 @@ using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 using Spark.Game.Battle;
 using Spark.Packet.Battle;
+using Spark.Packet.Processor.Battle;
 using Spark.Tests.Attributes;
 
 namespace Spark.Tests.Processor
 {
     public class BattleProcessorTests : ProcessorTests
     {
-        [ProcessorTest(typeof(Sr))]
+        [ProcessorTest(typeof(SrProcessor))]
         public void Sr_Test()
         {
             using (GameContext context = CreateContext())
@@ -30,7 +31,7 @@ namespace Spark.Tests.Processor
             }
         }
 
-        [ProcessorTest(typeof(Su))]
+        [ProcessorTest(typeof(SuProcessor))]
         [EventTest(typeof(EntityDamageEvent))]
         public void Su_Non_Lethal_Test()
         {
@@ -57,11 +58,11 @@ namespace Spark.Tests.Processor
                 Check.That(map.Entities).Contains(target);
                 Check.That(target.HpPercentage).IsEqualTo(34);
 
-                context.Verify<EntityDamageEvent>(x => x.Caster.Equals(character) && x.Target.Equals(target) && x.Damage == 1000 && x.SkillKey == 254);
+                context.IsEventEmitted<EntityDamageEvent>(x => x.Caster.Equals(character) && x.Target.Equals(target) && x.Damage == 1000 && x.SkillKey == 254);
             }
         }
 
-        [ProcessorTest(typeof(Die))]
+        [ProcessorTest(typeof(DieProcessor))]
         [EventTest(typeof(EntityDeathEvent))]
         public void Die_Test()
         {
@@ -82,11 +83,11 @@ namespace Spark.Tests.Processor
                 Check.That(map.Entities).Not.Contains(monster);
                 Check.That(monster.HpPercentage).IsEqualTo(0);
                 
-                context.Verify<EntityDeathEvent>(x => x.Entity.Equals(monster));
+                context.IsEventEmitted<EntityDeathEvent>(x => x.Entity.Equals(monster));
             }
         }
 
-        [ProcessorTest(typeof(Su))]
+        [ProcessorTest(typeof(SuProcessor))]
         [EventTest(typeof(EntityDamageEvent))]
         [EventTest(typeof(EntityDeathEvent))]
         public void Su_Lethal_Test()
@@ -114,12 +115,12 @@ namespace Spark.Tests.Processor
                 Check.That(map.Entities).Not.Contains(target);
                 Check.That(target.HpPercentage).IsEqualTo(0);
 
-                context.Verify<EntityDamageEvent>(x => x.Caster.Equals(character) && x.Target.Equals(target) && x.Damage == 1000 && x.SkillKey == 254);
-                context.Verify<EntityDeathEvent>(x => x.Killer.Equals(character) && x.Entity.Equals(target));
+                context.IsEventEmitted<EntityDamageEvent>(x => x.Caster.Equals(character) && x.Target.Equals(target) && x.Damage == 1000 && x.SkillKey == 254);
+                context.IsEventEmitted<EntityDeathEvent>(x => x.Killer.Equals(character) && x.Entity.Equals(target));
             }
         }
 
-        [ProcessorTest(typeof(Bf))]
+        [ProcessorTest(typeof(BfProcessor))]
         [EventTest(typeof(EntityReceiveBuffEvent))]
         public void Bf_Add_Test()
         {
@@ -140,11 +141,11 @@ namespace Spark.Tests.Processor
 
                 Check.That(target.Buffs).HasElementThatMatches(x => x.Id == 150);
 
-                context.Verify<EntityReceiveBuffEvent>(x => x.Entity.Equals(target) && x.Buff.Id == 150);
+                context.IsEventEmitted<EntityReceiveBuffEvent>(x => x.Entity.Equals(target) && x.Buff.Id == 150);
             }
         }
         
-        [ProcessorTest(typeof(Bf))]
+        [ProcessorTest(typeof(BfProcessor))]
         [EventTest(typeof(EntityRemoveBuffEvent))]
         public void Bf_Remove_Test()
         {
@@ -167,7 +168,7 @@ namespace Spark.Tests.Processor
 
                 Check.That(target.Buffs).Not.HasElementThatMatches(x => x.Id == 150);
 
-                context.Verify<EntityRemoveBuffEvent>(x => x.Entity.Equals(target) && x.Buff.Id == 150);
+                context.IsEventEmitted<EntityRemoveBuffEvent>(x => x.Entity.Equals(target) && x.Buff.Id == 150);
             }
         }
     }

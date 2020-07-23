@@ -39,7 +39,10 @@ namespace Spark.Tests
         public static readonly IEnumerable<Type> ProcessorTests = typeof(ProcessorTests).Assembly.GetTypes()
             .SelectMany(x => x.GetMethods())
             .Select(x => x.GetCustomAttribute<ProcessorTestAttribute>()?.PacketType)
-            .Where(x => x != null);
+            .Where(x => x?.BaseType != null && x.BaseType != typeof(object))
+            .Select(x => x.BaseType)
+            .Where(x => x.IsParticularGeneric(typeof(PacketProcessor<>)))
+            .Select(x => x.GenericTypeArguments[0]);
 
         public static readonly IEnumerable<Type> EventTests = typeof(ProcessorTests).Assembly.GetTypes()
             .SelectMany(x => x.GetMethods())

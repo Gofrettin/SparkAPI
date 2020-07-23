@@ -47,9 +47,14 @@ namespace Spark.Tests
         /// <summary>
         ///     Check if defined event is successfully called by event pipeline
         /// </summary>
-        public void Verify<T>(Expression<Func<T, bool>> check) where T : IEvent
+        public void IsEventEmitted<T>(Expression<Func<T, bool>> check) where T : IEvent
         {
             EventPipeline.Verify(x => x.Emit(It.Is<T>(check)));
+        }
+
+        public void IsEventEmitted<T>() where T : IEvent
+        {
+            EventPipeline.Verify(x => x.Emit(It.IsAny<T>()));
         }
     }
 }

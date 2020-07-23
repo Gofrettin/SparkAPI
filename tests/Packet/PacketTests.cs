@@ -31,10 +31,10 @@ namespace Spark.Tests.Packet
             return (T)typedPacket;
         }
 
-        protected T CreateAndCheckValues<T>(string packet, T target) where T : IPacket
+        protected T CreateAndCheckValues<T>(string packet, T target, params string[] exclude) where T : IPacket
         {
             T typedPacket = Create<T>(packet);
-            Check.That(typedPacket).HasFieldsWithSameValues(target);
+            Check.That(typedPacket).Considering().Properties.Excluding(exclude).HasFieldsWithSameValues(target);
 
             return typedPacket;
         }

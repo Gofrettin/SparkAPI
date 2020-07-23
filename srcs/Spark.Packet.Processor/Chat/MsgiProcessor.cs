@@ -1,6 +1,6 @@
 ﻿using Spark.Core.Enum;
 using Spark.Event;
-using Spark.Event.GameEvent.InstantCombat;
+using Spark.Event.Game.InstantCombat;
 using Spark.Event.Notification;
 using Spark.Game.Abstraction;
 using Spark.Packet.Chat;
@@ -22,17 +22,17 @@ namespace Spark.Packet.Processor.Chat
             {
                 if (packet.MessageId == 1287)
                 {
-                    _eventPipeline.Emit(new WaveComingEvent(client));    
+                    _eventPipeline.Emit(new InstantCombatWaveComingEvent(client));    
                 }
                 
                 if (packet.MessageId == 387)
                 {
-                    _eventPipeline.Emit(new ICStartEvent(client));
+                    _eventPipeline.Emit(new InstantCombatStartEvent(client));
                 }
 
                 if (packet.MessageId == 384)
                 {
-                    _eventPipeline.Emit(new WaveStartSoonEvent(client));
+                    _eventPipeline.Emit(new InstantCombatWaveStartSoonEvent(client));
                 }
             }
         }

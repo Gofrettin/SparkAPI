@@ -1,5 +1,5 @@
 ﻿using Spark.Event;
-using Spark.Event.GameEvent.InstantCombat;
+using Spark.Event.Game.InstantCombat;
 using Spark.Event.Notification;
 using Spark.Game.Abstraction;
 using Spark.Packet.Chat;
@@ -19,12 +19,12 @@ namespace Spark.Packet.Processor.Chat
             
             if (packet.MessageId == 2282)
             {
-                _eventPipeline.Emit(new RewardUnreceivedEvent(client));    
+                _eventPipeline.Emit(new InstantCombatRewardUnreceivedEvent(client));    
             }
 
             if (packet.MessageId == 2367)
             {
-                _eventPipeline.Emit(new RewardReceivedEvent(client));
+                _eventPipeline.Emit(new InstantCombatRewardReceivedEvent(client));
             }
         }
     }

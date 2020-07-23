@@ -1,4 +1,8 @@
-﻿using Spark.Packet.Notification;
+﻿using System.Collections.Generic;
+using NFluent;
+using Spark.Core.Enum;
+using Spark.Packet.Chat;
+using Spark.Packet.Notification;
 using Spark.Tests.Attributes;
 
 namespace Spark.Tests.Packet
@@ -15,6 +19,12 @@ namespace Spark.Tests.Packet
                     Owner = "MyNameIs"
                 }
             });
+        }
+
+        [PacketTest(typeof(QNamli))]
+        public void QNamli_Test()
+        {
+            
         }
     }
 }

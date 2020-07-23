@@ -30,6 +30,15 @@ namespace Spark.Tests.Packet
             });
         }
 
+        [PacketTest(typeof(Lev))]
+        public void Lev_Test()
+        {
+            CreateAndCheckValues("lev 93 1229857935 80 1598 1340194000 790000 4001855 8 10362364 35 12355200 0", new Lev
+            {
+                Level = 93
+            });
+        }
+
         [PacketTest(typeof(Ski))]
         public void Ski_Test()
         {
