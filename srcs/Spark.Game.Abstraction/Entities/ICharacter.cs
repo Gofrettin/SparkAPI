@@ -17,9 +17,12 @@ namespace Spark.Game.Abstraction.Entities
         int MaxHp { get; set; }
         int MaxMp { get; set; }
 
+        void WearSpecialist();
+        void UnwearSpecialist();
         void Walk(Vector2D position);
         void WalkInRange(Vector2D position, int range);
         void Attack(ISkill skill);
+        void Attack(ILivingEntity entity);
         void Attack(ISkill skill, ILivingEntity entity);
         void Rotate(Direction direction);
         void PickUp(IMapObject mapObject);

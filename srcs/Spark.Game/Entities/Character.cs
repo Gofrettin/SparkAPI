@@ -51,12 +51,12 @@ namespace Spark.Game.Entities
         public Class Class { get; set; }
         public Gender Gender { get; set; }
 
-        public void WearSp(ICharacter character)
+        public void WearSpecialist()
         {
             Client.SendPacket("sl 1");
         }
         
-        public void UnwearSp(ICharacter character)
+        public void UnwearSpecialist()
         {
             Client.SendPacket("sl 0");
         }

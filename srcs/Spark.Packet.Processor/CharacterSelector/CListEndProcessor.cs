@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NLog;
 using Spark.Core;
-using Spark.Core.Option;
+using Spark.Core.Configuration;
 using Spark.Game.Abstraction;
 using Spark.Packet.CharacterSelector;
 
@@ -13,7 +13,7 @@ namespace Spark.Packet.Processor.CharacterSelector
 
         protected override void Process(IClient client, CListEnd packet)
         {
-            LoginOption option = client.GetOption<LoginOption>();
+            LoginConfiguration option = client.GetConfiguration<LoginConfiguration>();
             if (option == null)
             {
                 return;

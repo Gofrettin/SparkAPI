@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using NLog;
-using Spark.Core.Option;
+using Spark.Core.Configuration;
 using Spark.Core.Server;
 using Spark.Game.Abstraction;
 using Spark.Network;
@@ -19,7 +19,7 @@ namespace Spark.Packet.Processor.Login
 
         protected override void Process(IClient client, NsTeST packet)
         {
-            LoginOption option = client.GetOption<LoginOption>();
+            LoginConfiguration option = client.GetConfiguration<LoginConfiguration>();
             if (option == null)
             {
                 return;

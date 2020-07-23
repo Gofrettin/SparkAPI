@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using Spark.Core.Configuration;
 using Spark.Core.Server;
 using Spark.Packet.Login;
