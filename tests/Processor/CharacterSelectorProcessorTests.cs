@@ -1,5 +1,6 @@
 ﻿using NFluent;
 using Spark.Core.Configuration;
+using Spark.Event.Login;
 using Spark.Game.Abstraction;
 using Spark.Packet.CharacterSelector;
 using Spark.Packet.Processor.CharacterSelector;
@@ -43,13 +44,13 @@ namespace Spark.Tests.Processor
         }
 
         [ProcessorTest(typeof(OkProcessor))]
+        [EventTest(typeof(GameStartEvent))]
         public void Ok_Test()
         {
             using (GameContext context = CreateContext())
             {
                 context.Process(new Ok());
-
-                // Nothing to check just processing to make sure everything is ok
+                context.IsEventEmitted<GameStartEvent>();
             }
         }
     }

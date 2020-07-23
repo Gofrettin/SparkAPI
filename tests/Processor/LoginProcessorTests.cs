@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using NFluent;
 using Spark.Core.Configuration;
 using Spark.Core.Server;
+using Spark.Event.Login;
 using Spark.Packet.Login;
 using Spark.Packet.Processor.Login;
 using Spark.Tests.Attributes;
@@ -15,8 +17,6 @@ namespace Spark.Tests.Processor
         {
             using (GameContext context = CreateContext())
             {
-                context.Client.AddConfiguration(new LoginConfiguration());
-                
                 context.Process(new NsTeST
                 {
                     Name = "MyNameIs",
@@ -28,12 +28,13 @@ namespace Spark.Tests.Processor
                         new WorldServer("Cosmos", 1, 1, 6, IPEndPoint.Parse("79.110.84.250:4015"))
                     }
                 });
-
-                // Nothing to check just processing to make sure everything is ok
+                
+                // Nothing to check
             }
         }
 
         [ProcessorTest(typeof(FailcProcessor))]
+        [EventTest(typeof(LoginFailEvent))]
         public void Failc_Test()
         {
             using (GameContext context = CreateContext())
@@ -43,7 +44,7 @@ namespace Spark.Tests.Processor
                     Reason = 1
                 });
 
-                // Nothing to check just processing to make sure everything is ok
+                context.IsEventEmitted<LoginFailEvent>(x => x.Reason == 1);
             }
         }
     }
