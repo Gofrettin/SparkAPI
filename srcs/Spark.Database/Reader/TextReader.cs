@@ -19,13 +19,30 @@ namespace Spark.Database.Reader
             _skipConditions = new List<Predicate<string>>();
         }
 
-        public static TextReader FromString(string content) => new TextReader(content.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
-        public static TextReader FromFile(string path) => new TextReader(File.ReadAllLines(path));
-        public static TextReader FromFile(FileInfo fileInfo) => FromFile(fileInfo.FullName);
+        public static TextReader FromString(string content)
+        {
+            return new TextReader(content.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
+        }
 
-        public TextReader SkipEmptyLines() => SkipLines(string.IsNullOrEmpty);
+        public static TextReader FromFile(string path)
+        {
+            return new TextReader(File.ReadAllLines(path));
+        }
 
-        public TextReader SkipCommentedLines(string commentTag) => SkipLines(x => x.StartsWith(commentTag));
+        public static TextReader FromFile(FileInfo fileInfo)
+        {
+            return FromFile(fileInfo.FullName);
+        }
+
+        public TextReader SkipEmptyLines()
+        {
+            return SkipLines(string.IsNullOrEmpty);
+        }
+
+        public TextReader SkipCommentedLines(string commentTag)
+        {
+            return SkipLines(x => x.StartsWith(commentTag));
+        }
 
         public TextReader TrimLines()
         {

@@ -2,6 +2,9 @@
 {
     public static class BoolExtensions
     {
-        public static bool Reverse(this bool value) => !value;
+        public static bool Reverse(this bool value)
+        {
+            return !value;
+        }
     }
 }

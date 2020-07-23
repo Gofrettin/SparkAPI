@@ -15,8 +15,9 @@
       <ProjectReference Include="..\Spark.Gameforge\Spark.Gameforge.csproj" />
       <ProjectReference Include="..\Spark.Game\Spark.Game.csproj" />
       <ProjectReference Include="..\Spark.Network\Spark.Network.csproj" />
+      <ProjectReference Include="..\Spark.Packet.Factory\Spark.Packet.Factory.csproj" />
+      <ProjectReference Include="..\Spark.Packet.Processor\Spark.Packet.Processor.csproj" />
       <ProjectReference Include="..\Spark.Packet\Spark.Packet.csproj" />
-      <ProjectReference Include="..\Spark.Processor\Spark.Processor.csproj" />
     </ItemGroup>
 
     <ItemGroup>

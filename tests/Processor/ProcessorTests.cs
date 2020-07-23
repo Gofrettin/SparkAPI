@@ -5,7 +5,7 @@ using Spark.Event;
 using Spark.Game;
 using Spark.Game.Entities;
 using Spark.Network;
-using Spark.Processor;
+using Spark.Packet.Processor;
 using Spark.Tests.Extension;
 
 namespace Spark.Tests.Processor

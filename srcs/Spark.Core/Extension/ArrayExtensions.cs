@@ -6,7 +6,10 @@ namespace Spark.Core.Extension
 {
     public static class ArrayExtensions
     {
-        public static T[] Slice<T>(this T[] array, int startIndex, int length) => array.Skip(startIndex).Take(length).ToArray();
+        public static T[] Slice<T>(this T[] array, int startIndex, int length)
+        {
+            return array.Skip(startIndex).Take(length).ToArray();
+        }
 
         public static bool RemoveIf<T>(this List<T> list, Predicate<T> predicate)
         {

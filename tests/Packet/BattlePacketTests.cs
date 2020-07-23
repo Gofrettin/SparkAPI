@@ -31,6 +31,16 @@ namespace Spark.Tests.Packet
             });
         }
 
+        [PacketTest(typeof(Die))]
+        public void Die_Test()
+        {
+            CreateAndCheckValues("die 1 123456", new Die
+            {
+                EntityType = EntityType.Player,
+                EntityId = 123456
+            });
+        }
+
         [PacketTest(typeof(Su))]
         public void Su_Other_Test()
         {

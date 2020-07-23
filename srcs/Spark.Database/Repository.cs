@@ -20,7 +20,10 @@ namespace Spark.Database
         public string Path { get; }
         public ReadOnlyDictionary<int, T> Values { get; private set; }
 
-        public T GetValue(int id) => Values.GetValueOrDefault(id);
+        public T GetValue(int id)
+        {
+            return Values.GetValueOrDefault(id);
+        }
 
         public void Load()
         {

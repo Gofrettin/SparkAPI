@@ -18,7 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\srcs\Spark.Game\Spark.Game.csproj" />
-      <ProjectReference Include="..\srcs\Spark.Processor\Spark.Processor.csproj" />
+      <ProjectReference Include="..\srcs\Spark.Packet.Processor\Spark.Packet.Processor.csproj" />
       <ProjectReference Include="..\srcs\Spark\Spark.csproj" />
     </ItemGroup>
 

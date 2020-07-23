@@ -2,13 +2,14 @@
 using Spark.Core.Option;
 using Spark.Game.Abstraction;
 using Spark.Packet.CharacterSelector;
+using Spark.Packet.Processor.CharacterSelector;
 using Spark.Tests.Attributes;
 
 namespace Spark.Tests.Processor
 {
     public class CharacterSelectorProcessorTests : ProcessorTests
     {
-        [ProcessorTest(typeof(CListEnd))]
+        [ProcessorTest(typeof(CListEndProcessor))]
         public void CListEnd_Test()
         {
             using (GameContext context = CreateContext())
@@ -19,7 +20,7 @@ namespace Spark.Tests.Processor
             }
         }
 
-        [ProcessorTest(typeof(CList))]
+        [ProcessorTest(typeof(CListProcessor))]
         public void CList_Test()
         {
             using (GameContext context = CreateContext())
@@ -41,7 +42,7 @@ namespace Spark.Tests.Processor
             }
         }
 
-        [ProcessorTest(typeof(Ok))]
+        [ProcessorTest(typeof(OkProcessor))]
         public void Ok_Test()
         {
             using (GameContext context = CreateContext())

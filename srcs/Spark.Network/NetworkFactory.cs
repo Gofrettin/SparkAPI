@@ -51,6 +51,9 @@ namespace Spark.Network
             return session;
         }
 
-        public INetwork CreateLocalNetwork(Process process) => throw new NotImplementedException();
+        public INetwork CreateLocalNetwork(Process process)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

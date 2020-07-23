@@ -12,8 +12,8 @@ using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Factory;
 using Spark.Game.Factory;
 using Spark.Gameforge;
-using Spark.Packet;
-using Spark.Processor;
+using Spark.Packet.Factory;
+using Spark.Packet.Processor;
 
 namespace Spark
 {
@@ -50,8 +50,10 @@ namespace Spark
             return client;
         }
 
-        public Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> accountSelector) =>
-            GameforgeService.GetSessionToken(email, password, locale, accountSelector);
+        public Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> accountSelector)
+        {
+            return GameforgeService.GetSessionToken(email, password, locale, accountSelector);
+        }
 
         public void AddEventHandler(IEventHandler eventHandler)
         {
@@ -66,7 +68,8 @@ namespace Spark
         private static ISpark CreateInstance()
         {
             IServiceCollection services = new ServiceCollection();
-
+            
+            services.AddImplementingTypes<IPacketCreator>();
             services.AddImplementingTypes<IPacketProcessor>();
 
             services.AddSingleton<IDatabase, FileDatabase>();

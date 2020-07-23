@@ -1,20 +1,24 @@
-﻿using NFluent;
+﻿using System.Collections.Generic;
+using NFluent;
 using Spark.Core;
 using Spark.Core.Enum;
+using Spark.Database.Data;
 using Spark.Event.Characters;
+using Spark.Game;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 using Spark.Packet.Characters;
+using Spark.Packet.Entities;
+using Spark.Packet.Processor.Characters;
 using Spark.Tests.Attributes;
 
 namespace Spark.Tests.Processor
 {
     public class CharacterProcessorTests : ProcessorTests
     {
-        [ProcessorTest(typeof(At))]
+        [ProcessorTest(typeof(AtProcessor))]
         [EventTest(typeof(MapJoinEvent))]
-        [EventTest(typeof(MapLeaveEvent))]
-        public void At_Test()
+        public void At_Without_Map_Test()
         {
             using (GameContext context = CreateContext())
             {
@@ -33,12 +37,54 @@ namespace Spark.Tests.Processor
                 Check.That(character.Position).IsEqualTo(new Vector2D(24, 42));
                 Check.That(character.Direction).IsEqualTo(Direction.South);
 
-                context.Verify<MapJoinEvent>(x => x.Map.Equals(character.Map));
-                context.Verify<MapLeaveEvent>(x => x.Map.Equals(currentMap));
+                context.IsEventEmitted<MapJoinEvent>(x => x.Map.Equals(character.Map));
+            }
+        }
+        
+        [ProcessorTest(typeof(AtProcessor))]
+        [EventTest(typeof(MapJoinEvent))]
+        [EventTest(typeof(MapLeaveEvent))]
+        public void At_With_Map_Test()
+        {
+            using (GameContext context = CreateContext())
+            {
+                context.Map = TestFactory.CreateMap();
+                
+                ICharacter character = context.Character;
+                IMap currentMap = character.Map;
+                
+                context.Process(new At
+                {
+                    MapId = 2544,
+                    Position = new Vector2D(24, 42),
+                    Direction = Direction.South
+                });
+
+                Check.That(character.Map).IsNotNull();
+                Check.That(character.Map.Id).IsEqualTo(2544);
+                Check.That(character.Position).IsEqualTo(new Vector2D(24, 42));
+                Check.That(character.Direction).IsEqualTo(Direction.South);
+
+                context.IsEventEmitted<MapJoinEvent>(x => x.Map.Equals(character.Map));
+                context.IsEventEmitted<MapLeaveEvent>(x => x.Map.Equals(currentMap));
             }
         }
 
-        [ProcessorTest(typeof(CInfo))]
+        [ProcessorTest(typeof(LevProcessor))]
+        public void Lev_Test()
+        {
+            using (GameContext context = CreateContext())
+            {
+                context.Process(new Lev
+                {
+                    Level = 80
+                });
+
+                Check.That(context.Character.Level).IsEqualTo(80);
+            }
+        }
+        
+        [ProcessorTest(typeof(CInfoProcessor))]
         [EventTest(typeof(CharacterInitializedEvent))]
         public void CInfo_Test()
         {
@@ -56,11 +102,11 @@ namespace Spark.Tests.Processor
                 Check.That(character.Name).IsEqualTo("Isha");
                 Check.That(character.Id).IsEqualTo(123456);
 
-                context.Verify<CharacterInitializedEvent>(x => x.Character.Equals(character));
+                context.IsEventEmitted<CharacterInitializedEvent>(x => x.Character.Equals(character));
             }
         }
 
-        [ProcessorTest(typeof(Ski))]
+        [ProcessorTest(typeof(SkiProcessor))]
         public void Ski_Test()
         {
             using (GameContext context = CreateContext())
@@ -68,7 +114,7 @@ namespace Spark.Tests.Processor
                 ICharacter character = context.Character;
                 context.Process(new Ski
                 {
-                    Skills = { 240, 241, 242, 243 }
+                    Skills = new HashSet<int>() { 240, 241, 242, 243 }
                 });
 
                 Check.That(character.Skills).CountIs(4);
@@ -76,7 +122,7 @@ namespace Spark.Tests.Processor
             }
         }
 
-        [ProcessorTest(typeof(Stat))]
+        [ProcessorTest(typeof(StatProcessor))]
         [EventTest(typeof(StatChangeEvent))]
         public void Stat_Test()
         {
@@ -99,7 +145,7 @@ namespace Spark.Tests.Processor
                 Check.That(character.HpPercentage).IsEqualTo(50);
                 Check.That(character.MpPercentage).IsEqualTo(75);
 
-                context.Verify<StatChangeEvent>(x => x.Character.Equals(character));
+                context.IsEventEmitted<StatChangeEvent>(x => x.Character.Equals(character));
             }
         }
     }

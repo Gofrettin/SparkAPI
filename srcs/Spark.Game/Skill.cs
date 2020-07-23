@@ -37,6 +37,9 @@ namespace Spark.Game
 
         public bool IsOnCooldown { get; set; }
 
-        public bool Equals(ISkill other) => other != null && other.SkillKey == SkillKey;
+        public bool Equals(ISkill other)
+        {
+            return other != null && other.SkillKey == SkillKey;
+        }
     }
 }

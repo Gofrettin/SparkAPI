@@ -6,13 +6,14 @@ using Spark.Event.Entities.Player;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 using Spark.Packet.Entities;
+using Spark.Packet.Processor.Entities;
 using Spark.Tests.Attributes;
 
 namespace Spark.Tests.Processor
 {
     public class EntityProcessorTests : ProcessorTests
     {
-        [ProcessorTest(typeof(CMode))]
+        [ProcessorTest(typeof(CModeProcessor))]
         [EventTest(typeof(SpecialistWearEvent))]
         public void CMode_Wear_Test()
         {
@@ -37,11 +38,30 @@ namespace Spark.Tests.Processor
                 Check.That(map.Entities).Contains(entity);
                 Check.That(entity.MorphId).IsEqualTo(11);
 
-                context.Verify<SpecialistWearEvent>(x => x.Entity.Equals(entity) && x.SpecialistId == 11);
+                context.IsEventEmitted<SpecialistWearEvent>(x => x.Entity.Equals(entity) && x.SpecialistId == 11);
             }
         }
 
-        [ProcessorTest(typeof(CMode))]
+        [ProcessorTest(typeof(GpProcessor))]
+        public void Gp_Test()
+        {
+            using (GameContext context = CreateContext())
+            {
+                IMap map = TestFactory.CreateMap(context.Character);
+                
+                context.Process(new Gp
+                {
+                    Position = new Vector2D(50, 50),
+                    PortalId = 1,
+                    PortalType = PortalType.MapPortal,
+                    DestinationId = 2
+                });
+
+                Check.That(map.Portals).HasElementThatMatches(x => x.Id == 1 && x.PortalType == PortalType.MapPortal && x.DestinationId == 2 && x.Position.Equals(new Vector2D(50, 50)));
+            }
+        }
+
+        [ProcessorTest(typeof(CModeProcessor))]
         [EventTest(typeof(SpecialistUnwearEvent))]
         public void CMode_Unwear_Test()
         {
@@ -66,11 +86,11 @@ namespace Spark.Tests.Processor
                 Check.That(map.Entities).Contains(entity);
                 Check.That(entity.MorphId).IsEqualTo(0);
 
-                context.Verify<SpecialistUnwearEvent>(x => x.Entity.Equals(entity));
+                context.IsEventEmitted<SpecialistUnwearEvent>(x => x.Entity.Equals(entity));
             }
         }
 
-        [ProcessorTest(typeof(Cond))]
+        [ProcessorTest(typeof(CondProcessor))]
         public void Cond_Test()
         {
             using (GameContext context = CreateContext())
@@ -94,7 +114,7 @@ namespace Spark.Tests.Processor
             }
         }
 
-        [ProcessorTest(typeof(Dir))]
+        [ProcessorTest(typeof(DirProcessor))]
         public void Dir_Test()
         {
             using (GameContext context = CreateContext())
@@ -116,7 +136,7 @@ namespace Spark.Tests.Processor
             }
         }
 
-        [ProcessorTest(typeof(In))]
+        [ProcessorTest(typeof(InProcessor))]
         [EventTest(typeof(EntitySpawnEvent))]
         public void In_As_Npc_Test()
         {
@@ -154,11 +174,11 @@ namespace Spark.Tests.Processor
                 Check.That(npc.MpPercentage).IsEqualTo(100);
                 Check.That(npc.Name).IsEmpty();
 
-                context.Verify<EntitySpawnEvent>(x => x.Entity.Id == 9326 && x.Entity.EntityType == EntityType.Npc && x.Map.Equals(map));
+                context.IsEventEmitted<EntitySpawnEvent>(x => x.Entity.Id == 9326 && x.Entity.EntityType == EntityType.Npc && x.Map.Equals(map));
             }
         }
 
-        [ProcessorTest(typeof(In))]
+        [ProcessorTest(typeof(InProcessor))]
         [EventTest(typeof(EntitySpawnEvent))]
         public void In_As_Player_Test()
         {
@@ -196,11 +216,11 @@ namespace Spark.Tests.Processor
                 Check.That(player.Class).IsEqualTo(Class.Archer);
                 Check.That(player.Gender).IsEqualTo(Gender.Male);
 
-                context.Verify<EntitySpawnEvent>(x => x.Entity.Id == 1204334 && x.Entity.EntityType == EntityType.Player && x.Map.Equals(map));
+                context.IsEventEmitted<EntitySpawnEvent>(x => x.Entity.Id == 1204334 && x.Entity.EntityType == EntityType.Player && x.Map.Equals(map));
             }
         }
 
-        [ProcessorTest(typeof(In))]
+        [ProcessorTest(typeof(InProcessor))]
         [EventTest(typeof(EntitySpawnEvent))]
         public void In_As_MapObject_Test()
         {
@@ -233,11 +253,11 @@ namespace Spark.Tests.Processor
                 Check.That(mapObject.Name).IsEmpty();
                 Check.That(mapObject.Amount).IsEqualTo(80);
 
-                context.Verify<EntitySpawnEvent>(x => x.Entity.Id == 708392 && x.Entity.EntityType == EntityType.MapObject && x.Map.Equals(map));
+                context.IsEventEmitted<EntitySpawnEvent>(x => x.Entity.Id == 708392 && x.Entity.EntityType == EntityType.MapObject && x.Map.Equals(map));
             }
         }
 
-        [ProcessorTest(typeof(Mv))]
+        [ProcessorTest(typeof(MvProcessor))]
         [EventTest(typeof(EntityMoveEvent))]
         public void Mv_Test()
         {
@@ -259,11 +279,11 @@ namespace Spark.Tests.Processor
                 Check.That(map.Entities).Contains(entity);
                 Check.That(entity.Position).IsEqualTo(new Vector2D(120, 143));
 
-                context.Verify<EntityMoveEvent>(x => x.Entity.Equals(entity) && x.From.Equals(new Vector2D(0, 0)) && x.To.Equals(new Vector2D(120, 143)));
+                context.IsEventEmitted<EntityMoveEvent>(x => x.Entity.Equals(entity) && x.From.Equals(new Vector2D(0, 0)) && x.To.Equals(new Vector2D(120, 143)));
             }
         }
 
-        [ProcessorTest(typeof(Out))]
+        [ProcessorTest(typeof(OutProcessor))]
         [EventTest(typeof(EntityLeaveEvent))]
         public void Out_Test()
         {
@@ -283,7 +303,7 @@ namespace Spark.Tests.Processor
                 Check.That(map.Entities).Not.Contains(entity);
                 Check.That(entity.Map).IsNull();
 
-                context.Verify<EntityLeaveEvent>(x => x.Entity.Equals(entity) && x.Map.Equals(map));
+                context.IsEventEmitted<EntityLeaveEvent>(x => x.Entity.Equals(entity) && x.Map.Equals(map));
             }
         }
     }

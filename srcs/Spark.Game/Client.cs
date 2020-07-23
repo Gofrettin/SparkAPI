@@ -45,7 +45,10 @@ namespace Spark.Game
             Network.SendPacket(packet);
         }
 
-        public T GetOption<T>() where T : IOption => (T)Options.GetValueOrDefault(typeof(T));
+        public T GetOption<T>() where T : IOption
+        {
+            return (T)Options.GetValueOrDefault(typeof(T));
+        }
 
         public void AddOption<T>(T storage) where T : IOption
         {
@@ -57,6 +60,9 @@ namespace Spark.Game
             PacketReceived?.Invoke(packet);
         }
 
-        public bool Equals(IClient other) => other != null && other.Id.Equals(Id);
+        public bool Equals(IClient other)
+        {
+            return other != null && other.Id.Equals(Id);
+        }
     }
 }

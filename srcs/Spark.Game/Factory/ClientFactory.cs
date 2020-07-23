@@ -8,7 +8,8 @@ using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Factory;
 using Spark.Network;
 using Spark.Packet;
-using Spark.Processor;
+using Spark.Packet.Factory;
+using Spark.Packet.Processor;
 
 namespace Spark.Game.Factory
 {
@@ -46,6 +47,9 @@ namespace Spark.Game.Factory
             return client;
         }
 
-        public IClient CreateLocalClient(Process process) => new Client(_networkFactory.CreateLocalNetwork(process));
+        public IClient CreateLocalClient(Process process)
+        {
+            return new Client(_networkFactory.CreateLocalNetwork(process));
+        }
     }
 }
