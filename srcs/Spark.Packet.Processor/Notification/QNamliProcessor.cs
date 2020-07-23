@@ -1,4 +1,5 @@
-﻿using Spark.Event;
+﻿using Spark.Core.Enum;
+using Spark.Event;
 using Spark.Event.Notification;
 using Spark.Game.Abstraction;
 using Spark.Packet.Notification;
@@ -15,7 +16,7 @@ namespace Spark.Packet.Processor.Notification
         {
             if (packet.Request.Equals("#guri^506"))
             {
-                _eventPipeline.Emit(new ICNotifyEvent(client));
+                _eventPipeline.Emit(new NotificationReceivedEvent(NotificationType.InstantCombat, client));
             }
         }
     }

@@ -1,11 +1,26 @@
-﻿using NFluent;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using NFluent;
+using Spark.Extension;
 using Spark.Packet;
+using Spark.Packet.Factory;
 
 namespace Spark.Tests.Packet
 {
     public abstract class PacketTests
     {
-        private IPacketFactory Factory { get; } = new PacketFactory();
+        private IPacketFactory Factory { get; }
+
+        protected PacketTests()
+        {
+            IServiceCollection services = new ServiceCollection();
+            
+            services.AddImplementingTypes<IPacketCreator>();
+            services.AddSingleton<IPacketFactory, PacketFactory>();
+
+            IServiceProvider provider = services.BuildServiceProvider();
+            Factory = provider.GetService<IPacketFactory>();
+        }
 
         private T Create<T>(string packet) where T : IPacket
         {

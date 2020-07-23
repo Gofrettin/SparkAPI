@@ -12,8 +12,8 @@ namespace Spark.Packet.Factory.Characters
             return new Stat
             {
                 Hp = content[0].ToInt(),
-                Mp = content[1].ToInt(),
-                MaxHp = content[2].ToInt(),
+                Mp = content[2].ToInt(),
+                MaxHp = content[1].ToInt(),
                 MaxMp = content[3].ToInt()
             };
         }

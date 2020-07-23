@@ -2,9 +2,10 @@
 using Spark.Event.GameEvent.InstantCombat;
 using Spark.Event.Notification;
 using Spark.Game.Abstraction;
+using Spark.Packet.Chat;
 using Spark.Packet.Notification;
 
-namespace Spark.Packet.Processor.Notification
+namespace Spark.Packet.Processor.Chat
 {
     public class SayiProcessor : PacketProcessor<Sayi>
     {

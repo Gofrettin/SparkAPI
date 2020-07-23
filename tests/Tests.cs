@@ -24,6 +24,12 @@ namespace Spark.Tests
             .Select(x => x.BaseType)
             .Where(x => x.IsParticularGeneric(typeof(PacketProcessor<>)))
             .Select(x => x.GenericTypeArguments[0]);
+        
+        public static readonly IEnumerable<Type> PacketCreatorsType = typeof(PacketProcessor<>).Assembly.GetTypes()
+            .Where(x => x.BaseType != null && x.BaseType != typeof(object))
+            .Select(x => x.BaseType)
+            .Where(x => x.IsParticularGeneric(typeof(PacketProcessor<>)))
+            .Select(x => x.GenericTypeArguments[0]);
 
         public static readonly IEnumerable<Type> PacketTests = typeof(PacketTests).Assembly.GetTypes()
             .SelectMany(x => x.GetMethods())
@@ -70,9 +76,9 @@ namespace Spark.Tests
 
         [Theory]
         [MemberData(nameof(PacketTypes))]
-        public void All_Packet_Have_Attribute(Type type)
+        public void All_Packet_Have_Creator(Type type)
         {
-            Check.WithCustomMessage($"Missing PacketAttribute for packet {type.Name}").That(type.GetCustomAttribute<PacketAttribute>()).IsNotNull();
+            Check.WithCustomMessage($"Missing PacketCreator for packet {type.Name}").That(PacketCreatorsType).Contains(type);
         }
     }
 }

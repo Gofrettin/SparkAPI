@@ -1,4 +1,5 @@
 ﻿using NLog;
+using Spark.Core.Enum;
 using Spark.Event;
 using Spark.Event.Notification;
 using Spark.Game.Abstraction;
@@ -18,8 +19,7 @@ namespace Spark.Packet.Processor.Notification
         {
             if (packet.Raid != null)
             {
-                _eventPipeline.Emit(new RaidListNotifyEvent(client, packet.Raid.Owner));
-                Logger.Debug($"Raid notification received from {packet.Raid.Owner}");
+                _eventPipeline.Emit(new NotificationReceivedEvent(NotificationType.Raid, client, packet.Raid));
             }
         }
     }

@@ -1,7 +1,10 @@
-﻿using NFluent;
+﻿using System.Collections.Generic;
+using NFluent;
 using Spark.Core;
 using Spark.Core.Enum;
+using Spark.Database.Data;
 using Spark.Event.Characters;
+using Spark.Game;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 using Spark.Packet.Characters;
@@ -13,11 +16,38 @@ namespace Spark.Tests.Processor
     {
         [ProcessorTest(typeof(At))]
         [EventTest(typeof(MapJoinEvent))]
-        [EventTest(typeof(MapLeaveEvent))]
-        public void At_Test()
+        public void At_Without_Map_Test()
         {
             using (GameContext context = CreateContext())
             {
+                ICharacter character = context.Character;
+                IMap currentMap = character.Map;
+                
+                context.Process(new At
+                {
+                    MapId = 2544,
+                    Position = new Vector2D(24, 42),
+                    Direction = Direction.South
+                });
+
+                Check.That(character.Map).IsNotNull();
+                Check.That(character.Map.Id).IsEqualTo(2544);
+                Check.That(character.Position).IsEqualTo(new Vector2D(24, 42));
+                Check.That(character.Direction).IsEqualTo(Direction.South);
+
+                context.Verify<MapJoinEvent>(x => x.Map.Equals(character.Map));
+            }
+        }
+        
+        [ProcessorTest(typeof(At))]
+        [EventTest(typeof(MapJoinEvent))]
+        [EventTest(typeof(MapLeaveEvent))]
+        public void At_With_Map_Test()
+        {
+            using (GameContext context = CreateContext())
+            {
+                context.Map = TestFactory.CreateMap();
+                
                 ICharacter character = context.Character;
                 IMap currentMap = character.Map;
                 
@@ -68,7 +98,7 @@ namespace Spark.Tests.Processor
                 ICharacter character = context.Character;
                 context.Process(new Ski
                 {
-                    Skills = { 240, 241, 242, 243 }
+                    Skills = new HashSet<int>() { 240, 241, 242, 243 }
                 });
 
                 Check.That(character.Skills).CountIs(4);

@@ -1,4 +1,5 @@
-﻿using Spark.Core;
+﻿using System.Collections.Generic;
+using Spark.Core;
 using Spark.Core.Enum;
 using Spark.Packet.Characters;
 using Spark.Tests.Attributes;
@@ -34,7 +35,7 @@ namespace Spark.Tests.Packet
         {
             CreateAndCheckValues("ski 240 241 240 241 242 243 244 245 247 248 249 250 251 252 254 256 236 694|4 704|0 279 280 281 282 283", new Ski
             {
-                Skills = { 240, 241, 242, 243, 244, 245, 247, 248, 249, 250, 251, 252, 254, 256, 236, 694, 704, 279, 280, 281, 282, 283 }
+                Skills = new HashSet<int>() { 240, 241, 242, 243, 244, 245, 247, 248, 249, 250, 251, 252, 254, 256, 236, 694, 704, 279, 280, 281, 282, 283 }
             });
         }
 

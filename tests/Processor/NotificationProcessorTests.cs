@@ -1,4 +1,5 @@
-﻿using Spark.Event.Notification;
+﻿using Spark.Core.Enum;
+using Spark.Event.Notification;
 using Spark.Packet.Notification;
 using Spark.Tests.Attributes;
 
@@ -7,7 +8,7 @@ namespace Spark.Tests.Processor
     public class NotificationProcessorTests : ProcessorTests
     {
         [ProcessorTest(typeof(QNamli2))]
-        [EventTest(typeof(RaidListNotifyEvent))]
+        [EventTest(typeof(NotificationReceivedEvent))]
         public void QNamli2_Test()
         {
             using (GameContext context = CreateContext())
@@ -20,7 +21,7 @@ namespace Spark.Tests.Processor
                     }
                 });
 
-                context.Verify<RaidListNotifyEvent>(x => x.Owner == "MyNameIs");
+                context.Verify<NotificationReceivedEvent>(x => x.NotificationType == NotificationType.Raid);
             }
         }
     }

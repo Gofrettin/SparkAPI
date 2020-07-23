@@ -1,4 +1,5 @@
-﻿using NFluent;
+﻿using System.Collections.Generic;
+using NFluent;
 using Spark.Core.Enum;
 using Spark.Game.Abstraction.Entities;
 using Spark.Packet.Inventory;
@@ -15,18 +16,18 @@ namespace Spark.Tests.Processor
             {
                 ICharacter character = context.Character;
 
-                context.Process(new Inv()
+                context.Process(new Inv
                 {
                     BagType = BagType.Main,
-                    Objects =
+                    Objects = new List<Inv.ObjectInfo>()
                     {
-                        new ObjectInfo
+                        new Inv.ObjectInfo
                         {
                             Slot = 1,
                             ObjectKey = 140,
                             Amount = 10
                         },
-                        new ObjectInfo
+                        new Inv.ObjectInfo
                         {
                             Slot = 8,
                             ObjectKey = 220,
@@ -50,15 +51,15 @@ namespace Spark.Tests.Processor
                 context.Process(new Inv
                 {
                     BagType = BagType.Equipment,
-                    Objects =
+                    Objects = new List<Inv.ObjectInfo>()
                     {
-                        new ObjectInfo
+                        new Inv.ObjectInfo
                         {
                             Slot = 1,
                             ObjectKey = 140,
                             Amount = 10
                         },
-                        new ObjectInfo
+                        new Inv.ObjectInfo
                         {
                             Slot = 8,
                             ObjectKey = 220,

@@ -21,7 +21,7 @@ namespace Spark.Packet.Processor.Inventory
             ICharacter character = client.Character;
             BagType bagType = packet.BagType;
             
-            foreach (ObjectInfo objectInfo in packet.Objects)
+            foreach (Inv.ObjectInfo objectInfo in packet.Objects)
             {
                 IObjectStack objectStack = _objectFactory.CreateObjectStack(bagType, objectInfo.ObjectKey, objectInfo.Slot, objectInfo.Amount);
                 if (objectStack == null)
