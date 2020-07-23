@@ -24,7 +24,10 @@ namespace Spark.Tests.Packet
         [PacketTest(typeof(QNamli))]
         public void QNamli_Test()
         {
-            
+            CreateAndCheckValues("qnamli 1 #guri^205", new QNamli
+            {
+                Request = "#guri^205"
+            });
         }
     }
 }

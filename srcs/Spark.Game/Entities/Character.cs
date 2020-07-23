@@ -79,8 +79,8 @@ namespace Spark.Game.Entities
             int stepX = distance.X > 3 ? 3 : distance.X;
             int stepY = distance.Y > 3 ? 3 : distance.Y;
 
-            short x = (short)((positiveX ? 1 : -1) * stepX + Position.X);
-            short y = (short)((positiveY ? 1 : -1) * stepY + Position.Y);
+            short x = (short)(((positiveX ? 1 : -1) * stepX) + Position.X);
+            short y = (short)(((positiveY ? 1 : -1) * stepY) + Position.Y);
 
             var nextPosition = new Vector2D(x, y);
 
@@ -129,8 +129,8 @@ namespace Spark.Game.Entities
 
             double ratio = (distance - range) / distance;
 
-            double x = Position.X + ratio * (position.X - Position.X);
-            double y = Position.Y + ratio * (position.Y - Position.Y);
+            double x = Position.X + (ratio * (position.X - Position.X));
+            double y = Position.Y + (ratio * (position.Y - Position.Y));
 
             Walk(new Vector2D((short)x, (short)y));
         }
