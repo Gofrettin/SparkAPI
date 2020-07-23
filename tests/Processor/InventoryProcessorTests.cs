@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NFluent;
 using Spark.Core.Enum;
+using Spark.Event.Inventory;
 using Spark.Game.Abstraction.Entities;
 using Spark.Packet.Inventory;
 using Spark.Tests.Attributes;
@@ -9,6 +10,26 @@ namespace Spark.Tests.Processor
 {
     public class InventoryProcessorTests : ProcessorTests
     {
+        [ProcessorTest(typeof(Gold))]
+        [EventTest(typeof(GoldChangeEvent))]
+        public void Gold_Test()
+        {
+            using (GameContext context = CreateContext())
+            {
+                ICharacter character = context.Character;
+                
+                context.Process(new Gold
+                {
+                    Classic = 123456,
+                    Bank = 123
+                });
+
+                Check.That(character.Inventory.Gold).IsEqualTo(123456);
+                
+                context.Verify<GoldChangeEvent>(x => x.Gold == 123456);
+            }
+        }
+        
         [ProcessorTest(typeof(Inv))]
         public void Inv_Main_Test()
         {

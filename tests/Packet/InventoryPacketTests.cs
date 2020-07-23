@@ -7,7 +7,17 @@ namespace Spark.Tests.Packet
 {
     public class InventoryPacketTests : PacketTests
     {
-        [PacketTest(typeof(Inv))]
+        [PacketTest(typeof(Gold))]
+        public void Gold_Test()
+        {
+            CreateAndCheckValues("gold 123456 123", new Gold
+            {
+                Classic = 123456,
+                Bank = 123
+            });
+        }
+        
+        [PacketTest(typeof(Inv))] 
         public void Inv_Main_Test()
         {
             CreateAndCheckValues("inv 1 0.1243.13 1.1004.14 3.9068.1", new Inv

@@ -61,6 +61,31 @@ namespace Spark.Tests.Processor
             }
         }
 
+        [ProcessorTest(typeof(Die))]
+        [EventTest(typeof(EntityDeathEvent))]
+        public void Die_Test()
+        {
+            using (GameContext context = CreateContext())
+            {
+                ICharacter character = context.Character;
+                ILivingEntity monster = TestFactory.CreateMonster();
+
+                IMap map = TestFactory.CreateMap(character, monster);
+                
+                context.Process(new Die
+                {
+                    EntityType = monster.EntityType,
+                    EntityId = monster.Id
+                });
+
+                Check.That(monster.Map).IsNull();
+                Check.That(map.Entities).Not.Contains(monster);
+                Check.That(monster.HpPercentage).IsEqualTo(0);
+                
+                context.Verify<EntityDeathEvent>(x => x.Entity.Equals(monster));
+            }
+        }
+
         [ProcessorTest(typeof(Su))]
         [EventTest(typeof(EntityDamageEvent))]
         [EventTest(typeof(EntityDeathEvent))]

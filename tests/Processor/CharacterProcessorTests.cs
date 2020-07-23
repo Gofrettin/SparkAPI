@@ -8,6 +8,7 @@ using Spark.Game;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
 using Spark.Packet.Characters;
+using Spark.Packet.Entities;
 using Spark.Tests.Attributes;
 
 namespace Spark.Tests.Processor
@@ -68,6 +69,20 @@ namespace Spark.Tests.Processor
             }
         }
 
+        [ProcessorTest(typeof(Lev))]
+        public void Lev_Test()
+        {
+            using (GameContext context = CreateContext())
+            {
+                context.Process(new Lev
+                {
+                    Level = 80
+                });
+
+                Check.That(context.Character.Level).IsEqualTo(80);
+            }
+        }
+        
         [ProcessorTest(typeof(CInfo))]
         [EventTest(typeof(CharacterInitializedEvent))]
         public void CInfo_Test()

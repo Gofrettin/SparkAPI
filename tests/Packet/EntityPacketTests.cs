@@ -36,6 +36,18 @@ namespace Spark.Tests.Packet
             });
         }
 
+        [PacketTest(typeof(Gp))]
+        public void Gp_Test()
+        {
+            CreateAndCheckValues("gp 50 75 1 -1 2", new Gp
+            {
+                Position = new Vector2D(50, 75),
+                DestinationId = 1,
+                PortalType = PortalType.MapPortal,
+                PortalId = 2
+            });
+        }
+
         [PacketTest(typeof(Dir))]
         public void Dir_Test()
         {

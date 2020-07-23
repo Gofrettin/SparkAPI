@@ -158,5 +158,54 @@ namespace Spark.Game
             byte b = Grid[4 + vector2D.Y * Height + vector2D.X];
             return b == 0 || b == 2 || (b >= 16 && b <= 19);
         }
+        
+        public Vector2D GetRandomPosition(Vector2D point, int max = 1)
+        {
+            Vector2D output;
+            int attempt = 0;
+            do
+            {
+                output = point.Randomize(max);
+                attempt++;
+            } 
+            while (!IsWalkable(output) && attempt < max * 6);
+
+            return attempt == (max * 6) ? point : output;
+        }
+
+        public Vector2D FindTopDensityPosition()
+        {
+            int x = -1;
+            int y = -1;
+            double max = -1;
+            
+            for (int cy = 0; cy < Width; cy++)
+            {
+                for (int cx = 0; cx < Height; cx++)
+                {
+                    double score = 0;
+                    foreach (IPlayer player in Players)
+                    {
+                        Vector2D vector = player.Position;
+                        double d = vector.GetDistance(new Vector2D(cx, cy));
+                        if (d == 0)
+                        {
+                            d = 0.5;
+                        }
+
+                        score += 1000 / d;
+                    }
+
+                    if (score > max || max == -1)
+                    {
+                        max = score;
+                        x = cx;
+                        y = cy;
+                    }
+                }
+            }
+            
+            return new Vector2D(x, y);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Spark.Core;
+using Spark.Core.Enum;
 using Spark.Game.Abstraction.Inventory;
 
 namespace Spark.Game.Abstraction.Entities
@@ -15,5 +16,15 @@ namespace Spark.Game.Abstraction.Entities
         int Mp { get; set; }
         int MaxHp { get; set; }
         int MaxMp { get; set; }
+
+        void Walk(Vector2D position);
+        void WalkInRange(Vector2D position, int range);
+        void Attack(ISkill skill);
+        void Attack(ISkill skill, ILivingEntity entity);
+        void Rotate(Direction direction);
+        void PickUp(IMapObject mapObject);
+        void UseObject(IObjectStack objectStack);
+        void UseObject(int objectKey);
+        void Rest();
     }
 }

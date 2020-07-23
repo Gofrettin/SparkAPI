@@ -41,6 +41,25 @@ namespace Spark.Tests.Processor
             }
         }
 
+        [ProcessorTest(typeof(Gp))]
+        public void Gp_Test()
+        {
+            using (GameContext context = CreateContext())
+            {
+                IMap map = TestFactory.CreateMap(context.Character);
+                
+                context.Process(new Gp
+                {
+                    Position = new Vector2D(50, 50),
+                    PortalId = 1,
+                    PortalType = PortalType.MapPortal,
+                    DestinationId = 2
+                });
+
+                Check.That(map.Portals).HasElementThatMatches(x => x.Id == 1 && x.PortalType == PortalType.MapPortal && x.DestinationId == 2 && x.Position.Equals(new Vector2D(50, 50)));
+            }
+        }
+
         [ProcessorTest(typeof(CMode))]
         [EventTest(typeof(SpecialistUnwearEvent))]
         public void CMode_Unwear_Test()
