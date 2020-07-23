@@ -14,8 +14,12 @@ namespace Spark.Packet.Processor.CharacterSelector
         protected override void Process(IClient client, CListEnd packet)
         {
             LoginOption option = client.GetOption<LoginOption>();
+            if (option == null)
+            {
+                return;
+            }
+            
             SelectableCharacter character = option.SelectableCharacters.FirstOrDefault(x => option.CharacterSelector.Invoke(x));
-
             if (character == null)
             {
                 Logger.Error("Can't found character matching predicate");
