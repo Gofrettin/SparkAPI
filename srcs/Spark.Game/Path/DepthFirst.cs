@@ -3,13 +3,13 @@ using System.Linq;
 using Spark.Core;
 using Spark.Game.Abstraction;
 
-namespace Spark.Game
+namespace Spark.Game.Path
 {
-    public class Pathfinder : IPathfinder
+    public class DepthFirst : IPathfinder
     {
         private readonly IMap _map;
         
-        public Pathfinder(IMap map)
+        public DepthFirst(IMap map)
         {
             _map = map;
         }
@@ -31,7 +31,7 @@ namespace Spark.Game
                     return path;
                 }
 
-                IEnumerable<Vector2D> neighbours = GetNeighbours(current).Where(s => stack.Any(x => x.Equals(s)) || closed.Any(x => x.Equals(s)));
+                IEnumerable<Vector2D> neighbours = GetNeighbours(current).Where(s => !stack.Any(x => x.Equals(s)) && !closed.Any(x => x.Equals(s)));
                 if (neighbours.Any())
                 { 
                     stack.Push(neighbours.First());

@@ -9,6 +9,7 @@ using Spark.Core.Extension;
 using Spark.Database.Data;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
+using Spark.Game.Path;
 
 namespace Spark.Game
 {
@@ -29,7 +30,7 @@ namespace Spark.Game
             Grid = data.Grid;
             Height = BitConverter.ToInt16(Grid.Slice(0, 2));
             Width = BitConverter.ToInt16(Grid.Slice(2, 2));
-            Pathfinder = new Pathfinder(this);
+            Pathfinder = new BreadthFirst(this);
             
             _monsters = new ConcurrentDictionary<long, IMonster>();
             _npcs = new ConcurrentDictionary<long, INpc>();
@@ -152,7 +153,7 @@ namespace Spark.Game
 
         public bool IsWalkable(Vector2D vector2D)
         {
-            if (vector2D.X > Height || vector2D.X < 0 || vector2D.Y > Width || vector2D.Y < 0)
+            if (vector2D.X >= Height || vector2D.X < 0 || vector2D.Y >= Width || vector2D.Y < 0)
             {
                 return false;
             }
