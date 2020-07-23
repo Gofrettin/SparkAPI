@@ -71,37 +71,22 @@ namespace Spark.Game.Entities
                 return;
             }
 
-            bool positiveX = destination.X > Position.X;
-            bool positiveY = destination.Y > Position.Y;
-
-            Vector2D distance = Position.GetDistanceTo(destination);
-
-            int stepX = distance.X > 3 ? 3 : distance.X;
-            int stepY = distance.Y > 3 ? 3 : distance.Y;
-
-            short x = (short)(((positiveX ? 1 : -1) * stepX) + Position.X);
-            short y = (short)(((positiveY ? 1 : -1) * stepY) + Position.Y);
-
-            var nextPosition = new Vector2D(x, y);
-
-            if (!Map.IsWalkable(nextPosition))
+            Stack<Vector2D> path = Map.Pathfinder.Find(Position, destination);
+            if (path == null)
             {
-                Logger.Warn("Next position is not walkable");
+                Logger.Error($"Can't found path to {destination}");
                 return;
             }
-
-            Logger.Debug($"Walk to {nextPosition} with speed {Speed}");
-            Client.SendPacket($"walk {nextPosition.X} {nextPosition.Y} {(nextPosition.X + nextPosition.Y) % 3 % 2} {Speed}");
-
-            Thread.Sleep((1000 / Speed) * ((stepX + stepY) + 3));
             
-            Position = nextPosition;
-            if (!Position.Equals(destination))
+            while (path.TryPop(out Vector2D position))
             {
-                Walk(destination);
-                return;
+                Logger.Debug($"Walk to {position} with speed {Speed}");
+                Client.SendPacket($"walk {position.X} {position.Y} {(position.X + position.Y) % 3 % 2} {Speed}");
+
+                Thread.Sleep((100 / Speed) * 23);
+                Position = position;
             }
-        
+
             Logger.Debug($"Walked to {Position}");
 
             IMap map = Map;

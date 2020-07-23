@@ -8,113 +8,95 @@ namespace Spark.Game.Path
 {
     public class AStar : IPathfinder
     {
-        private readonly IMap _map;
+        public Node[,] Grid { get; }
+
+        public int Rows => Grid.GetLength(0);
+        public int Columns => Grid.GetLength(1);
 
         public AStar(IMap map)
         {
-            _map = map;
-        }
-        
-        public IEnumerable<Vector2D> Find(Vector2D origin, Vector2D destination)
-        {
-            int id = 0;
-            var neighbours = new List<Vector2D>();
-            var closed = new List<Node>();
-            var opens = new List<Node>
+            Grid = new Node[map.Height, map.Width];
+            for (int i = 0; i < map.Height; i++)
             {
-                new Node(id++, null, origin, 0, GetH(origin, destination))
-            };
-            
-            Node current = null;
-            while (true)
-            {
-                if (current == null)
+                for (int j = 0; j < map.Width; j++)
                 {
-                    if (!opens.Any())
-                    {
-                        continue;
-                    }
-
-                    current = opens.OrderBy(x => x.F).ThenBy(x => x.H).First();
-
-                    opens.Remove(current);
-                    closed.Add(current);
-                    
-                    neighbours.AddRange(GetNeighbours(current.Position));
-                }
-
-                if (neighbours.Any())
-                {
-                    Vector2D neighbour = neighbours.First();
-                    neighbours.Remove(neighbour);
-
-                    if (neighbour.Equals(destination))
-                    {
-                        var path = new List<Vector2D>()
-                        {
-                            neighbour
-                        };
-
-                        int? parent = current.Id;
-                        while (parent.HasValue)
-                        {
-                            Node next = closed.First(x => x.Id == parent);
-                            path.Add(next.Position);
-                            parent = next.Parent;
-                        }
-
-                        path.Reverse();
-                        return path;
-                    }
-                    
-                    int hFromHere = GetH(neighbour, destination);
-                    int neighbourCost = current.G + hFromHere;
-                    
-                    Node openListItem = opens.FirstOrDefault(x => x.Id == GetExistingNode(opens, closed, true, neighbour));
-                    if (openListItem != null && openListItem.F > neighbourCost)
-                    {
-                        openListItem.F = neighbourCost;
-                        openListItem.Parent = current.Id;
-                    }
-                    
-                    Node closedListItem = closed.FirstOrDefault(x => x.Id == GetExistingNode(opens, closed, false, neighbour));
-                    if (closedListItem != null && closedListItem.F > neighbourCost)
-                    {
-                        closedListItem.F = neighbourCost;
-                        closedListItem.Parent = current.Id;
-                    }
-                    
-                    if (openListItem != null || closedListItem != null) continue;
-                    opens.Add(new Node(id++, current.Id, neighbour, current.G, hFromHere));
-                }
-                else
-                {
-                    current = null;
+                    Grid[i, j] = new Node(new Vector2D(i, j), map.IsWalkable(new Vector2D(i, j)));
                 }
             }
         }
         
-        private int? GetExistingNode(IEnumerable<Node> opens, IEnumerable<Node> closed, bool checkOpenList, Vector2D position)
+        public Stack<Vector2D> Find(Vector2D origin, Vector2D destination)
         {
-            return checkOpenList ? opens.FirstOrDefault(x => x.Position.Equals(position))?.Id : closed.FirstOrDefault(x => x.Position.Equals(position))?.Id;
+            var start = new Node(origin, true);
+            var end = new Node(destination, true);
+            
+            var path = new Stack<Vector2D>();
+            
+            var open = new List<Node>();
+            var closed = new List<Node>();
+
+            Node current = start;
+            
+            open.Add(start);
+
+            while (open.Count != 00 && !closed.Exists(x => x.Position.Equals(end.Position)))
+            {
+                current = open[0];
+                open.Remove(current);
+                closed.Add(current);
+                
+                IEnumerable<Node> adjacent = GetAdjacentNodes(current);
+                foreach (Node n in adjacent.Where(n => !closed.Contains(n) && n.IsWalkable).Where(n => !open.Contains(n)))
+                {
+                    n.Parent = current;
+                    n.Distance = Math.Abs(n.Position.X - end.Position.X) + Math.Abs(n.Position.Y - end.Position.Y);
+                    n.Cost = 1 + n.Parent.Cost;
+                            
+                    open.Add(n);
+                    open = open.OrderBy(node => node.F).ToList();
+                }
+            }
+
+            if (!closed.Exists(x => x.Position.Equals(end.Position)))
+            {
+                return null;
+            }
+
+            Node temp = closed[closed.IndexOf(current)];
+            while (temp.Parent != start && temp != null)
+            {
+                path.Push(temp.Position);
+                temp = temp.Parent;
+            }
+
+            return path;
         }
         
-        private IEnumerable<Vector2D> GetNeighbours(Vector2D current)
+        private IEnumerable<Node> GetAdjacentNodes(Node n)
         {
-            var neighbours = new List<Vector2D>
+            var temp = new List<Node>();
+
+            int row = n.Position.Y;
+            int col = n.Position.X;
+
+            if(row + 1 < Rows)
             {
-                new Vector2D(current.X - 1, current.Y),
-                new Vector2D(current.X + 1, current.Y),
-                new Vector2D(current.X, current.Y - 1),
-                new Vector2D(current.X, current.Y + 1)
-            };
+                temp.Add(Grid[col, row + 1]);
+            }
+            if(row - 1 >= 0)
+            {
+                temp.Add(Grid[col, row - 1]);
+            }
+            if(col - 1 >= 0)
+            {
+                temp.Add(Grid[col - 1, row]);
+            }
+            if(col + 1 < Columns)
+            {
+                temp.Add(Grid[col + 1, row]);
+            }
 
-            return neighbours.Where(x => _map.IsWalkable(x));
-        }
-
-        private int GetH(Vector2D origin, Vector2D destination)
-        {
-            return Math.Abs(origin.X - destination.X) + Math.Abs(origin.Y - destination.Y);
+            return temp;
         }
     }
 }

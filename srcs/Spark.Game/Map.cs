@@ -28,9 +28,9 @@ namespace Spark.Game
             Id = id;
             NameKey = data.NameKey;
             Grid = data.Grid;
-            Height = BitConverter.ToInt16(Grid.Slice(0, 2));
-            Width = BitConverter.ToInt16(Grid.Slice(2, 2));
-            Pathfinder = new BreadthFirst(this);
+            Width = BitConverter.ToInt16(Grid.Slice(0, 2));
+            Height = BitConverter.ToInt16(Grid.Slice(2, 2));
+            Pathfinder = new AStar(this);
             
             _monsters = new ConcurrentDictionary<long, IMonster>();
             _npcs = new ConcurrentDictionary<long, INpc>();
@@ -153,12 +153,12 @@ namespace Spark.Game
 
         public bool IsWalkable(Vector2D vector2D)
         {
-            if (vector2D.X >= Height || vector2D.X < 0 || vector2D.Y >= Width || vector2D.Y < 0)
+            if (vector2D.X > Width || vector2D.X < 0 || vector2D.Y > Height || vector2D.Y < 0)
             {
                 return false;
             }
 
-            byte b = Grid[4 + vector2D.Y * Height + vector2D.X];
+            byte b = Grid[4 + vector2D.Y * Width + vector2D.X];
             return b == 0 || b == 2 || (b >= 16 && b <= 19);
         }
         

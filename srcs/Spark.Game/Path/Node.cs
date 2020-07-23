@@ -4,21 +4,32 @@ namespace Spark.Game.Path
 {
     public class Node
     {
+        public Node Parent { get; set; }
         public Vector2D Position { get; set; }
-        public int? Parent { get; set; }
-        public int Id { get; set; }
-        public int F { get; set; }
-        public int G { get; set; }
-        public int H { get; set; }
+        public float Distance { get; set; }
+        public float Cost { get; set; }
 
-        public Node(int id, int? parent, Vector2D position, int g, int h)
+        public float F
+        {
+            get
+            {
+                if (Distance != -1 && Cost != -1)
+                {
+                    return Distance + Cost;
+                }
+
+                return -1;
+            }
+        }
+        
+        public bool IsWalkable { get; set; }
+
+        public Node(Vector2D position, bool isWalkable)
         {
             Position = position;
-            Parent = parent;
-            Id = id;
-            G = g;
-            H = h;
-            F = G + H;
+            IsWalkable = isWalkable;
+            Distance = -1;
+            Cost = -1;
         }
     }
 }
