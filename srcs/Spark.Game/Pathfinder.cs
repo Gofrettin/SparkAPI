@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EpPathFinding.cs;
 using Spark.Core;
 using Spark.Game.Abstraction;
+using Spark.Pathfinder;
+using Spark.Pathfinder.Grid;
 
 namespace Spark.Game
 {

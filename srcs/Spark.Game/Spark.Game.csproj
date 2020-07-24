@@ -12,11 +12,7 @@
       <ProjectReference Include="..\Spark.Packet.Factory\Spark.Packet.Factory.csproj" />
       <ProjectReference Include="..\Spark.Packet.Processor\Spark.Packet.Processor.csproj" />
       <ProjectReference Include="..\Spark.Packet\Spark.Packet.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="EpPathFinding.cs" Version="1.4.2" />
-      <PackageReference Include="NLog" Version="4.7.2" />
+      <ProjectReference Include="..\Spark.Pathfinder\Spark.Pathfinder.csproj" />
     </ItemGroup>
 
 </Project>
