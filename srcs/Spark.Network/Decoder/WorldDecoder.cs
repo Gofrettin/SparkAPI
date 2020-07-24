@@ -8,23 +8,19 @@ namespace Spark.Network.Decoder
     {
         private static readonly char[] Keys = { ' ', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'n', };
 
-        private List<byte> Cache { get; } = new List<byte>();
-        
         public IEnumerable<string> Decode(byte[] bytes, int size)
         {
             int index = 0;
             var output = new List<string>();
             string currentPacket = string.Empty;
+            
             while (index < size)
             {
                 byte currentByte = bytes[index++];
                 if (currentByte == 0xFF)
                 {
-                    if (currentPacket != string.Empty)
-                    {
-                        output.Add(currentPacket.Trim());
-                        currentPacket = "";
-                    }
+                    output.Add(currentPacket.Trim());
+                    currentPacket = string.Empty;
                     continue;
                 }
 

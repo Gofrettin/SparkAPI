@@ -33,7 +33,7 @@ namespace Spark.Game
             BaseGrid searchGrid = new StaticGrid(_map.Width, _map.Height, _matrix);
             var jp = new JumpPointParam(searchGrid, new GridPos(origin.X, origin.Y), new GridPos(destination.X, destination.Y), EndNodeUnWalkableTreatment.ALLOW);
 
-            return JumpPointFinder.GetFullPath(JumpPointFinder.FindPath(jp)).Select(x => new Vector2D(x.x, x.y));
+            return JumpPointFinder.FindPath(jp).Select(x => new Vector2D(x.x, x.y));
         }
     }
 }

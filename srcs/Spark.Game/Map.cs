@@ -180,15 +180,16 @@ namespace Spark.Game
             int x = -1;
             int y = -1;
             double max = -1;
+
+            IEnumerable<Vector2D> positions = Players.Where(s => !s.Name.EndsWith("30")).Select(s => s.Position);
             
-            for (int cy = 0; cy < Width; cy++)
+            for (int cx = 0; cx < Width; cx++)
             {
-                for (int cx = 0; cx < Height; cx++)
+                for (int cy = 0; cy < Height; cy++)
                 {
                     double score = 0;
-                    foreach (IPlayer player in Players)
+                    foreach (Vector2D vector in positions)
                     {
-                        Vector2D vector = player.Position;
                         double d = vector.GetDistance(new Vector2D(cx, cy));
                         if (d == 0)
                         {

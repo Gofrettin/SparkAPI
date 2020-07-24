@@ -10,6 +10,7 @@ namespace Spark.Game.Abstraction.Entities
         int MpPercentage { get; set; }
         short MorphId { get; set; }
         int Level { get; set; }
+        bool IsResting { get; set; }
 
         List<IBuff> Buffs { get; }
         

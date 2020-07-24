@@ -31,6 +31,7 @@ namespace Spark.Game.Entities
         public int MpPercentage { get; set; }
         public short MorphId { get; set; }
         public int Level { get; set; }
+        public bool IsResting { get; set; }
         public List<IBuff> Buffs { get; }
         public short Speed { get; set; }
         public Direction Direction { get; set; }

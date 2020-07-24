@@ -39,6 +39,7 @@ namespace Spark.Game.Entities
         public int MpPercentage { get; set; }
         public short MorphId { get; set; }
         public int Level { get; set; }
+        public bool IsResting { get; set; }
         public List<IBuff> Buffs { get; }
         public short Speed { get; set; }
         public Direction Direction { get; set; }
@@ -60,6 +61,14 @@ namespace Spark.Game.Entities
         {
             Client.SendPacket("sl 0");
         }
+
+        public void Walk(IEnumerable<Vector2D> path)
+        {
+            foreach (Vector2D position in path)
+            {
+                Walk(position);
+            }
+        }
         
         public void Walk(Vector2D destination)
         {
@@ -71,16 +80,6 @@ namespace Spark.Game.Entities
                 return;
             }
 
-            IEnumerable<Vector2D> path = Map.Pathfinder.Find(Position, destination);
-            foreach (Vector2D node in path)
-            {
-                Client.SendPacket($"walk {node.X} {node.Y} {(node.X + node.Y) % 3 % 2} {Speed}");
-                Thread.Sleep((100 / Speed) * 24);
-
-                Position = node;
-            }
-
-            /*
             bool positiveX = destination.X > Position.X;
             bool positiveY = destination.Y > Position.Y;
 
@@ -96,7 +95,6 @@ namespace Spark.Game.Entities
 
             if (!Map.IsWalkable(nextPosition))
             {
-                Logger.Warn("Next position is not walkable");
                 return;
             }
 
@@ -111,7 +109,6 @@ namespace Spark.Game.Entities
                 Walk(destination);
                 return;
             }
-            */
 
             Logger.Debug($"Walked to {Position}");
             
@@ -123,12 +120,11 @@ namespace Spark.Game.Entities
                 return;
             }
         
-            if (Position.IsInRange(closestPortal.Position, 2))
+            if (Position.IsInRange(closestPortal.Position, 1))
             {
                 Client.SendPacket("preq");
                 Logger.Debug("Character on portal, switching map");
             }
-        
         }
 
         public void WalkInRange(Vector2D position, int range)
@@ -259,6 +255,7 @@ namespace Spark.Game.Entities
         public void Rest()
         {
             Client.SendPacket($"rest 1 {EntityType.AsString()} {Id}");
+            IsResting = true;
         }
         
         public bool Equals(IEntity other)
