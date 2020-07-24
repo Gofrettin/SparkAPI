@@ -13,4 +13,14 @@
       <ProjectReference Include="..\Spark.Core\Spark.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Resources" />
+    </ItemGroup>
+	
+	<ItemGroup>
+	  <ContentWithTargetPath Include="Resources/*.json" 
+		TargetPath="Database/%(Filename)%(Extension)"
+		CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
 </Project>
