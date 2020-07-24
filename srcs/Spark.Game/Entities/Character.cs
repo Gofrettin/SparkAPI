@@ -71,6 +71,16 @@ namespace Spark.Game.Entities
                 return;
             }
 
+            IEnumerable<Vector2D> path = Map.Pathfinder.Find(Position, destination);
+            foreach (Vector2D node in path)
+            {
+                Client.SendPacket($"walk {node.X} {node.Y} {(node.X + node.Y) % 3 % 2} {Speed}");
+                Thread.Sleep((100 / Speed) * 24);
+
+                Position = node;
+            }
+
+            /*
             bool positiveX = destination.X > Position.X;
             bool positiveY = destination.Y > Position.Y;
 
@@ -101,12 +111,13 @@ namespace Spark.Game.Entities
                 Walk(destination);
                 return;
             }
-        
-            Logger.Debug($"Walked to {Position}");
+            */
 
+            Logger.Debug($"Walked to {Position}");
+            
             IMap map = Map;
             IPortal closestPortal = map.Portals.OrderBy(p => p.Position.GetDistance(Position)).FirstOrDefault();
-
+            
             if (closestPortal == null)
             {
                 return;
@@ -117,6 +128,7 @@ namespace Spark.Game.Entities
                 Client.SendPacket("preq");
                 Logger.Debug("Character on portal, switching map");
             }
+        
         }
 
         public void WalkInRange(Vector2D position, int range)

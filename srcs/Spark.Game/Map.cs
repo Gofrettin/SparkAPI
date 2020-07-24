@@ -9,7 +9,6 @@ using Spark.Core.Extension;
 using Spark.Database.Data;
 using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Entities;
-using Spark.Game.Path;
 
 namespace Spark.Game
 {
@@ -30,7 +29,7 @@ namespace Spark.Game
             Grid = data.Grid;
             Width = BitConverter.ToInt16(Grid.Slice(0, 2));
             Height = BitConverter.ToInt16(Grid.Slice(2, 2));
-            Pathfinder = new AStar(this);
+            Pathfinder = new Pathfinder(this);
             
             _monsters = new ConcurrentDictionary<long, IMonster>();
             _npcs = new ConcurrentDictionary<long, INpc>();
