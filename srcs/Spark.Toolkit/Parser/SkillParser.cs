@@ -15,7 +15,7 @@ namespace Spark.Toolkit.Parser
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly JsonSerializer _serializer = new JsonSerializer
+        private readonly JsonSerializer serializer = new JsonSerializer
         {
             Formatting = Formatting.Indented
         };
@@ -67,7 +67,7 @@ namespace Spark.Toolkit.Parser
 
             using (StreamWriter file = File.CreateText(Path.Combine(output.FullName, "skills.json")))
             {
-                _serializer.Serialize(file, skills);
+                serializer.Serialize(file, skills);
             }
 
             Logger.Info($"Successfully parsed {skills.Count} skills");

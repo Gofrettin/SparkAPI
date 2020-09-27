@@ -17,10 +17,10 @@ namespace Spark.Tests.Packet
             });
         }
 
-        [PacketTest(typeof(NsTeST))]
+        [PacketTest(typeof(NsTeSt))]
         public void NsTeST_Test()
         {
-            CreateAndCheckValues("NsTeST 2 MyNameIs 2 972 79.110.84.37:4014:0:2.5.Galaxie 79.110.84.250:4015:1:1.6.Cosmos -1:-1:-1:10000.10000.1", new NsTeST
+            CreateAndCheckValues("NsTeST 2 MyNameIs 2 972 79.110.84.37:4014:0:2.5.Galaxie 79.110.84.250:4015:1:1.6.Cosmos -1:-1:-1:10000.10000.1", new NsTeSt
             {
                 Name = "MyNameIs",
                 RegionId = 2,

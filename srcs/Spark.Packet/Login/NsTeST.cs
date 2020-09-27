@@ -3,7 +3,7 @@ using Spark.Core.Server;
 
 namespace Spark.Packet.Login
 {
-    public class NsTeST : IPacket
+    public class NsTeSt : IPacket
     {
         public string Name { get; set; }
         public int RegionId { get; set; }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using NLog;
+using NLog.Fluent;
 using Spark.Core;
 using Spark.Core.Server;
 using Spark.Database;
@@ -12,14 +14,17 @@ using Spark.Game.Abstraction;
 using Spark.Game.Abstraction.Factory;
 using Spark.Game.Factory;
 using Spark.Gameforge;
+using Spark.Gameforge.Nostale;
 using Spark.Packet.Factory;
 using Spark.Packet.Processor;
 
 namespace Spark
 {
-    public sealed class SparkAPI : ISpark
+    public sealed class SparkApi : ISpark
     {
-        public SparkAPI(IClientFactory clientFactory, IEventPipeline eventPipeline, IDatabase database, IPacketManager packetManager, IGameforgeService gameforgeService,
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
+        public SparkApi(IClientFactory clientFactory, IEventPipeline eventPipeline, IDatabase database, IPacketManager packetManager, IGameforgeService gameforgeService,
             IEnumerable<IPacketProcessor> packetProcessors)
         {
             ClientFactory = clientFactory;
@@ -41,11 +46,11 @@ namespace Spark
         public IEventPipeline EventPipeline { get; }
         public IGameforgeService GameforgeService { get; }
 
-        public IClient CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
+        public IClient CreateRemoteClient(IPEndPoint ip, string token, NostaleClientInfo clientInfo, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
         {
             IClient client = ClientFactory.CreateRemoteClient(ip, serverSelector, characterSelector);
-
-            client.SendPacket($"NoS0577 {token} {GameforgeService.InstallationId} 007C762C 20.9.3.3131 0 35A4AA7A09325A8BDEF01C188C7BF295");
+            
+            client.SendPacket($"NoS0577 {token} {GameforgeService.InstallationId} 007C762C 2{clientInfo.Version} 0 {(clientInfo.DxHash.ToUpper() + clientInfo.GlHash.ToUpper()).ToMd5()}");
 
             return client;
         }
@@ -82,9 +87,9 @@ namespace Spark
             services.AddSingleton<IClientFactory, ClientFactory>();
             services.AddSingleton<IGameforgeService, GameforgeService>();
             
-            services.AddSingleton<SparkAPI>();
+            services.AddSingleton<SparkApi>();
 
-            SparkAPI sparkApi = services.BuildServiceProvider().GetService<SparkAPI>();
+            SparkApi sparkApi = services.BuildServiceProvider().GetService<SparkApi>();
             
             sparkApi.Database.Load();
 

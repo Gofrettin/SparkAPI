@@ -4,23 +4,23 @@ namespace Spark.Database.Reader
 {
     public class TextLine
     {
-        private readonly string[] _content;
-        private readonly char _separator;
+        private readonly string[] content;
+        private readonly char separator;
 
         public TextLine(string[] content, char separator)
         {
-            _content = content;
-            _separator = separator;
+            this.content = content;
+            this.separator = separator;
         }
 
         public string GetValue(int index)
         {
-            if (index >= _content.Length)
+            if (index >= content.Length)
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            return _content[index];
+            return content[index];
         }
 
         public T GetValue<T>(int index)
@@ -30,17 +30,17 @@ namespace Spark.Database.Reader
 
         public string[] GetValues()
         {
-            return _content;
+            return content;
         }
 
         public string GetFirstValue()
         {
-            return _content[0];
+            return content[0];
         }
 
         public string GetLastValue()
         {
-            return _content[_content.Length - 1];
+            return content[content.Length - 1];
         }
 
         public T GetFirstValue<T>()
@@ -55,17 +55,17 @@ namespace Spark.Database.Reader
 
         public bool StartWith(string value)
         {
-            return _content[0].Equals(value);
+            return content[0].Equals(value);
         }
 
         public bool EndWith(string value)
         {
-            return _content[_content.Length - 1].Equals(value);
+            return content[content.Length - 1].Equals(value);
         }
 
         public string AsString()
         {
-            return string.Join(_separator.ToString(), _content);
+            return string.Join(separator.ToString(), content);
         }
     }
 }

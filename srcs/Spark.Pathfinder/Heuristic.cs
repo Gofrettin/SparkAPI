@@ -43,9 +43,9 @@ namespace Spark.Pathfinder
 {
     public enum HeuristicMode
     {
-        MANHATTAN,
-        EUCLIDEAN,
-        CHEBYSHEV,
+        Manhattan,
+        Euclidean,
+        Chebyshev,
 
     };
 

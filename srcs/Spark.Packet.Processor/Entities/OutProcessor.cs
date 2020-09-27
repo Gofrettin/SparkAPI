@@ -11,9 +11,9 @@ namespace Spark.Packet.Processor.Entities
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
-        public OutProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+        public OutProcessor(IEventPipeline eventPipeline) => this.eventPipeline = eventPipeline;
 
         protected override void Process(IClient client, Out packet)
         {
@@ -31,7 +31,7 @@ namespace Spark.Packet.Processor.Entities
             }
 
             map.RemoveEntity(entity);
-            _eventPipeline.Emit(new EntityLeaveEvent(client, map, entity));
+            eventPipeline.Emit(new EntityLeaveEvent(client, map, entity));
         }
     }
 }

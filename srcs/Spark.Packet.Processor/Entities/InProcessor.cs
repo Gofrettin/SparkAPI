@@ -12,14 +12,14 @@ namespace Spark.Packet.Processor.Entities
     public class InProcessor : PacketProcessor<In>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly IEntityFactory _entityFactory;
+        private readonly IEntityFactory entityFactory;
 
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
         public InProcessor(IEventPipeline eventPipeline, IEntityFactory entityFactory)
         {
-            _eventPipeline = eventPipeline;
-            _entityFactory = entityFactory;
+            this.eventPipeline = eventPipeline;
+            this.entityFactory = entityFactory;
         }
 
         protected override void Process(IClient client, In packet)
@@ -35,16 +35,16 @@ namespace Spark.Packet.Processor.Entities
             switch (packet.EntityType)
             {
                 case EntityType.Monster:
-                    entity = _entityFactory.CreateMonster(packet.EntityId, packet.GameKey);
+                    entity = entityFactory.CreateMonster(packet.EntityId, packet.GameKey);
                     break;
                 case EntityType.Npc:
-                    entity = _entityFactory.CreateNpc(packet.EntityId, packet.GameKey);
+                    entity = entityFactory.CreateNpc(packet.EntityId, packet.GameKey);
                     break;
                 case EntityType.Player:
-                    entity = _entityFactory.CreatePlayer(packet.EntityId, packet.Name);
+                    entity = entityFactory.CreatePlayer(packet.EntityId, packet.Name);
                     break;
                 case EntityType.MapObject:
-                    entity = _entityFactory.CreateMapObject(packet.EntityId, packet.GameKey, packet.MapObject.Amount);
+                    entity = entityFactory.CreateMapObject(packet.EntityId, packet.GameKey, packet.MapObject.Amount);
                     break;
                 default:
                     Logger.Error($"Undefined switch clause for entity type {packet.EntityType}");
@@ -78,7 +78,7 @@ namespace Spark.Packet.Processor.Entities
 
             map.AddEntity(entity);
 
-            _eventPipeline.Emit(new EntitySpawnEvent(client, map, entity));
+            eventPipeline.Emit(new EntitySpawnEvent(client, map, entity));
         }
     }
 }

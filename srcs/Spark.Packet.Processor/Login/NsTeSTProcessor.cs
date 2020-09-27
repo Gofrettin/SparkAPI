@@ -9,15 +9,15 @@ using Spark.Packet.Login;
 
 namespace Spark.Packet.Processor.Login
 {
-    public class NsTeSTProcessor : PacketProcessor<NsTeST>
+    public class NsTeStProcessor : PacketProcessor<NsTeSt>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly INetworkFactory _networkFactory;
+        private readonly INetworkFactory networkFactory;
 
-        public NsTeSTProcessor(INetworkFactory networkFactory) => _networkFactory = networkFactory;
+        public NsTeStProcessor(INetworkFactory networkFactory) => this.networkFactory = networkFactory;
 
-        protected override void Process(IClient client, NsTeST packet)
+        protected override void Process(IClient client, NsTeSt packet)
         {
             LoginConfiguration option = client.GetConfiguration<LoginConfiguration>();
             if (option == null)
@@ -33,7 +33,7 @@ namespace Spark.Packet.Processor.Login
             }
             
             client.Network.Close();
-            client.Network = _networkFactory.CreateRemoteNetwork(server.Ip, packet.EncryptionKey);
+            client.Network = networkFactory.CreateRemoteNetwork(server.Ip, packet.EncryptionKey);
 
             client.SendPacket($"{packet.EncryptionKey}");
             Task.Delay(1000).ContinueWith(s =>

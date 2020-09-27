@@ -11,15 +11,15 @@ namespace Spark.Packet.Processor.Notification
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
-        public QNamli2Processor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+        public QNamli2Processor(IEventPipeline eventPipeline) => this.eventPipeline = eventPipeline;
 
         protected override void Process(IClient client, QNamli2 packet)
         {
             if (packet.Raid != null)
             {
-                _eventPipeline.Emit(new NotificationReceivedEvent(NotificationType.Raid, client, packet.Raid));
+                eventPipeline.Emit(new NotificationReceivedEvent(NotificationType.Raid, client, packet.Raid));
             }
         }
     }

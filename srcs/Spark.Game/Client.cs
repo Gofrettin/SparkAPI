@@ -9,7 +9,7 @@ namespace Spark.Game
 {
     public sealed class Client : IClient
     {
-        private INetwork _network;
+        private INetwork network;
 
         public Client(INetwork network)
         {
@@ -22,16 +22,16 @@ namespace Spark.Game
 
         public INetwork Network
         {
-            get => _network;
+            get => network;
             set
             {
-                if (_network != null)
+                if (network != null)
                 {
-                    _network.PacketReceived -= ProcessPacket;
+                    network.PacketReceived -= ProcessPacket;
                 }
 
-                _network = value;
-                _network.PacketReceived += ProcessPacket;
+                network = value;
+                network.PacketReceived += ProcessPacket;
             }
         }
 

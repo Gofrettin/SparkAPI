@@ -9,22 +9,22 @@ namespace Spark.Packet.Processor.Chat
 {
     public class SayiProcessor : PacketProcessor<Sayi>
     {
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
-        public SayiProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+        public SayiProcessor(IEventPipeline eventPipeline) => this.eventPipeline = eventPipeline;
 
         protected override void Process(IClient client, Sayi packet)
         {
-            _eventPipeline.Emit(new ChatMessageReceivedEvent(client, packet.MessageId, packet.Color));
+            eventPipeline.Emit(new ChatMessageReceivedEvent(client, packet.MessageId, packet.Color));
             
             if (packet.MessageId == 2282)
             {
-                _eventPipeline.Emit(new InstantCombatRewardUnreceivedEvent(client));    
+                eventPipeline.Emit(new InstantCombatRewardUnreceivedEvent(client));    
             }
 
             if (packet.MessageId == 2367)
             {
-                _eventPipeline.Emit(new InstantCombatRewardReceivedEvent(client));
+                eventPipeline.Emit(new InstantCombatRewardReceivedEvent(client));
             }
         }
     }

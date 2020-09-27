@@ -15,11 +15,11 @@ namespace Spark.Packet.Factory
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
-        private readonly Dictionary<string, IPacketCreator> _creators;
+        private readonly Dictionary<string, IPacketCreator> creators;
 
         public PacketFactory(IEnumerable<IPacketCreator> creators)
         {
-            _creators = creators.ToDictionary(x => x.Header, x => x);
+            this.creators = creators.ToDictionary(x => x.Header, x => x);
         }
 
         public IPacket CreatePacket(string content)
@@ -34,7 +34,7 @@ namespace Spark.Packet.Factory
             string header = split[0];
             string[] packetContent = header.Length > 1 ? split.Skip(1).ToArray() : split;
 
-            IPacketCreator creator = _creators.GetValueOrDefault(header);
+            IPacketCreator creator = creators.GetValueOrDefault(header);
             if (creator == null)
             {
                 return default;

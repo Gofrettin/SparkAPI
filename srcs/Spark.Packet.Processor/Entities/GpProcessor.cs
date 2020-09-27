@@ -6,9 +6,9 @@ namespace Spark.Packet.Processor.Entities
 {
     public class GpProcessor : PacketProcessor<Gp>
     {
-        private readonly IPortalFactory _portalFactory;
+        private readonly IPortalFactory portalFactory;
 
-        public GpProcessor(IPortalFactory portalFactory) => _portalFactory = portalFactory;
+        public GpProcessor(IPortalFactory portalFactory) => this.portalFactory = portalFactory;
 
         protected override void Process(IClient client, Gp packet)
         {
@@ -18,7 +18,7 @@ namespace Spark.Packet.Processor.Entities
                 return;
             }
 
-            IPortal portal = _portalFactory.CreatePortal(packet.PortalId, packet.Position, packet.DestinationId, packet.PortalType);
+            IPortal portal = portalFactory.CreatePortal(packet.PortalId, packet.Position, packet.DestinationId, packet.PortalType);
             if (portal == null)
             {
                 return;

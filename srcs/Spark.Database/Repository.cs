@@ -8,12 +8,12 @@ namespace Spark.Database
 {
     public sealed class Repository<T> : IRepository<T>
     {
-        private readonly JsonSerializer _serializer = new JsonSerializer
+        private readonly JsonSerializer serializer = new JsonSerializer
         {
             Formatting = Formatting.Indented
         };
 
-        private readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public Repository(string path) => Path = path;
 
@@ -34,16 +34,16 @@ namespace Spark.Database
             
             using (StreamReader stream = File.OpenText(Path))
             {
-                Values = (ReadOnlyDictionary<int, T>)_serializer.Deserialize(stream, typeof(ReadOnlyDictionary<int, T>));
+                Values = (ReadOnlyDictionary<int, T>)serializer.Deserialize(stream, typeof(ReadOnlyDictionary<int, T>));
             }
 
             if (Values == null)
             {
-                Logger.Error("Failed to load values");
+                logger.Error("Failed to load values");
                 return;
             }
 
-            Logger.Debug($"Loaded {Values.Count} values");
+            logger.Debug($"Loaded {Values.Count} values");
         }
     }
 }

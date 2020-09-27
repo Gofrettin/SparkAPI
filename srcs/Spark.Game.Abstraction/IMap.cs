@@ -33,8 +33,7 @@ namespace Spark.Game.Abstraction
         void AddPortal(IPortal portal);
 
         bool IsWalkable(Vector2D vector2D);
-
-        Vector2D FindTopDensityPosition();
+        
         Vector2D GetRandomPosition(Vector2D point, int max = 1);
     }
 }

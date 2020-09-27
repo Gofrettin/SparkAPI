@@ -12,9 +12,9 @@ namespace Spark.Packet.Processor.Inventory
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
-        private readonly IObjectFactory _objectFactory;
+        private readonly IObjectFactory objectFactory;
 
-        public InvProcessor(IObjectFactory objectFactory) => _objectFactory = objectFactory;
+        public InvProcessor(IObjectFactory objectFactory) => this.objectFactory = objectFactory;
 
         protected override void Process(IClient client, Inv packet)
         {
@@ -23,7 +23,7 @@ namespace Spark.Packet.Processor.Inventory
             
             foreach (Inv.ObjectInfo objectInfo in packet.Objects)
             {
-                IObjectStack objectStack = _objectFactory.CreateObjectStack(bagType, objectInfo.ObjectKey, objectInfo.Slot, objectInfo.Amount);
+                IObjectStack objectStack = objectFactory.CreateObjectStack(bagType, objectInfo.ObjectKey, objectInfo.Slot, objectInfo.Amount);
                 if (objectStack == null)
                 {
                     continue;

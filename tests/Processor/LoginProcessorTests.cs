@@ -12,12 +12,12 @@ namespace Spark.Tests.Processor
 {
     public class LoginProcessorTests : ProcessorTests
     {
-        [ProcessorTest(typeof(NsTeSTProcessor))]
+        [ProcessorTest(typeof(NsTeStProcessor))]
         public void NsTeST_Test()
         {
             using (GameContext context = CreateContext())
             {
-                context.Process(new NsTeST
+                context.Process(new NsTeSt
                 {
                     Name = "MyNameIs",
                     RegionId = 2,

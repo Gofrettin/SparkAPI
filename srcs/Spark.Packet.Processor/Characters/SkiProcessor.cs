@@ -11,9 +11,9 @@ namespace Spark.Packet.Processor.Characters
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ISkillFactory _skillFactory;
+        private readonly ISkillFactory skillFactory;
 
-        public SkiProcessor(ISkillFactory skillFactory) => _skillFactory = skillFactory;
+        public SkiProcessor(ISkillFactory skillFactory) => this.skillFactory = skillFactory;
 
         protected override void Process(IClient client, Ski packet)
         {
@@ -21,7 +21,7 @@ namespace Spark.Packet.Processor.Characters
 
             foreach (int skillGameId in packet.Skills)
             {
-                ISkill skill = _skillFactory.CreateSkill(skillGameId);
+                ISkill skill = skillFactory.CreateSkill(skillGameId);
                 if (skill.Category == SkillCategory.Player)
                 {
                     skills.Add(skill);

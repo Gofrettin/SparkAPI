@@ -11,9 +11,9 @@ namespace Spark.Packet.Processor.Entities
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
-        public CModeProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+        public CModeProcessor(IEventPipeline eventPipeline) => this.eventPipeline = eventPipeline;
 
         protected override void Process(IClient client, CMode packet)
         {
@@ -36,13 +36,13 @@ namespace Spark.Packet.Processor.Entities
             {
                 if (entity.MorphId > 0 && entity.MorphId <= 34)
                 {
-                    _eventPipeline.Emit(new SpecialistWearEvent(client, entity, packet.MorphId));
+                    eventPipeline.Emit(new SpecialistWearEvent(client, entity, packet.MorphId));
                     Logger.Debug($"Entity {entity.EntityType} with id {entity.Id} wear SP {packet.MorphId}");
                 }
 
                 if (entity.MorphId == 0)
                 {
-                    _eventPipeline.Emit(new SpecialistUnwearEvent(client, entity));
+                    eventPipeline.Emit(new SpecialistUnwearEvent(client, entity));
                     Logger.Debug($"Entity {entity.EntityType} with id {entity.Id} removed SP");
                 }
             }

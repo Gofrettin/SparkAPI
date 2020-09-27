@@ -44,16 +44,16 @@ namespace Spark.Pathfinder
 {
     public class NodePool
     {
-        protected Dictionary<GridPos, Node> m_nodes;
+        protected Dictionary<GridPos, Node> MNodes;
 
         public NodePool()
         {
-            m_nodes = new Dictionary<GridPos, Node>();
+            MNodes = new Dictionary<GridPos, Node>();
         }
 
         public Dictionary<GridPos, Node> Nodes
         {
-            get { return m_nodes; }
+            get { return MNodes; }
         }
         public Node GetNode(int iX, int iY)
         {
@@ -64,7 +64,7 @@ namespace Spark.Pathfinder
         public Node GetNode(GridPos iPos)
         {
             Node retVal = null;
-            m_nodes.TryGetValue(iPos, out retVal);
+            MNodes.TryGetValue(iPos, out retVal);
             return retVal;
         }
 
@@ -81,37 +81,37 @@ namespace Spark.Pathfinder
                 if (iWalkable.Value == true)
                 {
                     Node retVal = null;
-                    if (m_nodes.TryGetValue(iPos, out retVal))
+                    if (MNodes.TryGetValue(iPos, out retVal))
                     {
                         return retVal;
                     }
-                    var newNode = new Node(iPos.x, iPos.y, iWalkable);
-                    m_nodes.Add(iPos, newNode);
+                    var newNode = new Node(iPos.X, iPos.Y, iWalkable);
+                    MNodes.Add(iPos, newNode);
                     return newNode;
                 }
                 else
                 {
-                    removeNode(iPos);
+                    RemoveNode(iPos);
                 }
 
             }
             else
             {
-                var newNode = new Node(iPos.x, iPos.y, true);
-                m_nodes.Add(iPos, newNode);
+                var newNode = new Node(iPos.X, iPos.Y, true);
+                MNodes.Add(iPos, newNode);
                 return newNode;
             }
             return null;
         }
-        protected void removeNode(int iX, int iY)
+        protected void RemoveNode(int iX, int iY)
         {
             var pos = new GridPos(iX, iY);
-            removeNode(pos);
+            RemoveNode(pos);
         }
-        protected void removeNode(GridPos iPos)
+        protected void RemoveNode(GridPos iPos)
         {
-            if (m_nodes.ContainsKey(iPos))
-                m_nodes.Remove(iPos);
+            if (MNodes.ContainsKey(iPos))
+                MNodes.Remove(iPos);
         }
     }
 }

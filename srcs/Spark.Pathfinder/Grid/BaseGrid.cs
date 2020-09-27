@@ -43,62 +43,62 @@ namespace Spark.Pathfinder.Grid
 {
     public class Node : IComparable<Node>
     {
-        public int x;
-        public int y;
-        public bool walkable;
-        public float heuristicStartToEndLen; // which passes current node
-        public float startToCurNodeLen;
-        public float? heuristicCurNodeToEndLen;
-        public bool isOpened;
-        public bool isClosed;
-        public Object parent;
+        public int X;
+        public int Y;
+        public bool Walkable;
+        public float HeuristicStartToEndLen; // which passes current node
+        public float StartToCurNodeLen;
+        public float? HeuristicCurNodeToEndLen;
+        public bool IsOpened;
+        public bool IsClosed;
+        public Object Parent;
 
         public Node(int iX, int iY, bool? iWalkable = null)
         {
-            this.x = iX;
-            this.y = iY;
-            this.walkable = (iWalkable.HasValue ? iWalkable.Value : false);
-            this.heuristicStartToEndLen = 0;
-            this.startToCurNodeLen = 0;
+            this.X = iX;
+            this.Y = iY;
+            this.Walkable = (iWalkable.HasValue ? iWalkable.Value : false);
+            this.HeuristicStartToEndLen = 0;
+            this.StartToCurNodeLen = 0;
             // this must be initialized as null to verify that its value never initialized
             // 0 is not good candidate!!
-            this.heuristicCurNodeToEndLen = null;
-            this.isOpened = false;
-            this.isClosed = false;
-            this.parent = null;
+            this.HeuristicCurNodeToEndLen = null;
+            this.IsOpened = false;
+            this.IsClosed = false;
+            this.Parent = null;
 
         }
 
         public Node(Node b)
         {
-            this.x = b.x;
-            this.y = b.y;
-            this.walkable = b.walkable;
-            this.heuristicStartToEndLen = b.heuristicStartToEndLen;
-            this.startToCurNodeLen = b.startToCurNodeLen;
-            this.heuristicCurNodeToEndLen = b.heuristicCurNodeToEndLen;
-            this.isOpened = b.isOpened;
-            this.isClosed = b.isClosed;
-            this.parent = b.parent;
+            this.X = b.X;
+            this.Y = b.Y;
+            this.Walkable = b.Walkable;
+            this.HeuristicStartToEndLen = b.HeuristicStartToEndLen;
+            this.StartToCurNodeLen = b.StartToCurNodeLen;
+            this.HeuristicCurNodeToEndLen = b.HeuristicCurNodeToEndLen;
+            this.IsOpened = b.IsOpened;
+            this.IsClosed = b.IsClosed;
+            this.Parent = b.Parent;
         }
 
         public void Reset(bool? iWalkable = null)
         {
             if (iWalkable.HasValue)
-                walkable = iWalkable.Value;
-            this.heuristicStartToEndLen = 0;
-            this.startToCurNodeLen = 0;
+                Walkable = iWalkable.Value;
+            this.HeuristicStartToEndLen = 0;
+            this.StartToCurNodeLen = 0;
             // this must be initialized as null to verify that its value never initialized
             // 0 is not good candidate!!
-            this.heuristicCurNodeToEndLen = null ;
-            this.isOpened = false;
-            this.isClosed = false;
-            this.parent = null;
+            this.HeuristicCurNodeToEndLen = null ;
+            this.IsOpened = false;
+            this.IsClosed = false;
+            this.Parent = null;
         }
 
         public int CompareTo(Node iObj)
         {
-            float result = this.heuristicStartToEndLen - iObj.heuristicStartToEndLen;
+            float result = this.HeuristicStartToEndLen - iObj.HeuristicStartToEndLen;
             if (result > 0.0f)
                 return 1;
             else if (result == 0.0f)
@@ -110,11 +110,11 @@ namespace Spark.Pathfinder.Grid
         public static List<GridPos> Backtrace(Node iNode)
         {
             var path = new List<GridPos>();
-            path.Add(new GridPos(iNode.x, iNode.y));
-            while (iNode.parent != null)
+            path.Add(new GridPos(iNode.X, iNode.Y));
+            while (iNode.Parent != null)
             {
-                iNode = (Node)iNode.parent;
-                path.Add(new GridPos(iNode.x, iNode.y));
+                iNode = (Node)iNode.Parent;
+                path.Add(new GridPos(iNode.X, iNode.Y));
             }
             path.Reverse();
             return path;
@@ -123,7 +123,7 @@ namespace Spark.Pathfinder.Grid
 
         public override int GetHashCode()
         {
-            return x ^ y;
+            return X ^ Y;
         }
 
         public override bool Equals(System.Object obj)
@@ -142,7 +142,7 @@ namespace Spark.Pathfinder.Grid
             }
 
             // Return true if the fields match:
-            return (x == p.x) && (y == p.y);
+            return (X == p.X) && (Y == p.Y);
         }
 
         public bool Equals(Node p)
@@ -154,7 +154,7 @@ namespace Spark.Pathfinder.Grid
             }
 
             // Return true if the fields match:
-            return (x == p.x) && (y == p.y);
+            return (X == p.X) && (Y == p.Y);
         }
 
         public static bool operator ==(Node a, Node b)
@@ -172,7 +172,7 @@ namespace Spark.Pathfinder.Grid
             }
 
             // Return true if the fields match:
-            return a.x == b.x && a.y == b.y;
+            return a.X == b.X && a.Y == b.Y;
         }
 
         public static bool operator !=(Node a, Node b)
@@ -187,25 +187,25 @@ namespace Spark.Pathfinder.Grid
 
         public BaseGrid()
         {
-            m_gridRect = new GridRect();
+            MGridRect = new GridRect();
         }
 
         public BaseGrid(BaseGrid b)
         {
-            m_gridRect = new GridRect(b.m_gridRect);
-            width = b.width;
-            height = b.height;
+            MGridRect = new GridRect(b.MGridRect);
+            Width = b.Width;
+            Height = b.Height;
         }
 
-        protected GridRect m_gridRect;
-        public GridRect gridRect
+        protected GridRect MGridRect;
+        public GridRect GridRect
         {
-            get { return m_gridRect; }
+            get { return MGridRect; }
         }
 
-        public abstract int width { get; protected set; }
+        public abstract int Width { get; protected set; }
 
-        public abstract int height { get; protected set; }
+        public abstract int Height { get; protected set; }
 
         public abstract Node GetNodeAt(int iX, int iY);
 
@@ -221,8 +221,8 @@ namespace Spark.Pathfinder.Grid
 
         public List<Node> GetNeighbors(Node iNode, DiagonalMovement diagonalMovement)
         {
-            int tX = iNode.x;
-            int tY = iNode.y;
+            int tX = iNode.X;
+            int tY = iNode.Y;
             var neighbors = new List<Node>();
             bool tS0 = false, tD0 = false,
                 tS1 = false, tD1 = false,

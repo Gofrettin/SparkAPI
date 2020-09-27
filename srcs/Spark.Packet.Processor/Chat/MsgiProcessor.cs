@@ -10,29 +10,29 @@ namespace Spark.Packet.Processor.Chat
 {
     public class MsgiProcessor : PacketProcessor<Msgi>
     {
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
-        public MsgiProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+        public MsgiProcessor(IEventPipeline eventPipeline) => this.eventPipeline = eventPipeline;
 
         protected override void Process(IClient client, Msgi packet)
         {
-            _eventPipeline.Emit(new ServerMessageReceivedEvent(client, packet.MessageId, packet.MessageType));
+            eventPipeline.Emit(new ServerMessageReceivedEvent(client, packet.MessageId, packet.MessageType));
             
             if (packet.MessageType == MessageType.Classic)
             {
                 if (packet.MessageId == 1287)
                 {
-                    _eventPipeline.Emit(new InstantCombatWaveComingEvent(client));    
+                    eventPipeline.Emit(new InstantCombatWaveComingEvent(client));    
                 }
                 
                 if (packet.MessageId == 387)
                 {
-                    _eventPipeline.Emit(new InstantCombatStartEvent(client));
+                    eventPipeline.Emit(new InstantCombatStartEvent(client));
                 }
 
                 if (packet.MessageId == 384)
                 {
-                    _eventPipeline.Emit(new InstantCombatWaveStartSoonEvent(client));
+                    eventPipeline.Emit(new InstantCombatWaveStartSoonEvent(client));
                 }
             }
         }

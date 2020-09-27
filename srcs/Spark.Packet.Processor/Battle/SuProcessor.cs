@@ -11,9 +11,9 @@ namespace Spark.Packet.Processor.Battle
     public class SuProcessor : PacketProcessor<Su>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
-        public SuProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+        public SuProcessor(IEventPipeline eventPipeline) => this.eventPipeline = eventPipeline;
 
         protected override void Process(IClient client, Su packet)
         {
@@ -39,7 +39,7 @@ namespace Spark.Packet.Processor.Battle
 
             target.HpPercentage = packet.HpPercentage > 100 ? 100 : packet.HpPercentage;
 
-            _eventPipeline.Emit(new EntityDamageEvent(client, caster, target, packet.SkillKey, packet.Damage));
+            eventPipeline.Emit(new EntityDamageEvent(client, caster, target, packet.SkillKey, packet.Damage));
 
             if (packet.IsTargetAlive)
             {
@@ -54,7 +54,7 @@ namespace Spark.Packet.Processor.Battle
                 map.RemoveEntity(target);
             }
 
-            _eventPipeline.Emit(new EntityDeathEvent(client, target, caster));
+            eventPipeline.Emit(new EntityDeathEvent(client, target, caster));
         }
     }
 }

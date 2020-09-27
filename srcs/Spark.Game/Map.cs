@@ -16,11 +16,11 @@ namespace Spark.Game
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IDictionary<long, IMonster> _monsters;
-        private readonly IDictionary<long, INpc> _npcs;
-        private readonly IDictionary<long, IMapObject> _objects;
-        private readonly IDictionary<long, IPlayer> _players;
-        private readonly IDictionary<int, IPortal> _portals;
+        private readonly IDictionary<long, IMonster> monsters;
+        private readonly IDictionary<long, INpc> npcs;
+        private readonly IDictionary<long, IMapObject> objects;
+        private readonly IDictionary<long, IPlayer> players;
+        private readonly IDictionary<int, IPortal> portals;
 
         public Map(int id, MapData data)
         {
@@ -31,19 +31,19 @@ namespace Spark.Game
             Height = BitConverter.ToInt16(Grid.Slice(2, 2));
             Pathfinder = new Pathfinder(this);
             
-            _monsters = new ConcurrentDictionary<long, IMonster>();
-            _npcs = new ConcurrentDictionary<long, INpc>();
-            _players = new ConcurrentDictionary<long, IPlayer>();
-            _objects = new ConcurrentDictionary<long, IMapObject>();
-            _portals = new ConcurrentDictionary<int, IPortal>();
+            monsters = new ConcurrentDictionary<long, IMonster>();
+            npcs = new ConcurrentDictionary<long, INpc>();
+            players = new ConcurrentDictionary<long, IPlayer>();
+            objects = new ConcurrentDictionary<long, IMapObject>();
+            portals = new ConcurrentDictionary<int, IPortal>();
         }
 
-        public IEnumerable<IPortal> Portals => _portals.Values;
+        public IEnumerable<IPortal> Portals => portals.Values;
 
-        public IEnumerable<IEntity> Entities => _monsters.Values
-            .Concat<IEntity>(_npcs.Values)
-            .Concat(_players.Values)
-            .Concat(_objects.Values);
+        public IEnumerable<IEntity> Entities => monsters.Values
+            .Concat<IEntity>(npcs.Values)
+            .Concat(players.Values)
+            .Concat(objects.Values);
 
         public int Id { get; }
         public string NameKey { get; }
@@ -52,23 +52,23 @@ namespace Spark.Game
         public int Width { get; }
         public IPathfinder Pathfinder { get; }
 
-        public IEnumerable<IMonster> Monsters => _monsters.Values;
-        public IEnumerable<IPlayer> Players => _players.Values;
-        public IEnumerable<INpc> Npcs => _npcs.Values;
-        public IEnumerable<IMapObject> Objects => _objects.Values;
+        public IEnumerable<IMonster> Monsters => monsters.Values;
+        public IEnumerable<IPlayer> Players => players.Values;
+        public IEnumerable<INpc> Npcs => npcs.Values;
+        public IEnumerable<IMapObject> Objects => objects.Values;
 
         public IEntity GetEntity(EntityType entityType, long id)
         {
             switch (entityType)
             {
                 case EntityType.Monster:
-                    return _monsters.GetValueOrDefault(id);
+                    return monsters.GetValueOrDefault(id);
                 case EntityType.Npc:
-                    return _npcs.GetValueOrDefault(id);
+                    return npcs.GetValueOrDefault(id);
                 case EntityType.MapObject:
-                    return _objects.GetValueOrDefault(id);
+                    return objects.GetValueOrDefault(id);
                 case EntityType.Player:
-                    return _players.GetValueOrDefault(id);
+                    return players.GetValueOrDefault(id);
                 default:
                     Logger.Warn($"Trying to get an invalid entity type {entityType}");
                     return default;
@@ -97,16 +97,16 @@ namespace Spark.Game
             switch (entity.EntityType)
             {
                 case EntityType.Monster:
-                    _monsters[entity.Id] = (IMonster)entity;
+                    monsters[entity.Id] = (IMonster)entity;
                     break;
                 case EntityType.Npc:
-                    _npcs[entity.Id] = (INpc)entity;
+                    npcs[entity.Id] = (INpc)entity;
                     break;
                 case EntityType.MapObject:
-                    _objects[entity.Id] = (IMapObject)entity;
+                    objects[entity.Id] = (IMapObject)entity;
                     break;
                 case EntityType.Player:
-                    _players[entity.Id] = (IPlayer)entity;
+                    players[entity.Id] = (IPlayer)entity;
                     break;
                 default:
                     Logger.Warn($"Unvalid entity type {entity.EntityType}");
@@ -123,16 +123,16 @@ namespace Spark.Game
             switch (entity.EntityType)
             {
                 case EntityType.Monster:
-                    _monsters.Remove(entity.Id);
+                    monsters.Remove(entity.Id);
                     break;
                 case EntityType.Npc:
-                    _npcs.Remove(entity.Id);
+                    npcs.Remove(entity.Id);
                     break;
                 case EntityType.MapObject:
-                    _objects.Remove(entity.Id);
+                    objects.Remove(entity.Id);
                     break;
                 case EntityType.Player:
-                    _players.Remove(entity.Id);
+                    players.Remove(entity.Id);
                     break;
                 default:
                     Logger.Warn($"Unvalid entity type {entity.EntityType}");
@@ -146,7 +146,7 @@ namespace Spark.Game
 
         public void AddPortal(IPortal portal)
         {
-            _portals[portal.Id] = portal;
+            portals[portal.Id] = portal;
             Logger.Debug($"Portal {portal.Id} of type {portal.PortalType} added to map {Id}");
         }
 
@@ -173,42 +173,6 @@ namespace Spark.Game
             while (!IsWalkable(output) && attempt < max * 6);
 
             return attempt == (max * 6) ? point : output;
-        }
-
-        public Vector2D FindTopDensityPosition()
-        {
-            int x = -1;
-            int y = -1;
-            double max = -1;
-
-            IEnumerable<Vector2D> positions = Players.Where(s => !s.Name.EndsWith("30")).Select(s => s.Position);
-            
-            for (int cx = 0; cx < Width; cx++)
-            {
-                for (int cy = 0; cy < Height; cy++)
-                {
-                    double score = 0;
-                    foreach (Vector2D vector in positions)
-                    {
-                        double d = vector.GetDistance(new Vector2D(cx, cy));
-                        if (d == 0)
-                        {
-                            d = 0.5;
-                        }
-
-                        score += 1000 / d;
-                    }
-
-                    if (score > max || max == -1)
-                    {
-                        max = score;
-                        x = cx;
-                        y = cy;
-                    }
-                }
-            }
-            
-            return new Vector2D(x, y);
         }
     }
 }

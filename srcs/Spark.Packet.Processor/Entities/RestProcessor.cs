@@ -10,11 +10,11 @@ namespace Spark.Packet.Processor.Entities
     public class RestProcessor : PacketProcessor<Rest>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
         public RestProcessor(IEventPipeline eventPipeline)
         {
-            _eventPipeline = eventPipeline;
+            this.eventPipeline = eventPipeline;
         }
         
         protected override void Process(IClient client, Rest packet)
@@ -29,7 +29,7 @@ namespace Spark.Packet.Processor.Entities
             }
 
             entity.IsResting = packet.IsResting;
-            _eventPipeline.Emit(new EntityRestEvent(client, entity));
+            eventPipeline.Emit(new EntityRestEvent(client, entity));
         }
     }
 }

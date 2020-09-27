@@ -62,21 +62,20 @@ namespace Spark.Game.Entities
             Client.SendPacket("sl 0");
         }
 
-        public void Walk(IEnumerable<Vector2D> path)
+        public void Walk(IEnumerable<Vector2D> path, bool pathfinder = true)
         {
             foreach (Vector2D position in path)
             {
-                Walk(position);
+                Walk(position, pathfinder);
             }
         }
         
-        public void Walk(Vector2D destination)
+        public void Walk(Vector2D destination, bool pathfinder = true)
         {
             Logger.Debug($"Walking to {destination.X} {destination.Y}");
 
             if (!Map.IsWalkable(destination))
             {
-                Logger.Warn("Destination is not walkable");
                 return;
             }
 
@@ -95,6 +94,12 @@ namespace Spark.Game.Entities
 
             if (!Map.IsWalkable(nextPosition))
             {
+                if (pathfinder)
+                {
+                    IEnumerable<Vector2D> path = Map.Pathfinder.Find(Position, nextPosition);
+                    Walk(path, false);
+                    return;
+                }
                 return;
             }
 
@@ -154,12 +159,12 @@ namespace Spark.Game.Entities
             if (skill.IsOnCooldown)
             {
                 Logger.Trace("Skill is in cooldown");
-                 return;
+                return;
             }
 
             if (skill.Target == SkillTarget.Target)
             {
-                Logger.Warn("Trying to use target skill on self");
+                Logger.Warn($"Invalid target {skill.CastId} {skill.Category} {skill.Target} {skill.HitType}");
                 return;
             }
 
@@ -205,7 +210,7 @@ namespace Spark.Game.Entities
 
             if (entity.Equals(this))
             {
-                Logger.Warn("Can't target self");
+                Logger.Warn($"Can't target self ({Name}) (Skill: {skill.CastId} {skill.Target} {skill.HitType})");
                 return;
             }
 

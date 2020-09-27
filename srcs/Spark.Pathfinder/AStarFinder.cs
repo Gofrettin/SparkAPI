@@ -1,8 +1,4 @@
-﻿﻿#if (UNITY_EDITOR || UNITY_EDITOR_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE || UNITY_WII || UNITY_IOS || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS4 || UNITY_SAMSUNGTV || UNITY_XBOXONE || UNITY_TIZEN || UNITY_TVOS || UNITY_WP_8_1 || UNITY_WSA || UNITY_WSA_8_1 || UNITY_WSA_10_0 || UNITY_WINRT || UNITY_WINRT_8_1 || UNITY_WINRT_10_0 || UNITY_WEBGL || UNITY_ADS || UNITY_ANALYTICS || UNITY_ASSERTIONS)
-#define UNITY
-#else
-using System.Threading.Tasks;
-#endif
+﻿using System.Threading.Tasks;
 using C5;
 using System;
 using System.Collections.Generic;
@@ -21,13 +17,13 @@ using Spark.Pathfinder.Grid;
 
         public float Weight;
 
-        public AStarParam(BaseGrid iGrid, GridPos iStartPos, GridPos iEndPos, float iweight, DiagonalMovement iDiagonalMovement = DiagonalMovement.Always, HeuristicMode iMode = HeuristicMode.EUCLIDEAN)
+        public AStarParam(BaseGrid iGrid, GridPos iStartPos, GridPos iEndPos, float iweight, DiagonalMovement iDiagonalMovement = DiagonalMovement.Always, HeuristicMode iMode = HeuristicMode.Euclidean)
             : base(iGrid,iStartPos,iEndPos, iDiagonalMovement,iMode)
         {
             Weight = iweight;
         }
 
-        public AStarParam(BaseGrid iGrid, float iweight, DiagonalMovement iDiagonalMovement = DiagonalMovement.Always, HeuristicMode iMode = HeuristicMode.EUCLIDEAN)
+        public AStarParam(BaseGrid iGrid, float iweight, DiagonalMovement iDiagonalMovement = DiagonalMovement.Always, HeuristicMode iMode = HeuristicMode.Euclidean)
             : base(iGrid, iDiagonalMovement, iMode)
         {
             Weight = iweight;
@@ -69,16 +65,16 @@ using Spark.Pathfinder.Grid;
             float weight = iParam.Weight;
 
 
-            startNode.startToCurNodeLen = 0;
-            startNode.heuristicStartToEndLen = 0;
+            startNode.StartToCurNodeLen = 0;
+            startNode.HeuristicStartToEndLen = 0;
 
             openList.Add(startNode);
-            startNode.isOpened = true;
+            startNode.IsOpened = true;
 
             while (openList.Count != 0)
             {
                 Node node = openList.DeleteMin();
-                node.isClosed = true;
+                node.IsClosed = true;
 
                 if (node == endNode)
                 {
@@ -96,25 +92,25 @@ using Spark.Pathfinder.Grid;
 #if (UNITY)
                     if (neighbor.isClosed) continue;
 #else
-                    if (neighbor.isClosed) return;
+                    if (neighbor.IsClosed) return;
 #endif
-                    int x = neighbor.x;
-                    int y = neighbor.y;
-                    float ng = node.startToCurNodeLen + (float)((x - node.x == 0 || y - node.y == 0) ? 1 : Math.Sqrt(2));
+                    int x = neighbor.X;
+                    int y = neighbor.Y;
+                    float ng = node.StartToCurNodeLen + (float)((x - node.X == 0 || y - node.Y == 0) ? 1 : Math.Sqrt(2));
 
-                    if (!neighbor.isOpened || ng < neighbor.startToCurNodeLen)
+                    if (!neighbor.IsOpened || ng < neighbor.StartToCurNodeLen)
                     {
-                        neighbor.startToCurNodeLen = ng;
-                        if (neighbor.heuristicCurNodeToEndLen == null) neighbor.heuristicCurNodeToEndLen = weight * heuristic(Math.Abs(x - endNode.x), Math.Abs(y - endNode.y));
-                        neighbor.heuristicStartToEndLen = neighbor.startToCurNodeLen + neighbor.heuristicCurNodeToEndLen.Value;
-                        neighbor.parent = node;
-                        if (!neighbor.isOpened)
+                        neighbor.StartToCurNodeLen = ng;
+                        if (neighbor.HeuristicCurNodeToEndLen == null) neighbor.HeuristicCurNodeToEndLen = weight * heuristic(Math.Abs(x - endNode.X), Math.Abs(y - endNode.Y));
+                        neighbor.HeuristicStartToEndLen = neighbor.StartToCurNodeLen + neighbor.HeuristicCurNodeToEndLen.Value;
+                        neighbor.Parent = node;
+                        if (!neighbor.IsOpened)
                         {
                             lock (lo)
                             {
                                 openList.Add(neighbor);
                             }
-                            neighbor.isOpened = true;
+                            neighbor.IsOpened = true;
                         }
                         else
                         {

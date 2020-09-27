@@ -44,17 +44,17 @@ namespace Spark.Pathfinder.Grid
 {
     public class DynamicGrid : BaseGrid
     {
-        protected Dictionary<GridPos, Node> m_nodes;
-        private bool m_notSet;
+        protected Dictionary<GridPos, Node> MNodes;
+        private bool mNotSet;
 
 
-        public override int width
+        public override int Width
         {
             get
             {
-                if (m_notSet)
-                    setBoundingBox();
-                return m_gridRect.maxX - m_gridRect.minX + 1;
+                if (mNotSet)
+                    SetBoundingBox();
+                return MGridRect.MaxX - MGridRect.MinX + 1;
             }
             protected set
             {
@@ -62,13 +62,13 @@ namespace Spark.Pathfinder.Grid
             }
         }
 
-        public override int height
+        public override int Height
         {
             get
             {
-                if (m_notSet)
-                    setBoundingBox();
-                return m_gridRect.maxY - m_gridRect.minY + 1;
+                if (mNotSet)
+                    SetBoundingBox();
+                return MGridRect.MaxY - MGridRect.MinY + 1;
             }
             protected set
             {
@@ -79,31 +79,31 @@ namespace Spark.Pathfinder.Grid
         public DynamicGrid(List<GridPos> iWalkableGridList = null)
             : base()
         {
-            m_gridRect = new GridRect();
-            m_gridRect.minX = 0;
-            m_gridRect.minY = 0;
-            m_gridRect.maxX = 0;
-            m_gridRect.maxY = 0;
-            m_notSet = true;
-            buildNodes(iWalkableGridList);
+            MGridRect = new GridRect();
+            MGridRect.MinX = 0;
+            MGridRect.MinY = 0;
+            MGridRect.MaxX = 0;
+            MGridRect.MaxY = 0;
+            mNotSet = true;
+            BuildNodes(iWalkableGridList);
         }
 
         public DynamicGrid(DynamicGrid b)
             : base(b)
         {
-            m_notSet = b.m_notSet;
-            m_nodes = new Dictionary<GridPos, Node>(b.m_nodes);
+            mNotSet = b.mNotSet;
+            MNodes = new Dictionary<GridPos, Node>(b.MNodes);
         }
 
-        protected void buildNodes(List<GridPos> iWalkableGridList)
+        protected void BuildNodes(List<GridPos> iWalkableGridList)
         {
 
-            m_nodes = new Dictionary<GridPos, Node>();
+            MNodes = new Dictionary<GridPos, Node>();
             if (iWalkableGridList == null)
                 return;
             foreach (GridPos gridPos in iWalkableGridList)
             {
-                SetWalkableAt(gridPos.x, gridPos.y, true);
+                SetWalkableAt(gridPos.X, gridPos.Y, true);
             }
         }
 
@@ -120,22 +120,22 @@ namespace Spark.Pathfinder.Grid
             return IsWalkableAt(pos);
         }
 
-        private void setBoundingBox()
+        private void SetBoundingBox()
         {
-            m_notSet = true;
-            foreach (KeyValuePair<GridPos, Node> pair in m_nodes)
+            mNotSet = true;
+            foreach (KeyValuePair<GridPos, Node> pair in MNodes)
             {
-                if (pair.Key.x < m_gridRect.minX || m_notSet)
-                    m_gridRect.minX = pair.Key.x;
-                if (pair.Key.x > m_gridRect.maxX || m_notSet)
-                    m_gridRect.maxX = pair.Key.x;
-                if (pair.Key.y < m_gridRect.minY || m_notSet)
-                    m_gridRect.minY = pair.Key.y;
-                if (pair.Key.y > m_gridRect.maxY || m_notSet)
-                    m_gridRect.maxY = pair.Key.y;
-                m_notSet = false;
+                if (pair.Key.X < MGridRect.MinX || mNotSet)
+                    MGridRect.MinX = pair.Key.X;
+                if (pair.Key.X > MGridRect.MaxX || mNotSet)
+                    MGridRect.MaxX = pair.Key.X;
+                if (pair.Key.Y < MGridRect.MinY || mNotSet)
+                    MGridRect.MinY = pair.Key.Y;
+                if (pair.Key.Y > MGridRect.MaxY || mNotSet)
+                    MGridRect.MaxY = pair.Key.Y;
+                mNotSet = false;
             }
-            m_notSet = false;
+            mNotSet = false;
         }
 
         public override bool SetWalkableAt(int iX, int iY, bool iWalkable)
@@ -144,32 +144,32 @@ namespace Spark.Pathfinder.Grid
 
             if (iWalkable)
             {
-                if (m_nodes.ContainsKey(pos))
+                if (MNodes.ContainsKey(pos))
                 {
                    // this.m_nodes[pos].walkable = iWalkable;
                     return true;
                 }
                 else
                 {
-                    if (iX < m_gridRect.minX || m_notSet)
-                        m_gridRect.minX = iX;
-                    if (iX > m_gridRect.maxX || m_notSet)
-                        m_gridRect.maxX = iX;
-                    if (iY < m_gridRect.minY || m_notSet)
-                        m_gridRect.minY = iY;
-                    if (iY > m_gridRect.maxY || m_notSet)
-                        m_gridRect.maxY = iY;
-                    m_nodes.Add(new GridPos(pos.x, pos.y), new Node(pos.x, pos.y, iWalkable));
+                    if (iX < MGridRect.MinX || mNotSet)
+                        MGridRect.MinX = iX;
+                    if (iX > MGridRect.MaxX || mNotSet)
+                        MGridRect.MaxX = iX;
+                    if (iY < MGridRect.MinY || mNotSet)
+                        MGridRect.MinY = iY;
+                    if (iY > MGridRect.MaxY || mNotSet)
+                        MGridRect.MaxY = iY;
+                    MNodes.Add(new GridPos(pos.X, pos.Y), new Node(pos.X, pos.Y, iWalkable));
                     //m_notSet = false;
                 }
             }
             else
             {
-                if (m_nodes.ContainsKey(pos))
+                if (MNodes.ContainsKey(pos))
                 {
-                    m_nodes.Remove(pos);
-                    if (iX == m_gridRect.minX || iX == m_gridRect.maxX || iY == m_gridRect.minY || iY == m_gridRect.maxY)
-                        m_notSet = true;
+                    MNodes.Remove(pos);
+                    if (iX == MGridRect.MinX || iX == MGridRect.MaxX || iY == MGridRect.MinY || iY == MGridRect.MaxY)
+                        mNotSet = true;
                 }
             }
             return true;
@@ -177,21 +177,21 @@ namespace Spark.Pathfinder.Grid
 
         public override Node GetNodeAt(GridPos iPos)
         {
-            if (m_nodes.ContainsKey(iPos))
+            if (MNodes.ContainsKey(iPos))
             {
-                return m_nodes[iPos];
+                return MNodes[iPos];
             }
             return null;
         }
 
         public override bool IsWalkableAt(GridPos iPos)
         {
-            return m_nodes.ContainsKey(iPos);
+            return MNodes.ContainsKey(iPos);
         }
 
         public override bool SetWalkableAt(GridPos iPos, bool iWalkable)
         {
-            return SetWalkableAt(iPos.x, iPos.y, iWalkable);
+            return SetWalkableAt(iPos.X, iPos.Y, iWalkable);
         }
 
         public override void Reset()
@@ -202,14 +202,14 @@ namespace Spark.Pathfinder.Grid
         public void Reset(List<GridPos> iWalkableGridList)
         {
 
-            foreach (KeyValuePair<GridPos, Node> keyValue in m_nodes)
+            foreach (KeyValuePair<GridPos, Node> keyValue in MNodes)
             {
                 keyValue.Value.Reset();
             }
 
             if (iWalkableGridList == null)
                 return;
-            foreach (KeyValuePair<GridPos, Node> keyValue in m_nodes)
+            foreach (KeyValuePair<GridPos, Node> keyValue in MNodes)
             {
                 if (iWalkableGridList.Contains(keyValue.Key))
                     SetWalkableAt(keyValue.Key, true);
@@ -222,9 +222,9 @@ namespace Spark.Pathfinder.Grid
         {
             var tNewGrid = new DynamicGrid();
 
-            foreach (KeyValuePair<GridPos, Node> keyValue in m_nodes)
+            foreach (KeyValuePair<GridPos, Node> keyValue in MNodes)
             {
-                tNewGrid.SetWalkableAt(keyValue.Key.x, keyValue.Key.y, true);
+                tNewGrid.SetWalkableAt(keyValue.Key.X, keyValue.Key.Y, true);
 
             }
 

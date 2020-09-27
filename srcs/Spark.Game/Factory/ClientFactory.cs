@@ -15,33 +15,33 @@ namespace Spark.Game.Factory
 {
     public class ClientFactory : IClientFactory
     {
-        private readonly IPacketFactory _packetFactory;
-        private readonly IPacketManager _packetManager;
-        private readonly INetworkFactory _networkFactory;
+        private readonly IPacketFactory packetFactory;
+        private readonly IPacketManager packetManager;
+        private readonly INetworkFactory networkFactory;
 
         public ClientFactory(IPacketManager packetManager, IPacketFactory packetFactory, INetworkFactory networkFactory)
         {
-            _packetManager = packetManager;
-            _packetFactory = packetFactory;
-            _networkFactory = networkFactory;
+            this.packetManager = packetManager;
+            this.packetFactory = packetFactory;
+            this.networkFactory = networkFactory;
         }
 
         public IClient CreateRemoteClient(IPEndPoint ip, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector)
         {
-            INetwork network = _networkFactory.CreateRemoteNetwork(ip);
+            INetwork network = networkFactory.CreateRemoteNetwork(ip);
             IClient client = new Client(network);
 
             client.AddConfiguration(new LoginConfiguration(serverSelector, characterSelector));
 
             client.PacketReceived += packet =>
             {
-                IPacket typedPacket = _packetFactory.CreatePacket(packet);
+                IPacket typedPacket = packetFactory.CreatePacket(packet);
                 if (typedPacket == null)
                 {
                     return;
                 }
 
-                _packetManager.Process(client, typedPacket);
+                packetManager.Process(client, typedPacket);
             };
 
             return client;
@@ -49,7 +49,7 @@ namespace Spark.Game.Factory
 
         public IClient CreateLocalClient(Process process)
         {
-            return new Client(_networkFactory.CreateLocalNetwork(process));
+            return new Client(networkFactory.CreateLocalNetwork(process));
         }
     }
 }

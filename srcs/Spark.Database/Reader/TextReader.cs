@@ -7,16 +7,16 @@ namespace Spark.Database.Reader
 {
     public class TextReader
     {
-        private readonly string[] _content;
-        private readonly List<Predicate<string>> _skipConditions;
-        private char _separator;
+        private readonly string[] content;
+        private readonly List<Predicate<string>> skipConditions;
+        private char separator;
 
-        private bool _trim;
+        private bool trim;
 
         private TextReader(string[] content)
         {
-            _content = content;
-            _skipConditions = new List<Predicate<string>>();
+            this.content = content;
+            skipConditions = new List<Predicate<string>>();
         }
 
         public static TextReader FromString(string content)
@@ -46,40 +46,40 @@ namespace Spark.Database.Reader
 
         public TextReader TrimLines()
         {
-            _trim = true;
+            trim = true;
             return this;
         }
 
         public TextReader SplitLineContent(char separator)
         {
-            _separator = separator;
+            this.separator = separator;
             return this;
         }
 
         public TextReader SkipLines(Predicate<string> predicate)
         {
-            _skipConditions.Add(predicate);
+            skipConditions.Add(predicate);
             return this;
         }
 
         public TextContent GetContent()
         {
             var lines = new List<TextLine>();
-            foreach (string line in _content)
+            foreach (string line in content)
             {
-                if (_skipConditions.Any(x => x.Invoke(line)))
+                if (skipConditions.Any(x => x.Invoke(line)))
                 {
                     continue;
                 }
 
                 string content = line;
 
-                if (_trim)
+                if (trim)
                 {
                     content = content.Trim();
                 }
 
-                lines.Add(new TextLine(content.Split(_separator), _separator));
+                lines.Add(new TextLine(content.Split(separator), separator));
             }
 
             return new TextContent(lines);

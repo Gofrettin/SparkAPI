@@ -15,13 +15,13 @@ namespace Spark.Packet.Processor.Battle
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
-        private readonly IBuffFactory _buffFactory;
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IBuffFactory buffFactory;
+        private readonly IEventPipeline eventPipeline;
 
         public BfProcessor(IBuffFactory buffFactory, IEventPipeline eventPipeline)
         {
-            _buffFactory = buffFactory;
-            _eventPipeline = eventPipeline;
+            this.buffFactory = buffFactory;
+            this.eventPipeline = eventPipeline;
         }
         
         protected override void Process(IClient client, Bf packet)
@@ -42,7 +42,7 @@ namespace Spark.Packet.Processor.Battle
 
             if (packet.Duration != 0)
             {
-                IBuff buff = _buffFactory.CreateBuff(packet.BuffId, packet.Duration);
+                IBuff buff = buffFactory.CreateBuff(packet.BuffId, packet.Duration);
                 if (buff == null)
                 {
                     Logger.Warn($"Failed to create buff {packet.BuffId}");
@@ -51,7 +51,7 @@ namespace Spark.Packet.Processor.Battle
             
                 entity.Buffs.Add(buff);
             
-                _eventPipeline.Emit(new EntityReceiveBuffEvent(client, entity, buff));
+                eventPipeline.Emit(new EntityReceiveBuffEvent(client, entity, buff));
             
                 Logger.Debug($"Buff with id {packet.BuffId} successfully added to entity {entity.EntityType} with id {entity.Id}");
                 return;
@@ -65,7 +65,7 @@ namespace Spark.Packet.Processor.Battle
             }
 
             entity.Buffs.Remove(existingBuff);
-            _eventPipeline.Emit(new EntityRemoveBuffEvent(client, entity, existingBuff));
+            eventPipeline.Emit(new EntityRemoveBuffEvent(client, entity, existingBuff));
             
             Logger.Debug($"Buff with id {packet.BuffId} successfully removed from entity {entity.EntityType} with id {entity.Id}");
         }

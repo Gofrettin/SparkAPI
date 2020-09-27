@@ -43,13 +43,13 @@ namespace Spark.Pathfinder.Grid
 {
     public class PartialGridWPool : BaseGrid
     {
-        private NodePool m_nodePool;
+        private NodePool mNodePool;
 
-        public override int width
+        public override int Width
         {
             get
             {
-                return m_gridRect.maxX - m_gridRect.minX + 1;
+                return MGridRect.MaxX - MGridRect.MinX + 1;
             }
             protected set
             {
@@ -57,11 +57,11 @@ namespace Spark.Pathfinder.Grid
             }
         }
 
-        public override int height
+        public override int Height
         {
             get
             {
-                return m_gridRect.maxY - m_gridRect.minY + 1;
+                return MGridRect.MaxY - MGridRect.MinY + 1;
             }
             protected set
             {
@@ -74,27 +74,27 @@ namespace Spark.Pathfinder.Grid
             : base()
         {
             if (iGridRect == null)
-                m_gridRect = new GridRect();
+                MGridRect = new GridRect();
             else
-                m_gridRect = iGridRect;
-            m_nodePool = iNodePool;
+                MGridRect = iGridRect;
+            mNodePool = iNodePool;
         }
 
         public PartialGridWPool(PartialGridWPool b)
             : base(b)
         {
-            m_nodePool = b.m_nodePool;
+            mNodePool = b.mNodePool;
         }
        
         public void SetGridRect(GridRect iGridRect)
         {
-            m_gridRect = iGridRect;
+            MGridRect = iGridRect;
         }
 
 
         public bool IsInside(int iX, int iY)
         {
-            if (iX < m_gridRect.minX || iX > m_gridRect.maxX || iY < m_gridRect.minY || iY > m_gridRect.maxY)
+            if (iX < MGridRect.MinX || iX > MGridRect.MaxX || iY < MGridRect.MinY || iY > MGridRect.MaxY)
                 return false;
             return true;
         }
@@ -116,47 +116,47 @@ namespace Spark.Pathfinder.Grid
             if (!IsInside(iX,iY))
                 return false;
             var pos = new GridPos(iX, iY);
-            m_nodePool.SetNode(pos, iWalkable);
+            mNodePool.SetNode(pos, iWalkable);
             return true;
         }
 
         public bool IsInside(GridPos iPos)
         {
-            return IsInside(iPos.x, iPos.y);
+            return IsInside(iPos.X, iPos.Y);
         }
 
         public override Node GetNodeAt(GridPos iPos)
         {
             if (!IsInside(iPos))
                 return null;
-            return m_nodePool.GetNode(iPos);
+            return mNodePool.GetNode(iPos);
         }
 
         public override bool IsWalkableAt(GridPos iPos)
         {
             if (!IsInside(iPos))
                 return false;
-            return m_nodePool.Nodes.ContainsKey(iPos);
+            return mNodePool.Nodes.ContainsKey(iPos);
         }
 
         public override bool SetWalkableAt(GridPos iPos, bool iWalkable)
         {
-            return SetWalkableAt(iPos.x, iPos.y, iWalkable);
+            return SetWalkableAt(iPos.X, iPos.Y, iWalkable);
         }
 
         public override void Reset()
         {
-            int rectCount=(m_gridRect.maxX-m_gridRect.minX) * (m_gridRect.maxY-m_gridRect.minY);
-            if (m_nodePool.Nodes.Count > rectCount)
+            int rectCount=(MGridRect.MaxX-MGridRect.MinX) * (MGridRect.MaxY-MGridRect.MinY);
+            if (mNodePool.Nodes.Count > rectCount)
             {
                 var travPos = new GridPos(0, 0);
-                for (int xTrav = m_gridRect.minX; xTrav <= m_gridRect.maxX; xTrav++)
+                for (int xTrav = MGridRect.MinX; xTrav <= MGridRect.MaxX; xTrav++)
                 {
-                    travPos.x = xTrav;
-                    for (int yTrav = m_gridRect.minY; yTrav <= m_gridRect.maxY; yTrav++)
+                    travPos.X = xTrav;
+                    for (int yTrav = MGridRect.MinY; yTrav <= MGridRect.MaxY; yTrav++)
                     {
-                        travPos.y = yTrav;
-                        Node curNode=m_nodePool.GetNode(travPos);
+                        travPos.Y = yTrav;
+                        Node curNode=mNodePool.GetNode(travPos);
                         if (curNode!=null)
                             curNode.Reset();
                     }
@@ -164,7 +164,7 @@ namespace Spark.Pathfinder.Grid
             }
             else
             {
-                foreach (KeyValuePair<GridPos, Node> keyValue in m_nodePool.Nodes)
+                foreach (KeyValuePair<GridPos, Node> keyValue in mNodePool.Nodes)
                 {
                     keyValue.Value.Reset();
                 }
@@ -174,7 +174,7 @@ namespace Spark.Pathfinder.Grid
 
         public override BaseGrid Clone()
         {
-            var tNewGrid = new PartialGridWPool(m_nodePool,m_gridRect);
+            var tNewGrid = new PartialGridWPool(mNodePool,MGridRect);
             return tNewGrid;
         }
     }

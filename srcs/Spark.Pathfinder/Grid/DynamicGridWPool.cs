@@ -44,16 +44,16 @@ namespace Spark.Pathfinder.Grid
 {
     public class DynamicGridWPool : BaseGrid
     {
-         private bool m_notSet;
-         private NodePool m_nodePool;
+         private bool mNotSet;
+         private NodePool mNodePool;
 
-        public override int width
+        public override int Width
         {
             get
             {
-                if (m_notSet)
-                    setBoundingBox();
-                return m_gridRect.maxX - m_gridRect.minX + 1;
+                if (mNotSet)
+                    SetBoundingBox();
+                return MGridRect.MaxX - MGridRect.MinX + 1;
             }
             protected set
             {
@@ -61,13 +61,13 @@ namespace Spark.Pathfinder.Grid
             }
         }
 
-        public override int height
+        public override int Height
         {
             get
             {
-                if (m_notSet)
-                    setBoundingBox();
-                return m_gridRect.maxY - m_gridRect.minY + 1;
+                if (mNotSet)
+                    SetBoundingBox();
+                return MGridRect.MaxY - MGridRect.MinY + 1;
             }
             protected set
             {
@@ -78,20 +78,20 @@ namespace Spark.Pathfinder.Grid
         public DynamicGridWPool(NodePool iNodePool)
             : base()
         {
-            m_gridRect = new GridRect();
-            m_gridRect.minX = 0;
-            m_gridRect.minY = 0;
-            m_gridRect.maxX = 0;
-            m_gridRect.maxY = 0;
-            m_notSet = true;
-            m_nodePool = iNodePool;
+            MGridRect = new GridRect();
+            MGridRect.MinX = 0;
+            MGridRect.MinY = 0;
+            MGridRect.MaxX = 0;
+            MGridRect.MaxY = 0;
+            mNotSet = true;
+            mNodePool = iNodePool;
         }
 
         public DynamicGridWPool(DynamicGridWPool b)
             : base(b)
         {
-            m_notSet = b.m_notSet;
-            m_nodePool = b.m_nodePool;
+            mNotSet = b.mNotSet;
+            mNodePool = b.mNodePool;
         }
 
         public override Node GetNodeAt(int iX, int iY)
@@ -106,44 +106,44 @@ namespace Spark.Pathfinder.Grid
             return IsWalkableAt(pos);
         }
 
-        private void setBoundingBox()
+        private void SetBoundingBox()
         {
-            m_notSet = true;
-            foreach (KeyValuePair<GridPos, Node> pair in m_nodePool.Nodes)
+            mNotSet = true;
+            foreach (KeyValuePair<GridPos, Node> pair in mNodePool.Nodes)
             {
-                if (pair.Key.x < m_gridRect.minX || m_notSet)
-                    m_gridRect.minX = pair.Key.x;
-                if (pair.Key.x > m_gridRect.maxX || m_notSet)
-                    m_gridRect.maxX = pair.Key.x;
-                if (pair.Key.y < m_gridRect.minY || m_notSet)
-                    m_gridRect.minY = pair.Key.y;
-                if (pair.Key.y > m_gridRect.maxY || m_notSet)
-                    m_gridRect.maxY = pair.Key.y;
-                m_notSet = false;
+                if (pair.Key.X < MGridRect.MinX || mNotSet)
+                    MGridRect.MinX = pair.Key.X;
+                if (pair.Key.X > MGridRect.MaxX || mNotSet)
+                    MGridRect.MaxX = pair.Key.X;
+                if (pair.Key.Y < MGridRect.MinY || mNotSet)
+                    MGridRect.MinY = pair.Key.Y;
+                if (pair.Key.Y > MGridRect.MaxY || mNotSet)
+                    MGridRect.MaxY = pair.Key.Y;
+                mNotSet = false;
             }
-            m_notSet = false;
+            mNotSet = false;
         }
 
         public override bool SetWalkableAt(int iX, int iY, bool iWalkable)
         {
             var pos = new GridPos(iX, iY);
-            m_nodePool.SetNode(pos, iWalkable);
+            mNodePool.SetNode(pos, iWalkable);
             if (iWalkable)
             {
-                if (iX < m_gridRect.minX || m_notSet)
-                    m_gridRect.minX = iX;
-                if (iX > m_gridRect.maxX || m_notSet)
-                    m_gridRect.maxX = iX;
-                if (iY < m_gridRect.minY || m_notSet)
-                    m_gridRect.minY = iY;
-                if (iY > m_gridRect.maxY || m_notSet)
-                    m_gridRect.maxY = iY;
+                if (iX < MGridRect.MinX || mNotSet)
+                    MGridRect.MinX = iX;
+                if (iX > MGridRect.MaxX || mNotSet)
+                    MGridRect.MaxX = iX;
+                if (iY < MGridRect.MinY || mNotSet)
+                    MGridRect.MinY = iY;
+                if (iY > MGridRect.MaxY || mNotSet)
+                    MGridRect.MaxY = iY;
                 //m_notSet = false;
             }
             else
             {
-                if (iX == m_gridRect.minX || iX == m_gridRect.maxX || iY == m_gridRect.minY || iY == m_gridRect.maxY)
-                    m_notSet = true;
+                if (iX == MGridRect.MinX || iX == MGridRect.MaxX || iY == MGridRect.MinY || iY == MGridRect.MaxY)
+                    mNotSet = true;
                 
             }
             return true;
@@ -151,23 +151,23 @@ namespace Spark.Pathfinder.Grid
 
         public override Node GetNodeAt(GridPos iPos)
         {
-            return m_nodePool.GetNode(iPos);
+            return mNodePool.GetNode(iPos);
         }
 
         public override bool IsWalkableAt(GridPos iPos)
         {
-            return  m_nodePool.Nodes.ContainsKey(iPos);
+            return  mNodePool.Nodes.ContainsKey(iPos);
         }
 
         public override bool SetWalkableAt(GridPos iPos, bool iWalkable)
         {
-            return SetWalkableAt(iPos.x, iPos.y, iWalkable);
+            return SetWalkableAt(iPos.X, iPos.Y, iWalkable);
         }
 
 
         public override void Reset()
         {
-            foreach (KeyValuePair<GridPos, Node> keyValue in m_nodePool.Nodes)
+            foreach (KeyValuePair<GridPos, Node> keyValue in mNodePool.Nodes)
             {
                 keyValue.Value.Reset();
             }
@@ -175,7 +175,7 @@ namespace Spark.Pathfinder.Grid
 
         public override BaseGrid Clone()
         {
-            var tNewGrid = new DynamicGridWPool(m_nodePool);
+            var tNewGrid = new DynamicGridWPool(mNodePool);
             return tNewGrid;
         }
     }

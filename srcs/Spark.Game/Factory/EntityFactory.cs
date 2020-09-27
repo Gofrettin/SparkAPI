@@ -9,13 +9,13 @@ namespace Spark.Game.Factory
 {
     public class EntityFactory : IEntityFactory
     {
-        private readonly IDatabase _database;
+        private readonly IDatabase database;
 
-        public EntityFactory(IDatabase database) => _database = database;
+        public EntityFactory(IDatabase database) => this.database = database;
 
         public IMonster CreateMonster(long entityId, int gameKey)
         {
-            MonsterData data = _database.Monsters.GetValue(gameKey);
+            MonsterData data = database.Monsters.GetValue(gameKey);
             if (data == null)
             {
                 return default;
@@ -29,7 +29,7 @@ namespace Spark.Game.Factory
 
         public INpc CreateNpc(long entityId, int gameKey)
         {
-            MonsterData data = _database.Monsters.GetValue(gameKey);
+            MonsterData data = database.Monsters.GetValue(gameKey);
             if (data == null)
             {
                 return default;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using NLog;
 
@@ -15,13 +16,13 @@ namespace Spark.Event
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Dictionary<Type, List<IEventHandler>> _handlers;
+        private readonly ConcurrentDictionary<Type, List<IEventHandler>> handlers;
 
-        public EventPipeline() => _handlers = new Dictionary<Type, List<IEventHandler>>();
+        public EventPipeline() => handlers = new ConcurrentDictionary<Type, List<IEventHandler>>();
 
         public void Emit(IEvent e)
         {
-            List<IEventHandler> handlers = _handlers.GetValueOrDefault(e.GetType());
+            List<IEventHandler> handlers = this.handlers.GetValueOrDefault(e.GetType());
             if (handlers == null)
             {
                 Logger.Trace($"No event handler found for {e.GetType().Name}, skipping.");
@@ -45,11 +46,11 @@ namespace Spark.Event
 
         public void AddEventHandler(IEventHandler handler)
         {
-            List<IEventHandler> handlers = _handlers.GetValueOrDefault(handler.EventType);
+            List<IEventHandler> handlers = this.handlers.GetValueOrDefault(handler.EventType);
             if (handlers == null)
             {
                 handlers = new List<IEventHandler>();
-                _handlers[handler.EventType] = handlers;
+                this.handlers[handler.EventType] = handlers;
             }
 
             handlers.Add(handler);

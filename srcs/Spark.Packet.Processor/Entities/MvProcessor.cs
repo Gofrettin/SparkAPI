@@ -12,9 +12,9 @@ namespace Spark.Packet.Processor.Entities
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
-        public MvProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+        public MvProcessor(IEventPipeline eventPipeline) => this.eventPipeline = eventPipeline;
 
         protected override void Process(IClient client, Mv packet)
         {
@@ -37,7 +37,7 @@ namespace Spark.Packet.Processor.Entities
             entity.Position = to;
             entity.Speed = packet.Speed;
 
-            _eventPipeline.Emit(new EntityMoveEvent(client, entity, from, to));
+            eventPipeline.Emit(new EntityMoveEvent(client, entity, from, to));
 
             Logger.Trace($"Entity {entity.EntityType} with id {entity.Id} moved to {entity.Position}");
         }

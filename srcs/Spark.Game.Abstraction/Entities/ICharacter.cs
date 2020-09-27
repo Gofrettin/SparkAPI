@@ -19,8 +19,8 @@ namespace Spark.Game.Abstraction.Entities
 
         void WearSpecialist();
         void UnwearSpecialist();
-        void Walk(Vector2D position);
-        void Walk(IEnumerable<Vector2D> path);
+        void Walk(Vector2D position, bool pathfinder = true);
+        void Walk(IEnumerable<Vector2D> path, bool pathfinder = true);
         void WalkInRange(Vector2D position, int range);
         void Attack(ISkill skill);
         void Attack(ILivingEntity entity);

@@ -10,13 +10,13 @@ namespace Spark.Game.Factory
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IDatabase _database;
+        private readonly IDatabase database;
 
-        public MapFactory(IDatabase database) => _database = database;
+        public MapFactory(IDatabase database) => this.database = database;
 
         public IMap CreateMap(int mapId)
         {
-            MapData data = _database.Maps.GetValue(mapId);
+            MapData data = database.Maps.GetValue(mapId);
             if (data == null)
             {
                 Logger.Error($"Can't get map data with id {mapId} from database");

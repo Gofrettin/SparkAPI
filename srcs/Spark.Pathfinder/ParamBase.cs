@@ -12,30 +12,30 @@ using System.Text;
     {
         public ParamBase(BaseGrid iGrid, GridPos iStartPos, GridPos iEndPos, DiagonalMovement iDiagonalMovement, HeuristicMode iMode) : this(iGrid, iDiagonalMovement, iMode)
         {
-            m_startNode = m_searchGrid.GetNodeAt(iStartPos.x, iStartPos.y);
-            m_endNode = m_searchGrid.GetNodeAt(iEndPos.x, iEndPos.y);
-            if (m_startNode == null)
-                m_startNode = new Node(iStartPos.x, iStartPos.y, true);
-            if (m_endNode == null)
-                m_endNode = new Node(iEndPos.x, iEndPos.y, true);
+            MStartNode = MSearchGrid.GetNodeAt(iStartPos.X, iStartPos.Y);
+            MEndNode = MSearchGrid.GetNodeAt(iEndPos.X, iEndPos.Y);
+            if (MStartNode == null)
+                MStartNode = new Node(iStartPos.X, iStartPos.Y, true);
+            if (MEndNode == null)
+                MEndNode = new Node(iEndPos.X, iEndPos.Y, true);
         }
 
         public ParamBase(BaseGrid iGrid, DiagonalMovement iDiagonalMovement, HeuristicMode iMode)
         {
             SetHeuristic(iMode);
 
-            m_searchGrid = iGrid;
+            MSearchGrid = iGrid;
             DiagonalMovement = iDiagonalMovement;
-            m_startNode = null;
-            m_endNode = null;
+            MStartNode = null;
+            MEndNode = null;
         }
 
         public ParamBase(ParamBase param)
         {
-            m_searchGrid = param.m_searchGrid;
+            MSearchGrid = param.MSearchGrid;
             DiagonalMovement = param.DiagonalMovement;
-            m_startNode = param.m_startNode;
-            m_endNode = param.m_endNode;
+            MStartNode = param.MStartNode;
+            MEndNode = param.MEndNode;
             
         }
 
@@ -44,18 +44,18 @@ using System.Text;
         public void Reset(GridPos iStartPos, GridPos iEndPos, BaseGrid iSearchGrid = null)
         {
             _reset(iStartPos, iEndPos, iSearchGrid);
-            m_startNode = null;
-            m_endNode = null;
+            MStartNode = null;
+            MEndNode = null;
 
             if (iSearchGrid != null)
-                m_searchGrid = iSearchGrid;
-            m_searchGrid.Reset();
-            m_startNode = m_searchGrid.GetNodeAt(iStartPos.x, iStartPos.y);
-            m_endNode = m_searchGrid.GetNodeAt(iEndPos.x, iEndPos.y);
-            if (m_startNode == null)
-                m_startNode = new Node(iStartPos.x, iStartPos.y, true);
-            if (m_endNode == null)
-                m_endNode = new Node(iEndPos.x, iEndPos.y, true);
+                MSearchGrid = iSearchGrid;
+            MSearchGrid.Reset();
+            MStartNode = MSearchGrid.GetNodeAt(iStartPos.X, iStartPos.Y);
+            MEndNode = MSearchGrid.GetNodeAt(iEndPos.X, iEndPos.Y);
+            if (MStartNode == null)
+                MStartNode = new Node(iStartPos.X, iStartPos.Y, true);
+            if (MEndNode == null)
+                MEndNode = new Node(iEndPos.X, iEndPos.Y, true);
         }
 
         public DiagonalMovement DiagonalMovement;
@@ -63,7 +63,7 @@ using System.Text;
         {
             get
             {
-                return m_heuristic;
+                return MHeuristic;
             }
         }
 
@@ -71,7 +71,7 @@ using System.Text;
         {
             get
             {
-                return m_searchGrid;
+                return MSearchGrid;
             }
         }
 
@@ -79,40 +79,40 @@ using System.Text;
         {
             get
             {
-                return m_startNode;
+                return MStartNode;
             }
         }
         public Node EndNode
         {
             get
             {
-                return m_endNode;
+                return MEndNode;
             }
         }
 
         public void SetHeuristic(HeuristicMode iMode)
         {
-            m_heuristic = null;
+            MHeuristic = null;
             switch (iMode)
             {
-                case HeuristicMode.MANHATTAN:
-                    m_heuristic = new HeuristicDelegate(Heuristic.Manhattan);
+                case HeuristicMode.Manhattan:
+                    MHeuristic = new HeuristicDelegate(Heuristic.Manhattan);
                     break;
-                case HeuristicMode.EUCLIDEAN:
-                    m_heuristic = new HeuristicDelegate(Heuristic.Euclidean);
+                case HeuristicMode.Euclidean:
+                    MHeuristic = new HeuristicDelegate(Heuristic.Euclidean);
                     break;
-                case HeuristicMode.CHEBYSHEV:
-                    m_heuristic = new HeuristicDelegate(Heuristic.Chebyshev);
+                case HeuristicMode.Chebyshev:
+                    MHeuristic = new HeuristicDelegate(Heuristic.Chebyshev);
                     break;
                 default:
-                    m_heuristic = new HeuristicDelegate(Heuristic.Euclidean);
+                    MHeuristic = new HeuristicDelegate(Heuristic.Euclidean);
                     break;
             }
         }
 
-        protected BaseGrid m_searchGrid;
-        protected Node m_startNode;
-        protected Node m_endNode;
-        protected HeuristicDelegate m_heuristic;
+        protected BaseGrid MSearchGrid;
+        protected Node MStartNode;
+        protected Node MEndNode;
+        protected HeuristicDelegate MHeuristic;
     }
 }

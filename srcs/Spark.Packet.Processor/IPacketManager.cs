@@ -16,16 +16,16 @@ namespace Spark.Packet.Processor
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Dictionary<Type, IPacketProcessor> _processors;
+        private readonly Dictionary<Type, IPacketProcessor> processors;
 
         public PacketManager(IEnumerable<IPacketProcessor> processors)
         {
-            _processors = processors.ToDictionary(x => x.PacketType, x => x);
+            this.processors = processors.ToDictionary(x => x.PacketType, x => x);
         }
 
         public void Process(IClient client, IPacket packet)
         {
-            IPacketProcessor processor = _processors.GetValueOrDefault(packet.GetType());
+            IPacketProcessor processor = processors.GetValueOrDefault(packet.GetType());
             if (processor == null)
             {
                 Logger.Warn($"No packet processor for {packet.GetType().Name}");

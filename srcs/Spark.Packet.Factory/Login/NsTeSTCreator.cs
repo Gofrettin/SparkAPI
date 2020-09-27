@@ -7,13 +7,13 @@ using Spark.Packet.Login;
 
 namespace Spark.Packet.Factory.Login
 {
-    public class NsTeSTCreator : PacketCreator<NsTeST>
+    public class NsTeStCreator : PacketCreator<NsTeSt>
     {
         public override string Header { get; } = "NsTeST";
         
-        public override NsTeST Create(string[] content)
+        public override NsTeSt Create(string[] content)
         {
-            var packet = new NsTeST
+            var packet = new NsTeSt
             {
                 Name = content[1],
                 RegionId = content[2].ToInt(),

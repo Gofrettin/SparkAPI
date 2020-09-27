@@ -10,14 +10,14 @@ namespace Spark.Packet.Processor.Characters
     public class CInfoProcessor : PacketProcessor<CInfo>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly IEntityFactory _entityFactory;
+        private readonly IEntityFactory entityFactory;
 
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
         public CInfoProcessor(IEventPipeline eventPipeline, IEntityFactory entityFactory)
         {
-            _eventPipeline = eventPipeline;
-            _entityFactory = entityFactory;
+            this.eventPipeline = eventPipeline;
+            this.entityFactory = entityFactory;
         }
 
         protected override void Process(IClient client, CInfo packet)
@@ -27,9 +27,9 @@ namespace Spark.Packet.Processor.Characters
                 return;
             }
 
-            client.Character = _entityFactory.CreateCharacter(packet.Id, packet.Name, client);
+            client.Character = entityFactory.CreateCharacter(packet.Id, packet.Name, client);
 
-            _eventPipeline.Emit(new CharacterInitializedEvent(client, client.Character));
+            eventPipeline.Emit(new CharacterInitializedEvent(client, client.Character));
 
             Logger.Debug($"Client with id {client.Id} initialized with character {client.Character.Name}");
         }

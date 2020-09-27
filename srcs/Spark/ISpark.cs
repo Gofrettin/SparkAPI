@@ -6,6 +6,7 @@ using Spark.Core.Server;
 using Spark.Event;
 using Spark.Game.Abstraction;
 using Spark.Gameforge;
+using Spark.Gameforge.Nostale;
 
 namespace Spark
 {
@@ -14,7 +15,7 @@ namespace Spark
         IGameforgeService GameforgeService { get; }
         IEventPipeline EventPipeline { get; }
 
-        IClient CreateRemoteClient(IPEndPoint ip, string token, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector);
+        IClient CreateRemoteClient(IPEndPoint ip, string token, NostaleClientInfo clientInfo, Predicate<WorldServer> serverSelector, Predicate<SelectableCharacter> characterSelector);
         Task<GameforgeResponse<string>> GetSessionToken(string email, string password, string locale, Predicate<GameforgeAccount> accountSelector);
 
         void AddEventHandler(IEventHandler eventHandler);

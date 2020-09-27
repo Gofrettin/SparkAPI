@@ -8,9 +8,9 @@ namespace Spark.Packet.Processor.Battle
 {
     public class DieProcessor : PacketProcessor<Die>
     {
-        private readonly IEventPipeline _eventPipeline;
+        private readonly IEventPipeline eventPipeline;
 
-        public DieProcessor(IEventPipeline eventPipeline) => _eventPipeline = eventPipeline;
+        public DieProcessor(IEventPipeline eventPipeline) => this.eventPipeline = eventPipeline;
 
         protected override void Process(IClient client, Die packet)
         {
@@ -29,7 +29,7 @@ namespace Spark.Packet.Processor.Battle
             entity.HpPercentage = 0;
             map.RemoveEntity(entity);
             
-            _eventPipeline.Emit(new EntityDeathEvent(client, entity, entity));
+            eventPipeline.Emit(new EntityDeathEvent(client, entity, entity));
         }
     }
 }

@@ -45,6 +45,17 @@ namespace Spark.Core
             return dx <= range && dy <= range && dx + dy <= range + range / 2;
         }
 
+        public bool IsBetween(Vector2D firstPoint, Vector2D secondPoint)
+        {
+            int minX = Math.Min(firstPoint.X, secondPoint.X);
+            int maxX = Math.Min(firstPoint.X, secondPoint.X);
+            
+            int minY = Math.Min(firstPoint.Y, secondPoint.Y);
+            int maxY = Math.Min(firstPoint.Y, secondPoint.Y);
+
+            return X >= minX && X <= maxX && Y >= minY && Y <= maxY;
+        }
+
         public Vector2D Randomize(int range)
         {
             return new Vector2D(X + Random.Next(-range, range), Y + Random.Next(-range, range));
